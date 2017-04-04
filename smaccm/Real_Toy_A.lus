@@ -1,0 +1,20 @@
+node main(
+  Input : real;
+  Output : real
+) returns (
+
+);
+var
+  __GUARANTEE0 : bool;
+let
+  --%MAIN;
+  __GUARANTEE0 = (Output < (2.0 * Input));
+
+  assert (Input < 20.0);
+
+  --%PROPERTY __GUARANTEE0;
+
+  --%REALIZABLE Input;
+
+tel;
+

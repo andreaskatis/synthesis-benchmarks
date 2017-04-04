@@ -1,0 +1,173 @@
+type DATATYPES__Drug_Database_Inputs__Impl = struct {Drug_Concentration_High : int; Drug_Concentration_Low : int; Drug_Name : int; Flow_Rate_High : int; Flow_Rate_KVO : int; Flow_Rate_Low : int; Inteval_Patient_Bolus : int; Known_Prescription : bool; Number_Max_Patient_Bolus : int; VTBI_High : int; VTBI_Low : int};
+type DATATYPES__GPCA_SW_Outputs__Impl = struct {Actual_Infusion_Duration : int; Audio_Notification_Command : int; Commanded_Flow_Rate : int; Configured : int; Current_System_Mode : int; Drug_Concentration : int; Drug_Name : int; Duration_Intermittent_Bolus : int; Duration_Patient_Bolus : int; Entered_Reservoir_Volume : int; Error_Message_ID : int; Flow_Rate_Basal : int; Flow_Rate_Intermittent_Bolus : int; Flow_Rate_KVO : int; Flow_Rate_Patient_Bolus : int; Infusion_Total_Duration : int; Interval_Intermittent_Bolus : int; Is_Audio_Disabled : int; Lockout_Period_Patient_Bolus : int; Log : int; Max_Number_of_Patient_Bolus : int; Notification_Message : int; Patient_ID : int; Request_Config_Type : bool; Request_Confirm_Infusion_Initiate : bool; Request_Confirm_Stop : bool; Request_Infusion_Info : bool; Request_Patient_Drug_Info : bool; Reservoir_Volume : int; VTBI_Total : int; Volume_Infused : int};
+type DATATYPES__Patient_Inputs__Impl = struct {Patient_Bolus_Request : bool};
+type DATATYPES__Prescription_Inputs__Impl = struct {Drug_Concentration : int; Drug_Name : int; Duration_Intermittent_Bolus : int; Duration_Patient_Bolus : int; Entered_Reservoir_Volume : int; Flow_Rate_Basal : int; Flow_Rate_Intermittent_Bolus : int; Flow_Rate_Patient_Bolus : int; Interval_Intermittent_Bolus : int; Lockout_Period_Patient_Bolus : int; Max_Number_of_Patient_Bolus : int; Patient_ID : int; Total_Duration : int; VTBI_Total : int};
+type DATATYPES__Device_Sensor_Inputs__Impl = struct {Air_In_Line : bool; Air_Pressure : bool; Battery_Depleted : bool; Battery_Low : bool; Battery_Unable_To_Charge : bool; CPU_Error : bool; Door_Open : bool; Flow_Rate : int; Flow_Rate_Not_Stable : bool; Humidity : bool; Log : bool; Memory_Corrupted : bool; Occlusion : bool; Post_Successful : bool; Pump_Overheated : bool; Pump_Primed : bool; Pump_Too_Hot : bool; RTC_Error : bool; Supply_Voltage : bool; Temp : bool; WatchDog_Interrupt_Detected : bool};
+type DATATYPES__Device_Configuration_Inputs__Impl = struct {Audio_Enable_Duration : int; Audio_Level : int; Config_Warning_Duration : int; Empty_Reservoir : int; Log_Interval : int; Low_Reservoir : int; Max_Config_Duration : int; Max_Confirm_Stop_Duration : int; Max_Display_Duration : int; Max_Duration_Over_Infusion : int; Max_Duration_Under_Infusion : int; Max_Idle_Duration : int; Max_Paused_Duration : int; System_Test_Inteval : int; Tolerance_Max : int; Tolerance_Min : int};
+type DATATYPES__Operator_Commands__Impl = struct {Back : bool; Cancel : bool; Configuration_Type : int; Confirm_Stop : bool; Data_Config : bool; Disable_Audio : int; Infusion_Cancel : bool; Infusion_Inhibit : bool; Infusion_Initiate : bool; Keyboard : bool; Next : bool; Notification_Cancel : bool; System_Start : bool; System_Stop : bool};
+
+node main(
+  OP_CMD_IN : DATATYPES__Operator_Commands__Impl;
+  PRES_IN : DATATYPES__Prescription_Inputs__Impl;
+  PATIENT_IN : DATATYPES__Patient_Inputs__Impl;
+  SENSOR_IN : DATATYPES__Device_Sensor_Inputs__Impl;
+  CONST_IN : DATATYPES__Device_Configuration_Inputs__Impl;
+  DB_IN : DATATYPES__Drug_Database_Inputs__Impl;
+  GPCA_SW_OUT : DATATYPES__GPCA_SW_Outputs__Impl
+) returns (
+
+);
+var
+  __GUARANTEE0 : bool;
+  __GUARANTEE1 : bool;
+  __GUARANTEE2 : bool;
+  __GUARANTEE3 : bool;
+  __GUARANTEE4 : bool;
+  __GUARANTEE5 : bool;
+  __GUARANTEE6 : bool;
+  __GUARANTEE7 : bool;
+  __GUARANTEE8 : bool;
+  __GUARANTEE9 : bool;
+  __GUARANTEE10 : bool;
+  __GUARANTEE11 : bool;
+  __GUARANTEE12 : bool;
+  __GUARANTEE13 : bool;
+  __GUARANTEE14 : bool;
+  __GUARANTEE15 : bool;
+  __GUARANTEE16 : bool;
+  __GUARANTEE17 : bool;
+  __GUARANTEE18 : bool;
+  __GUARANTEE19 : bool;
+  sys_initial : bool;
+  mode_range : bool;
+  not_system_start_implies_mode_0 : bool;
+  initial_system_start_implies_mode_1 : bool;
+  off_to_on_implies_mode_1 : bool;
+  empty_reservoir_and_In_therapy_implies_no_flow : bool;
+  other_level_4_alarms_implies_no_flow : bool;
+  volume_infused_exceeds_VTBI_Hi : bool;
+  flow_rate_exceeds_flow_rate_Hi : bool;
+  airInLine_implies_flow_at_most_KVO : bool;
+  occlusion_implies_flow_at_most_KVO : bool;
+  door_open_implies_flow_at_most_KVO : bool;
+  low_reservoir_and_In_therapy_implies_no_bolus : bool;
+  infusion_cancel_implies_flow_0 : bool;
+  infusion_pause_implies_flow_kvo : bool;
+  no_audio_if_audio_disabled : bool;
+  no_config_implies_mode_1 : bool;
+  empty_reservoir_implies_audio : bool;
+  empty_reservoir_implies_visual_1 : bool;
+  no_patient_request_imples_no_pbolus : bool;
+let
+  --%MAIN;
+  __GUARANTEE0 = mode_range;
+
+  __GUARANTEE1 = not_system_start_implies_mode_0;
+
+  __GUARANTEE2 = initial_system_start_implies_mode_1;
+
+  __GUARANTEE3 = off_to_on_implies_mode_1;
+
+  __GUARANTEE4 = empty_reservoir_and_In_therapy_implies_no_flow;
+
+  __GUARANTEE5 = other_level_4_alarms_implies_no_flow;
+
+  __GUARANTEE6 = volume_infused_exceeds_VTBI_Hi;
+
+  __GUARANTEE7 = flow_rate_exceeds_flow_rate_Hi;
+
+  __GUARANTEE8 = airInLine_implies_flow_at_most_KVO;
+
+  __GUARANTEE9 = occlusion_implies_flow_at_most_KVO;
+
+  __GUARANTEE10 = door_open_implies_flow_at_most_KVO;
+
+  __GUARANTEE11 = low_reservoir_and_In_therapy_implies_no_bolus;
+
+  __GUARANTEE12 = infusion_cancel_implies_flow_0;
+
+  __GUARANTEE13 = infusion_pause_implies_flow_kvo;
+
+  __GUARANTEE14 = no_audio_if_audio_disabled;
+
+  __GUARANTEE15 = no_config_implies_mode_1;
+
+  __GUARANTEE16 = empty_reservoir_implies_audio;
+
+  __GUARANTEE17 = empty_reservoir_implies_visual_1;
+
+  __GUARANTEE18 = no_patient_request_imples_no_pbolus;
+
+  __GUARANTEE19 = airInLine_implies_flow_at_most_KVO;
+
+  sys_initial = (true -> false);
+
+  mode_range = ((((((((GPCA_SW_OUT.Current_System_Mode = 0) or (GPCA_SW_OUT.Current_System_Mode = 1)) or (GPCA_SW_OUT.Current_System_Mode = 2)) or (GPCA_SW_OUT.Current_System_Mode = 3)) or (GPCA_SW_OUT.Current_System_Mode = 4)) or (GPCA_SW_OUT.Current_System_Mode = 6)) or (GPCA_SW_OUT.Current_System_Mode = 7)) or (GPCA_SW_OUT.Current_System_Mode = 8));
+
+  not_system_start_implies_mode_0 = ((not OP_CMD_IN.System_Start) => (GPCA_SW_OUT.Current_System_Mode = 0));
+
+  initial_system_start_implies_mode_1 = ((sys_initial and OP_CMD_IN.System_Start) => (GPCA_SW_OUT.Current_System_Mode = 1));
+
+  off_to_on_implies_mode_1 = ((((not sys_initial) and ((pre GPCA_SW_OUT.Current_System_Mode) = 0)) and OP_CMD_IN.System_Start) => (GPCA_SW_OUT.Current_System_Mode = 1));
+
+  empty_reservoir_and_In_therapy_implies_no_flow = (true -> (((OP_CMD_IN.System_Start and ((pre GPCA_SW_OUT.Current_System_Mode) > 1)) and (GPCA_SW_OUT.Reservoir_Volume < CONST_IN.Empty_Reservoir)) => (GPCA_SW_OUT.Commanded_Flow_Rate = 0)));
+
+  other_level_4_alarms_implies_no_flow = (true -> ((OP_CMD_IN.System_Start and (((((SENSOR_IN.Battery_Depleted or SENSOR_IN.RTC_Error) or SENSOR_IN.CPU_Error) or SENSOR_IN.Memory_Corrupted) or SENSOR_IN.Pump_Too_Hot) or SENSOR_IN.WatchDog_Interrupt_Detected)) => (GPCA_SW_OUT.Commanded_Flow_Rate = 0)));
+
+  volume_infused_exceeds_VTBI_Hi = (true -> (((OP_CMD_IN.System_Start and ((pre GPCA_SW_OUT.Current_System_Mode) > 1)) and (GPCA_SW_OUT.Volume_Infused > DB_IN.VTBI_High)) => (GPCA_SW_OUT.Commanded_Flow_Rate <= GPCA_SW_OUT.Flow_Rate_KVO)));
+
+  flow_rate_exceeds_flow_rate_Hi = (true -> (((OP_CMD_IN.System_Start and ((pre GPCA_SW_OUT.Current_System_Mode) > 1)) and (SENSOR_IN.Flow_Rate > DB_IN.Flow_Rate_High)) => (GPCA_SW_OUT.Commanded_Flow_Rate <= GPCA_SW_OUT.Flow_Rate_KVO)));
+
+  airInLine_implies_flow_at_most_KVO = ((OP_CMD_IN.System_Start and SENSOR_IN.Air_In_Line) => (GPCA_SW_OUT.Commanded_Flow_Rate <= GPCA_SW_OUT.Flow_Rate_KVO));
+
+  occlusion_implies_flow_at_most_KVO = ((OP_CMD_IN.System_Start and SENSOR_IN.Occlusion) => (GPCA_SW_OUT.Commanded_Flow_Rate <= GPCA_SW_OUT.Flow_Rate_KVO));
+
+  door_open_implies_flow_at_most_KVO = (true -> ((OP_CMD_IN.System_Start and SENSOR_IN.Door_Open) => (GPCA_SW_OUT.Commanded_Flow_Rate <= GPCA_SW_OUT.Flow_Rate_KVO)));
+
+  low_reservoir_and_In_therapy_implies_no_bolus = (true -> (((OP_CMD_IN.System_Start and ((pre GPCA_SW_OUT.Current_System_Mode) > 1)) and (GPCA_SW_OUT.Reservoir_Volume < CONST_IN.Low_Reservoir)) => ((not (GPCA_SW_OUT.Current_System_Mode = 3)) or (not (GPCA_SW_OUT.Current_System_Mode = 4)))));
+
+  infusion_cancel_implies_flow_0 = (true -> ((OP_CMD_IN.System_Start and OP_CMD_IN.Infusion_Cancel) => (GPCA_SW_OUT.Commanded_Flow_Rate = 0)));
+
+  infusion_pause_implies_flow_kvo = (true -> ((OP_CMD_IN.System_Start and OP_CMD_IN.Infusion_Inhibit) => (GPCA_SW_OUT.Commanded_Flow_Rate <= GPCA_SW_OUT.Flow_Rate_KVO)));
+
+  no_audio_if_audio_disabled = ((OP_CMD_IN.System_Start and (OP_CMD_IN.Disable_Audio > 0)) => ((GPCA_SW_OUT.Audio_Notification_Command = 0) and (GPCA_SW_OUT.Is_Audio_Disabled = OP_CMD_IN.Disable_Audio)));
+
+  no_config_implies_mode_1 = ((OP_CMD_IN.System_Start and (GPCA_SW_OUT.Configured < 1)) => (GPCA_SW_OUT.Current_System_Mode = 1));
+
+  empty_reservoir_implies_audio = (true -> ((((OP_CMD_IN.System_Start and ((pre GPCA_SW_OUT.Current_System_Mode) > 1)) and (GPCA_SW_OUT.Reservoir_Volume < CONST_IN.Empty_Reservoir)) and (OP_CMD_IN.Disable_Audio = 0)) => ((GPCA_SW_OUT.Audio_Notification_Command = CONST_IN.Audio_Level) and (GPCA_SW_OUT.Is_Audio_Disabled = OP_CMD_IN.Disable_Audio))));
+
+  empty_reservoir_implies_visual_1 = (true -> (((OP_CMD_IN.System_Start and ((pre GPCA_SW_OUT.Current_System_Mode) > 1)) and (GPCA_SW_OUT.Reservoir_Volume < CONST_IN.Empty_Reservoir)) => (GPCA_SW_OUT.Notification_Message = 1)));
+
+  no_patient_request_imples_no_pbolus = (((OP_CMD_IN.System_Start and (not (pre (GPCA_SW_OUT.Current_System_Mode = 4)))) and (not PATIENT_IN.Patient_Bolus_Request)) => (not (GPCA_SW_OUT.Current_System_Mode = 4)));
+
+  assert (DB_IN.VTBI_High >= 0);
+
+  assert (CONST_IN.Empty_Reservoir >= 0);
+
+  assert (CONST_IN.Low_Reservoir >= 0);
+
+  --%PROPERTY __GUARANTEE0;
+  --%PROPERTY __GUARANTEE1;
+  --%PROPERTY __GUARANTEE2;
+  --%PROPERTY __GUARANTEE3;
+  --%PROPERTY __GUARANTEE4;
+  --%PROPERTY __GUARANTEE5;
+  --%PROPERTY __GUARANTEE6;
+  --%PROPERTY __GUARANTEE7;
+  --%PROPERTY __GUARANTEE8;
+  --%PROPERTY __GUARANTEE9;
+  --%PROPERTY __GUARANTEE10;
+  --%PROPERTY __GUARANTEE11;
+  --%PROPERTY __GUARANTEE12;
+  --%PROPERTY __GUARANTEE13;
+  --%PROPERTY __GUARANTEE14;
+  --%PROPERTY __GUARANTEE15;
+  --%PROPERTY __GUARANTEE16;
+  --%PROPERTY __GUARANTEE17;
+  --%PROPERTY __GUARANTEE18;
+  --%PROPERTY __GUARANTEE19;
+
+  --%REALIZABLE OP_CMD_IN, PRES_IN, PATIENT_IN, SENSOR_IN, CONST_IN, DB_IN;
+
+tel;
+

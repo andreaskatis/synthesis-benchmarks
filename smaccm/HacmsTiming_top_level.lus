@@ -1,0 +1,24 @@
+node main(
+  input___EVENT_ : bool;
+  input : int;
+  t : real;
+  output___EVENT_ : bool;
+  output : int
+) returns (
+
+);
+var
+  __GUARANTEE0 : bool;
+  time_of_last_input_change : real;
+let
+  --%MAIN;
+  __GUARANTEE0 = ((output <> (0 -> (pre output))) => (time_of_last_input_change < 40.0));
+
+  time_of_last_input_change = (if (input <> (0 -> (pre input))) then t else (0.0 -> (pre time_of_last_input_change)));
+
+  --%PROPERTY __GUARANTEE0;
+
+  --%REALIZABLE input___EVENT_, input;
+
+tel;
+

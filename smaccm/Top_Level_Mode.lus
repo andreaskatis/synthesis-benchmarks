@@ -1,0 +1,33 @@
+type DATATYPES__Top_Level_Mode_Outputs__Impl = struct {Log_Message_ID : int; Request_Confirm_Stop : bool; System_On : bool};
+type DATATYPES__Device_Configuration_Inputs__Impl = struct {Audio_Enable_Duration : int; Audio_Level : int; Config_Warning_Duration : int; Empty_Reservoir : int; Log_Interval : int; Low_Reservoir : int; Max_Config_Duration : int; Max_Confirm_Stop_Duration : int; Max_Display_Duration : int; Max_Duration_Over_Infusion : int; Max_Duration_Under_Infusion : int; Max_Idle_Duration : int; Max_Paused_Duration : int; System_Test_Inteval : int; Tolerance_Max : int; Tolerance_Min : int};
+type DATATYPES__Operator_Commands__Impl = struct {Back : bool; Cancel : bool; Configuration_Type : int; Confirm_Stop : bool; Data_Config : bool; Disable_Audio : int; Infusion_Cancel : bool; Infusion_Inhibit : bool; Infusion_Initiate : bool; Keyboard : bool; Next : bool; Notification_Cancel : bool; System_Start : bool; System_Stop : bool};
+
+node main(
+  OP_CMD_IN : DATATYPES__Operator_Commands__Impl;
+  CONST_IN : DATATYPES__Device_Configuration_Inputs__Impl;
+  TLM_MODE_OUT : DATATYPES__Top_Level_Mode_Outputs__Impl
+) returns (
+
+);
+var
+  __GUARANTEE0 : bool;
+  __GUARANTEE1 : bool;
+  system_start_implies_system_on : bool;
+  not_system_start_implies_system_off : bool;
+let
+  --%MAIN;
+  __GUARANTEE0 = system_start_implies_system_on;
+
+  __GUARANTEE1 = not_system_start_implies_system_off;
+
+  system_start_implies_system_on = (OP_CMD_IN.System_Start => TLM_MODE_OUT.System_On);
+
+  not_system_start_implies_system_off = ((not OP_CMD_IN.System_Start) => (not TLM_MODE_OUT.System_On));
+
+  --%PROPERTY __GUARANTEE0;
+  --%PROPERTY __GUARANTEE1;
+
+  --%REALIZABLE OP_CMD_IN, CONST_IN;
+
+tel;
+

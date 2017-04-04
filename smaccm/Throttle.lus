@@ -1,0 +1,20 @@
+type Types__speed__speed_impl = struct {val : real};
+
+node main(
+  Actuator_Input : real;
+  Actual : Types__speed__speed_impl
+) returns (
+
+);
+var
+  __GUARANTEE0 : bool;
+let
+  --%MAIN;
+  __GUARANTEE0 = (Actual.val = ((0.0 -> (pre Actual.val)) + (0.1 * Actuator_Input)));
+
+  --%PROPERTY __GUARANTEE0;
+
+  --%REALIZABLE Actuator_Input;
+
+tel;
+

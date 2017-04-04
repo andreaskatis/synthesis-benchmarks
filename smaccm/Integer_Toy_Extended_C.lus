@@ -1,0 +1,19 @@
+node main(
+  Input1 : int;
+  Input2 : int;
+  Output : int
+) returns (
+
+);
+var
+  __GUARANTEE0 : bool;
+let
+  --%MAIN;
+  __GUARANTEE0 = (Output = (Input1 + Input2));
+
+  --%PROPERTY __GUARANTEE0;
+
+  --%REALIZABLE Input1, Input2;
+
+tel;
+

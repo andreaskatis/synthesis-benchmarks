@@ -1,0 +1,19 @@
+type Types__state_sig__impl = struct {val : int};
+
+node main(
+  State_Out : Types__state_sig__impl
+) returns (
+
+);
+var
+  __GUARANTEE0 : bool;
+let
+  --%MAIN;
+  __GUARANTEE0 = (State_Out.val = (0 -> (pre State_Out.val)));
+
+  --%PROPERTY __GUARANTEE0;
+
+  --%REALIZABLE ;
+
+tel;
+

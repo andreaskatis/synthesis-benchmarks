@@ -1,0 +1,81 @@
+node main(
+  TS : bool;
+  LPFS : bool;
+  RPFS : bool
+) returns (
+
+);
+var
+  __GUARANTEE0 : bool;
+  __GUARANTEE1 : bool;
+  __GUARANTEE2 : bool;
+  __GUARANTEE3 : bool;
+let
+  --%MAIN;
+  __GUARANTEE0 = (LPFS or RPFS);
+
+  __GUARANTEE1 = ((Agree_Nodes__Duration((not Pilot_Flying__Pilot_Flying__PRESSED(TS))) > 25) => (LPFS = (not RPFS)));
+
+  __GUARANTEE2 = ((LPFS -> true) and ((not RPFS) -> true));
+
+  __GUARANTEE3 = ((Agree_Nodes__Duration((not Pilot_Flying__Pilot_Flying__PRESSED(TS))) > 26) => (not (Pilot_Flying__Pilot_Flying__CHANGED(RPFS) or Pilot_Flying__Pilot_Flying__CHANGED(LPFS))));
+
+  --%PROPERTY __GUARANTEE0;
+  --%PROPERTY __GUARANTEE1;
+  --%PROPERTY __GUARANTEE2;
+  --%PROPERTY __GUARANTEE3;
+
+  --%REALIZABLE TS;
+
+tel;
+
+node Agree_Nodes__Duration(
+  p : bool
+) returns (
+  c : int
+);
+let
+  c = (if p then (1 -> ((pre c) + 1)) else 0);
+
+tel;
+
+node Agree_Nodes__Rise(
+  p : bool
+) returns (
+  r : bool
+);
+let
+  r = (false -> ((not (pre p)) and p));
+
+tel;
+
+node Pilot_Flying__Pilot_Flying__PRESSED(
+  p : bool
+) returns (
+  r : bool
+);
+let
+  r = Agree_Nodes__Rise(p);
+
+tel;
+
+node Agree_Nodes__Changed(
+  p : bool
+) returns (
+  r : bool
+);
+let
+  r = (false -> (p <> (pre p)));
+
+tel;
+
+node Pilot_Flying__Pilot_Flying__CHANGED(
+  p : bool
+) returns (
+  r : bool
+);
+let
+  r = Agree_Nodes__Changed(p);
+
+tel;
+

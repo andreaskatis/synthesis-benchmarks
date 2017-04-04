@@ -1,0 +1,94 @@
+type DATA_TYPES__Elevators__treal = struct {ELLIB : real; ELLOB : real; ELRIB : real; ELROB : real; TIME_STAMP : int};
+type DATA_TYPES__BoolActuators__impl = struct {AILL : bool; AILR : bool; BRAKE : bool; ELLIB : bool; ELLOB : bool; ELRIB : bool; ELROB : bool; FLAPLI : bool; FLAPLO : bool; FLAPRI : bool; FLAPRO : bool; GEAR : bool; RUDLO : bool; RUDUP : bool; SPLLIB : bool; SPLLOB : bool; SPLRIB : bool; SPLROB : bool; STEER : bool; THROTL : bool; THROTR : bool};
+type DATA_TYPES__EGI__treal = struct {ALT : real; AOA : real; FPACCEL : real; GAMLNS : real; GS : real; HDD : real; HDOT : real; LAT : real; LON : real; NX : real; NY : real; NZ : real; PB : real; PHI : real; PSI : real; Pres : real; QB : real; RB : real; TAT : real; THETA : real; TIME_STAMP : int; Temp : real; TotPres : real; VE : real; VGOT : real; VN : real; XTACC : real};
+type DATA_TYPES__Ailerons__treal = struct {AILL : real; AILR : real; TIME_STAMP : int};
+type DATA_TYPES__Flaps__treal = struct {FLLIB : real; FLLOB : real; FLRIB : real; FLROB : real; TIME_STAMP : int};
+type DATA_TYPES__QUAD_Stabilizer__treal = struct {STAB1 : DATA_TYPES__Stabilizer__treal; STAB2 : DATA_TYPES__Stabilizer__treal; STAB3 : DATA_TYPES__Stabilizer__treal; STAB4 : DATA_TYPES__Stabilizer__treal};
+type DATA_TYPES__Spoilers__treal = struct {SPLIB : real; SPLOB : real; SPRIB : real; SPROB : real; TIME_STAMP : int};
+type DATA_TYPES__QUAD_Ailerons__treal = struct {AIL1 : DATA_TYPES__Ailerons__treal; AIL2 : DATA_TYPES__Ailerons__treal; AIL3 : DATA_TYPES__Ailerons__treal; AIL4 : DATA_TYPES__Ailerons__treal};
+type DATA_TYPES__QUAD_Elevators__treal = struct {EL1 : DATA_TYPES__Elevators__treal; EL2 : DATA_TYPES__Elevators__treal; EL3 : DATA_TYPES__Elevators__treal; EL4 : DATA_TYPES__Elevators__treal};
+type DATA_TYPES__AoA__treal = struct {AOA : real; TIME_STAMP : int};
+type DATA_TYPES__DUAL_AirData__treal = struct {AD1 : DATA_TYPES__AirData__treal; AD2 : DATA_TYPES__AirData__treal};
+type DATA_TYPES__QUAD_Flaps__treal = struct {FLAPS1 : DATA_TYPES__Flaps__treal; FLAPS2 : DATA_TYPES__Flaps__treal; FLAPS3 : DATA_TYPES__Flaps__treal; FLAPS4 : DATA_TYPES__Flaps__treal};
+type DATA_TYPES__DUAL_AoA__treal = struct {AOA1 : DATA_TYPES__AoA__treal; AOA2 : DATA_TYPES__AoA__treal};
+type DATA_TYPES__Rudders__treal = struct {RUDL : real; RUDU : real; TIME_STAMP : int};
+type DATA_TYPES__AirData__treal = struct {Pres : real; TAT : real; TIME_STAMP : int; Temp : real; TotPres : real};
+type DATA_TYPES__Actuators__impl = struct {AILL : real; AILR : real; BRAKE : real; ELLIB : real; ELLOB : real; ELRIB : real; ELROB : real; FLAPLI : real; FLAPLO : real; FLAPRI : real; FLAPRO : real; GEAR : real; RUDLO : real; RUDUP : real; SPLLIB : real; SPLLOB : real; SPLRIB : real; SPLROB : real; STEER : real; THROTL : real; THROTR : real};
+type DATA_TYPES__QUAD_Rudders__treal = struct {RUDD1 : DATA_TYPES__Rudders__treal; RUDD2 : DATA_TYPES__Rudders__treal; RUDD3 : DATA_TYPES__Rudders__treal; RUDD4 : DATA_TYPES__Rudders__treal};
+type DATA_TYPES__QUAD_EGI__treal = struct {egi1 : DATA_TYPES__EGI__treal; egi2 : DATA_TYPES__EGI__treal; egi3 : DATA_TYPES__EGI__treal; egi4 : DATA_TYPES__EGI__treal};
+type DATA_TYPES__QUAD_Spoilers__treal = struct {SPOIL1 : DATA_TYPES__Spoilers__treal; SPOIL2 : DATA_TYPES__Spoilers__treal; SPOIL3 : DATA_TYPES__Spoilers__treal; SPOIL4 : DATA_TYPES__Spoilers__treal};
+type DATA_TYPES__Stabilizer__treal = struct {TIME_STAMP : int; VAL : real};
+
+node main(
+  elevators : DATA_TYPES__QUAD_Elevators__treal;
+  ailerons : DATA_TYPES__QUAD_Ailerons__treal;
+  rudders : DATA_TYPES__QUAD_Rudders__treal;
+  flaps : DATA_TYPES__QUAD_Flaps__treal;
+  aoa : DATA_TYPES__DUAL_AoA__treal;
+  air_data : DATA_TYPES__DUAL_AirData__treal;
+  egi : DATA_TYPES__QUAD_EGI__treal;
+  spoilers : DATA_TYPES__QUAD_Spoilers__treal;
+  stabilizers : DATA_TYPES__QUAD_Stabilizer__treal;
+  acts_ret1 : DATA_TYPES__Actuators__impl;
+  acts_ret2 : DATA_TYPES__Actuators__impl;
+  acts_ret3 : DATA_TYPES__Actuators__impl;
+  acts_ret4 : DATA_TYPES__Actuators__impl;
+  acts_out1 : DATA_TYPES__Actuators__impl;
+  acts_out2 : DATA_TYPES__Actuators__impl;
+  acts_out3 : DATA_TYPES__Actuators__impl;
+  acts_out4 : DATA_TYPES__Actuators__impl;
+  sovs11 : DATA_TYPES__BoolActuators__impl;
+  sovs21 : DATA_TYPES__BoolActuators__impl;
+  sovs12 : DATA_TYPES__BoolActuators__impl;
+  sovs22 : DATA_TYPES__BoolActuators__impl;
+  sovs13 : DATA_TYPES__BoolActuators__impl;
+  sovs23 : DATA_TYPES__BoolActuators__impl;
+  sovs14 : DATA_TYPES__BoolActuators__impl;
+  sovs24 : DATA_TYPES__BoolActuators__impl
+) returns (
+
+);
+var
+  __GUARANTEE0 : bool;
+let
+  --%MAIN;
+  __GUARANTEE0 = FCS_RC1__req(acts_out1, acts_out2, acts_out3, acts_out4);
+
+  --%PROPERTY __GUARANTEE0;
+
+  --%REALIZABLE elevators, ailerons, rudders, flaps, aoa, air_data, egi, spoilers, stabilizers, acts_ret1, acts_ret2, acts_ret3, acts_ret4;
+
+tel;
+
+node FCS_RC1__sum_in_range(
+  a1 : real;
+  a2 : real;
+  a3 : real;
+  a4 : real;
+  low : real;
+  high : real
+) returns (
+  res : bool
+);
+var
+  avg : real;
+let
+  avg = ((((a1 + a2) + a3) + a4) / 4.0);
+
+  res = ((low <= avg) and (avg <= high));
+
+tel;
+
+node FCS_RC1__req(
+  acts1 : DATA_TYPES__Actuators__impl;
+  acts2 : DATA_TYPES__Actuators__impl;
+  acts3 : DATA_TYPES__Actuators__impl;
+  acts4 : DATA_TYPES__Actuators__impl
+) returns (
+  res : bool
+);
+let
+  res = ((((((((((((((((((((FCS_RC1__sum_in_range(acts1.AILL, acts2.AILL, acts3.AILL, acts4.AILL, 0.0, 50.0) and FCS_RC1__sum_in_range(acts1.AILR, acts2.AILR, acts3.AILR, acts4.AILR, 0.0, 50.0)) and FCS_RC1__sum_in_range(acts1.BRAKE, acts2.BRAKE, acts3.BRAKE, acts4.BRAKE, 0.0, 50.0)) and FCS_RC1__sum_in_range(acts1.ELLIB, acts2.ELLIB, acts3.ELLIB, acts4.ELLIB, 0.0, 50.0)) and FCS_RC1__sum_in_range(acts1.ELLOB, acts2.ELLOB, acts3.ELLOB, acts4.ELLOB, 0.0, 50.0)) and FCS_RC1__sum_in_range(acts1.ELRIB, acts2.ELRIB, acts3.ELRIB, acts4.ELRIB, 0.0, 50.0)) and FCS_RC1__sum_in_range(acts1.ELROB, acts2.ELROB, acts3.ELROB, acts4.ELROB, 0.0, 50.0)) and FCS_RC1__sum_in_range(acts1.FLAPLO, acts2.FLAPLO, acts3.FLAPLO, acts4.FLAPLO, 0.0, 50.0)) and FCS_RC1__sum_in_range(acts1.FLAPLI, acts2.FLAPLI, acts3.FLAPLI, acts4.FLAPLI, 0.0, 50.0)) and FCS_RC1__sum_in_range(acts1.FLAPRI, acts2.FLAPRI, acts3.FLAPRI, acts4.FLAPRI, 0.0, 50.0)) and FCS_RC1__sum_in_range(acts1.FLAPRO, acts2.FLAPRO, acts3.FLAPRO, acts4.FLAPRO, 0.0, 50.0)) and FCS_RC1__sum_in_range(acts1.GEAR, acts2.GEAR, acts3.GEAR, acts4.GEAR, 0.0, 50.0)) and FCS_RC1__sum_in_range(acts1.RUDLO, acts2.RUDLO, acts3.RUDLO, acts4.RUDLO, 0.0, 50.0)) and FCS_RC1__sum_in_range(acts1.RUDUP, acts2.RUDUP, acts3.RUDUP, acts4.RUDUP, 0.0, 50.0)) and FCS_RC1__sum_in_range(acts1.SPLLIB, acts2.SPLLIB, acts3.SPLLIB, acts4.SPLLIB, 0.0, 50.0)) and FCS_RC1__sum_in_range(acts1.SPLLOB, acts2.SPLLOB, acts3.SPLLOB, acts4.SPLLOB, 0.0, 50.0)) and FCS_RC1__sum_in_range(acts1.SPLRIB, acts2.SPLRIB, acts3.SPLRIB, acts4.SPLRIB, 0.0, 50.0)) and FCS_RC1__sum_in_range(acts1.SPLROB, acts2.SPLROB, acts3.SPLROB, acts4.SPLROB, 0.0, 50.0)) and FCS_RC1__sum_in_range(acts1.STEER, acts2.STEER, acts3.STEER, acts4.STEER, 0.0, 50.0)) and FCS_RC1__sum_in_range(acts1.THROTL, acts2.THROTL, acts3.THROTL, acts4.THROTL, 0.0, 50.0)) and FCS_RC1__sum_in_range(acts1.THROTR, acts2.THROTR, acts3.THROTR, acts4.THROTR, 0.0, 50.0));
+
+tel;
+

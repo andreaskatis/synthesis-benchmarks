@@ -1,0 +1,32 @@
+node main(
+  input1___EVENT_ : bool;
+  input1 : int;
+  input2___EVENT_ : bool;
+  input2 : int;
+  output___EVENT_ : bool;
+  output : int
+) returns (
+
+);
+var
+  __GUARANTEE0 : bool;
+  __GUARANTEE1 : bool;
+  input1_hold : int;
+  input2_hold : int;
+let
+  --%MAIN;
+  __GUARANTEE0 = (output = (input1_hold + input2_hold));
+
+  __GUARANTEE1 = (output___EVENT_ = (input1___EVENT_ or input2___EVENT_));
+
+  input1_hold = (if input1___EVENT_ then input1 else (0 -> (pre input1_hold)));
+
+  input2_hold = (if input2___EVENT_ then input2 else (0 -> (pre input2_hold)));
+
+  --%PROPERTY __GUARANTEE0;
+  --%PROPERTY __GUARANTEE1;
+
+  --%REALIZABLE input1___EVENT_, input1, input2___EVENT_, input2;
+
+tel;
+

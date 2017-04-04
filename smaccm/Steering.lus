@@ -1,0 +1,34 @@
+type Types__speed__speed_impl = struct {val : real};
+type Types__pitch__pitch_impl = struct {val : real};
+
+node main(
+  Target_Tire_Direction : Types__pitch__pitch_impl;
+  Speed : Types__speed__speed_impl;
+  Actual_Tire_Direction : Types__pitch__pitch_impl
+) returns (
+
+);
+var
+  __GUARANTEE0 : bool;
+let
+  --%MAIN;
+  __GUARANTEE0 = (if ((Agree_Nodes__abs(Target_Tire_Direction.val) > 0.2) and (Speed.val > 45.0)) then (Actual_Tire_Direction.val = 0.2) else (Actual_Tire_Direction.val = Target_Tire_Direction.val));
+
+  assert (Agree_Nodes__abs(Target_Tire_Direction.val) <= 0.45);
+
+  --%PROPERTY __GUARANTEE0;
+
+  --%REALIZABLE Target_Tire_Direction, Speed;
+
+tel;
+
+node Agree_Nodes__abs(
+  inp : real
+) returns (
+  outp : real
+);
+let
+  outp = (if (inp < 0.0) then (-inp) else inp);
+
+tel;
+

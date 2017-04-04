@@ -1,0 +1,23 @@
+type DATATYPES__IO__Impl = struct {field : int};
+
+node main(
+  Input : DATATYPES__IO__Impl;
+  Outp : DATATYPES__IO__Impl
+) returns (
+
+);
+var
+  __GUARANTEE0 : bool;
+  gt_0 : bool;
+let
+  --%MAIN;
+  __GUARANTEE0 = gt_0;
+
+  gt_0 = (Outp.field > 0);
+
+  --%PROPERTY __GUARANTEE0;
+
+  --%REALIZABLE Input;
+
+tel;
+

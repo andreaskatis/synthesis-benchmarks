@@ -1,0 +1,55 @@
+type DATATYPES__Config_Outputs__Impl = struct {Config_Mode : int; Config_Timer : int; Configured : int; Drug_Concentration : int; Drug_Name : int; Duration_Intermittent_Bolus : int; Duration_Patient_Bolus : int; Entered_Reservoir_Volume : int; Error_Message_ID : int; Flow_Rate_Basal : int; Flow_Rate_Intermittent_Bolus : int; Flow_Rate_KVO : int; Flow_Rate_Patient_Bolus : int; Infusion_Total_Duration : int; Interval_Intermittent_Bolus : int; Lockout_Period_Patient_Bolus : int; Log_Message_ID : int; Max_Number_of_Patient_Bolus : int; Patient_ID : int; Request_Config_Type : bool; Request_Confirm_Infusion_Initiate : bool; Request_Infusion_Info : bool; Request_Patient_Drug_Info : bool; Reservoir_Volume : int; VTBI_Total : int};
+type DATATYPES__Drug_Database_Inputs__Impl = struct {Drug_Concentration_High : int; Drug_Concentration_Low : int; Drug_Name : int; Flow_Rate_High : int; Flow_Rate_KVO : int; Flow_Rate_Low : int; Inteval_Patient_Bolus : int; Known_Prescription : bool; Number_Max_Patient_Bolus : int; VTBI_High : int; VTBI_Low : int};
+type DATATYPES__Top_Level_Mode_Outputs__Impl = struct {Log_Message_ID : int; Request_Confirm_Stop : bool; System_On : bool};
+type DATATYPES__System_Status_Outputs__Impl = struct {In_Therapy : bool; Log_Message_ID : int; Reservoir_Empty : bool; Reservoir_Volume : int; Volume_Infused : int};
+type DATATYPES__Prescription_Inputs__Impl = struct {Drug_Concentration : int; Drug_Name : int; Duration_Intermittent_Bolus : int; Duration_Patient_Bolus : int; Entered_Reservoir_Volume : int; Flow_Rate_Basal : int; Flow_Rate_Intermittent_Bolus : int; Flow_Rate_Patient_Bolus : int; Interval_Intermittent_Bolus : int; Lockout_Period_Patient_Bolus : int; Max_Number_of_Patient_Bolus : int; Patient_ID : int; Total_Duration : int; VTBI_Total : int};
+type DATATYPES__Device_Configuration_Inputs__Impl = struct {Audio_Enable_Duration : int; Audio_Level : int; Config_Warning_Duration : int; Empty_Reservoir : int; Log_Interval : int; Low_Reservoir : int; Max_Config_Duration : int; Max_Confirm_Stop_Duration : int; Max_Display_Duration : int; Max_Duration_Over_Infusion : int; Max_Duration_Under_Infusion : int; Max_Idle_Duration : int; Max_Paused_Duration : int; System_Test_Inteval : int; Tolerance_Max : int; Tolerance_Min : int};
+type DATATYPES__Operator_Commands__Impl = struct {Back : bool; Cancel : bool; Configuration_Type : int; Confirm_Stop : bool; Data_Config : bool; Disable_Audio : int; Infusion_Cancel : bool; Infusion_Inhibit : bool; Infusion_Initiate : bool; Keyboard : bool; Next : bool; Notification_Cancel : bool; System_Start : bool; System_Stop : bool};
+
+node main(
+  TLM_MODE_IN : DATATYPES__Top_Level_Mode_Outputs__Impl;
+  PRES_IN : DATATYPES__Prescription_Inputs__Impl;
+  OP_CMD_IN : DATATYPES__Operator_Commands__Impl;
+  DB_IN : DATATYPES__Drug_Database_Inputs__Impl;
+  CONST_IN : DATATYPES__Device_Configuration_Inputs__Impl;
+  SYS_STAT_IN : DATATYPES__System_Status_Outputs__Impl;
+  CONFIG_OUT : DATATYPES__Config_Outputs__Impl
+) returns (
+
+);
+var
+  __GUARANTEE0 : bool;
+  __GUARANTEE1 : bool;
+  __GUARANTEE2 : bool;
+  __GUARANTEE3 : bool;
+  flow_rate_kvo_gt_0 : bool;
+  config_range : bool;
+  Infusion_Total_Duration : bool;
+  config_gt_1_implies_values_configured : bool;
+let
+  --%MAIN;
+  __GUARANTEE0 = flow_rate_kvo_gt_0;
+
+  __GUARANTEE1 = config_range;
+
+  __GUARANTEE2 = Infusion_Total_Duration;
+
+  __GUARANTEE3 = config_gt_1_implies_values_configured;
+
+  flow_rate_kvo_gt_0 = (TLM_MODE_IN.System_On => (CONFIG_OUT.Flow_Rate_KVO > 0));
+
+  config_range = (TLM_MODE_IN.System_On => ((CONFIG_OUT.Configured >= 0) and (CONFIG_OUT.Configured <= 3)));
+
+  Infusion_Total_Duration = (TLM_MODE_IN.System_On => (CONFIG_OUT.Infusion_Total_Duration >= 0));
+
+  config_gt_1_implies_values_configured = ((TLM_MODE_IN.System_On and (CONFIG_OUT.Configured > 0)) => (CONFIG_OUT.Infusion_Total_Duration > 0));
+
+  --%PROPERTY __GUARANTEE0;
+  --%PROPERTY __GUARANTEE1;
+  --%PROPERTY __GUARANTEE2;
+  --%PROPERTY __GUARANTEE3;
+
+  --%REALIZABLE TLM_MODE_IN, PRES_IN, OP_CMD_IN, DB_IN, CONST_IN, SYS_STAT_IN;
+
+tel;
+

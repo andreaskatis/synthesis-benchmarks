@@ -1,0 +1,31 @@
+type DATA_TYPES__Actuators__impl = struct {AILL : real; AILR : real; BRAKE : real; ELLIB : real; ELLOB : real; ELRIB : real; ELROB : real; FLAPLI : real; FLAPLO : real; FLAPRI : real; FLAPRO : real; GEAR : real; RUDLO : real; RUDUP : real; SPLLIB : real; SPLLOB : real; SPLRIB : real; SPLROB : real; STEER : real; THROTL : real; THROTR : real};
+
+node main(
+  acts : DATA_TYPES__Actuators__impl
+) returns (
+
+);
+var
+  __GUARANTEE0 : bool;
+let
+  --%MAIN;
+  __GUARANTEE0 = ((((((((((((((((((((CLAW__CLAW__bound_rec(acts.THROTL, 0.0, 50.0) and CLAW__CLAW__bound_rec(acts.THROTR, 0.0, 50.0)) and CLAW__CLAW__bound_rec(acts.ELLOB, 0.0, 50.0)) and CLAW__CLAW__bound_rec(acts.ELLIB, 0.0, 50.0)) and CLAW__CLAW__bound_rec(acts.ELROB, 0.0, 50.0)) and CLAW__CLAW__bound_rec(acts.ELRIB, 0.0, 50.0)) and CLAW__CLAW__bound_rec(acts.AILL, 0.0, 50.0)) and CLAW__CLAW__bound_rec(acts.AILR, 0.0, 50.0)) and CLAW__CLAW__bound_rec(acts.RUDUP, 0.0, 50.0)) and CLAW__CLAW__bound_rec(acts.RUDLO, 0.0, 50.0)) and CLAW__CLAW__bound_rec(acts.SPLLIB, 0.0, 50.0)) and CLAW__CLAW__bound_rec(acts.SPLLOB, 0.0, 50.0)) and CLAW__CLAW__bound_rec(acts.SPLRIB, 0.0, 50.0)) and CLAW__CLAW__bound_rec(acts.SPLROB, 0.0, 50.0)) and CLAW__CLAW__bound_rec(acts.FLAPLI, 0.0, 50.0)) and CLAW__CLAW__bound_rec(acts.FLAPLO, 0.0, 50.0)) and CLAW__CLAW__bound_rec(acts.FLAPRO, 0.0, 50.0)) and CLAW__CLAW__bound_rec(acts.FLAPRI, 0.0, 50.0)) and CLAW__CLAW__bound_rec(acts.GEAR, 0.0, 50.0)) and CLAW__CLAW__bound_rec(acts.BRAKE, 0.0, 50.0)) and CLAW__CLAW__bound_rec(acts.STEER, 0.0, 50.0));
+
+  --%PROPERTY __GUARANTEE0;
+
+  --%REALIZABLE ;
+
+tel;
+
+node CLAW__CLAW__bound_rec(
+  act : real;
+  low : real;
+  high : real
+) returns (
+  ret : bool
+);
+let
+  ret = ((low <= act) and (act <= high));
+
+tel;
+

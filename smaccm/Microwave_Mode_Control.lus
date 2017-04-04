@@ -1,0 +1,117 @@
+node main(
+  start : bool;
+  clear : bool;
+  seconds_to_cook : int;
+  door_closed : bool;
+  cooking_mode : int
+) returns (
+
+);
+var
+  __GUARANTEE0 : bool;
+  __GUARANTEE1 : bool;
+  __GUARANTEE2 : bool;
+  __GUARANTEE3 : bool;
+  __GUARANTEE4 : bool;
+  __GUARANTEE5 : bool;
+  __GUARANTEE6 : bool;
+  __GUARANTEE7 : bool;
+  __GUARANTEE8 : bool;
+  is_cooking : bool;
+  is_setup : bool;
+  is_suspended : bool;
+  is_running : bool;
+let
+  --%MAIN;
+  __GUARANTEE0 = true;
+
+  __GUARANTEE1 = true;
+
+  __GUARANTEE2 = true;
+
+  __GUARANTEE3 = ((defs__rising_edge(is_running) and door_closed) => is_cooking);
+
+  __GUARANTEE4 = true;
+
+  __GUARANTEE5 = true;
+
+  __GUARANTEE6 = true;
+
+  __GUARANTEE7 = true;
+
+  __GUARANTEE8 = true;
+
+  is_cooking = defs__is_cooking(cooking_mode);
+
+  is_setup = defs__is_setup(cooking_mode);
+
+  is_suspended = defs__is_suspended(cooking_mode);
+
+  is_running = defs__is_running(cooking_mode);
+
+  assert (seconds_to_cook >= 0);
+
+  --%PROPERTY __GUARANTEE0;
+  --%PROPERTY __GUARANTEE1;
+  --%PROPERTY __GUARANTEE2;
+  --%PROPERTY __GUARANTEE3;
+  --%PROPERTY __GUARANTEE4;
+  --%PROPERTY __GUARANTEE5;
+  --%PROPERTY __GUARANTEE6;
+  --%PROPERTY __GUARANTEE7;
+  --%PROPERTY __GUARANTEE8;
+
+  --%REALIZABLE start, clear, seconds_to_cook, door_closed;
+
+tel;
+
+node defs__rising_edge(
+  signal : bool
+) returns (
+  re : bool
+);
+let
+  re = (signal and (not (false -> (pre signal))));
+
+tel;
+
+node defs__is_cooking(
+  m : int
+) returns (
+  _outvar : bool
+);
+let
+  _outvar = (m = 3);
+
+tel;
+
+node defs__is_setup(
+  m : int
+) returns (
+  _outvar : bool
+);
+let
+  _outvar = (m = 1);
+
+tel;
+
+node defs__is_suspended(
+  m : int
+) returns (
+  _outvar : bool
+);
+let
+  _outvar = (m = 2);
+
+tel;
+
+node defs__is_running(
+  m : int
+) returns (
+  _outvar : bool
+);
+let
+  _outvar = ((m = 3) or (m = 2));
+
+tel;
+
