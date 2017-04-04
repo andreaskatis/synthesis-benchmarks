@@ -1,0 +1,27 @@
+type software_types__Flight_Control_Commands__i = struct {ppm0 : real; ppm1 : real; ppm2 : real; ppm3 : real; ppm4 : real; ppm5 : real; ppm6 : real; ppm7 : real};
+
+node main(
+  mavlink_in___EVENT_ : bool;
+  ppm_commands___EVENT_ : bool;
+  ppm_commands : software_types__Flight_Control_Commands__i;
+  time : real;
+  control_mode : int;
+  mavlink_out___EVENT_ : bool
+) returns (
+
+);
+var
+  last_mavlink_received_time : real;
+  last_ppm_received_time : real;
+let
+  --%MAIN;
+  last_mavlink_received_time = (if mavlink_in___EVENT_ then time else (0.0 -> (pre last_mavlink_received_time)));
+
+  last_ppm_received_time = (0.0 -> (if ppm_commands___EVENT_ then time else (pre last_ppm_received_time)));
+
+  assert (true -> (((time - (pre last_ppm_received_time)) < 100.0) => (not ppm_commands___EVENT_)));
+
+  --%REALIZABLE mavlink_in___EVENT_, ppm_commands___EVENT_, ppm_commands;
+
+tel;
+

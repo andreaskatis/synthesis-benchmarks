@@ -1,0 +1,68 @@
+node main(
+  left_shift : bool;
+  right_shift : bool;
+  neighbor_state0 : int;
+  neighbor_state1 : int;
+  state : int
+) returns (
+
+);
+var
+  __GUARANTEE0 : bool;
+  __GUARANTEE1 : bool;
+  __GUARANTEE2 : bool;
+  __GUARANTEE3 : bool;
+  __GUARANTEE4 : bool;
+  __GUARANTEE5 : bool;
+  __GUARANTEE6 : bool;
+  __GUARANTEE7 : bool;
+  __GUARANTEE8 : bool;
+  is_pending : bool;
+let
+  --%MAIN;
+  __GUARANTEE0 = ((state >= 0) and (state <= 5));
+
+  __GUARANTEE1 = (true -> (((Defs__rising(left_shift) and ((pre state) = 0)) => (state = 4)) and ((Defs__rising(right_shift) and ((pre state) = 0)) => (state = 5))));
+
+  __GUARANTEE2 = (true -> (((Defs__rising(left_shift) and ((pre state) = 1)) => (state = 5)) and ((Defs__rising(right_shift) and ((pre state) = 1)) => (state = 3))));
+
+  __GUARANTEE3 = (true -> (((Defs__rising(left_shift) and ((pre state) = 2)) => (state = 3)) and ((Defs__rising(right_shift) and ((pre state) = 2)) => (state = 4))));
+
+  __GUARANTEE4 = ((state = 0) -> true);
+
+  __GUARANTEE5 = (true -> (((not (Defs__rising(left_shift) or Defs__rising(right_shift))) and ((pre state) <= 2)) => (state = (pre state))));
+
+  __GUARANTEE6 = (true -> (((pre state) = 3) => (if (((pre neighbor_state0) <> 0) and ((pre neighbor_state1) <> 0)) then (state = 0) else (state = 3))));
+
+  __GUARANTEE7 = (true -> (((pre state) = 5) => (if (((pre neighbor_state0) <> 2) and ((pre neighbor_state1) <> 2)) then (state = 2) else (state = 5))));
+
+  __GUARANTEE8 = (true -> (((pre state) = 4) => (if (((pre neighbor_state0) <> 1) and ((pre neighbor_state1) <> 1)) then (state = 1) else (state = 4))));
+
+  is_pending = ((state >= 3) or (state <= 5));
+
+  assert (not (left_shift and right_shift));
+
+  --%PROPERTY __GUARANTEE0;
+  --%PROPERTY __GUARANTEE1;
+  --%PROPERTY __GUARANTEE2;
+  --%PROPERTY __GUARANTEE3;
+  --%PROPERTY __GUARANTEE4;
+  --%PROPERTY __GUARANTEE5;
+  --%PROPERTY __GUARANTEE6;
+  --%PROPERTY __GUARANTEE7;
+  --%PROPERTY __GUARANTEE8;
+
+  --%REALIZABLE left_shift, right_shift, neighbor_state0, neighbor_state1;
+
+tel;
+
+node Defs__rising(
+  signal : bool
+) returns (
+  result : bool
+);
+let
+  result = (false -> ((pre (not signal)) and signal));
+
+tel;
+
