@@ -18,7 +18,8 @@ SECOND_ANOTHER_IMPLEMENT_DIR = 'smaccm/fixpoint'
 
 
 NestList_overhead = []
-
+NestList_size = [] 
+NestList_size_name = []
 #TIMEOUT = 3600
 
 
@@ -149,6 +150,64 @@ def writeOverhead(nestList, tempOverhead):
     f.close()
 
 
+def drawOverhead():
+    font = {'family' : 'normal','weight' : 'bold', 'size' : 20}
+    plt.rc('font', **font)
+    pl1 = np.array([float(j[1]) for j in sorted(NestList_overhead, key=lambda res: res[1])])
+    pl2 = np.array([float(j[2]) for j in sorted(NestList_overhead, key=lambda res: res[1])])
+    pl3 = np.array([float(j[3]) for j in sorted(NestList_overhead, key=lambda res: res[1])])
+
+    print(sorted(NestList_overhead, key=lambda res: res[1]))
+
+    fig = plt.figure()
+
+    plt.yscale('log')
+    
+    realizability = plt.plot(pl1,'-bs', label = 'JRealizability')
+    synthesis = plt.plot(pl2,'-r^', label = 'Synthesis')
+    fixpoint = plt.plot(pl3,'-g^', label = 'Fixpoint')
+
+    plt.xlabel("Model")
+    plt.ylabel("Performance (seconds)")
+
+    plt.legend(bbox_to_anchor=(0.6, 1))
+
+    fig.savefig("overhead.pdf")
+
+
+
+def measureSizeOfC(path):
+    os.chdir(path)
+    for cname in NestList_size_name:
+        os.system('wc -l ' + cname[0] + ' |grep -v total >> loc.txt' )
+    os.chdir("..")
+    os.chdir("..")
+
+
+def drawSize():
+    font = {'family' : 'normal', 'weight' : 'bold', 'size' : 20}
+    plt.rc('font', **font)
+
+    pl2 = [j[1] for j in (sorted(NestList_size, key=lambda x: x[1]))]
+
+#pl3 = sorted(zip(pl1,pl2), key=lambda x: int(x[0]))
+    pl4 = [j[2] for j in (sorted(NestList_size, key=lambda x: x[1]))]
+
+#(pl1,pl2) = zip(*pl3)
+
+# Plot the results
+    fig = plt.figure()
+    plt.yscale('log')
+    
+    synthesized = plt.plot(pl2,'-r^', label = 'synthesized')
+    fixpoint = plt.plot(pl4,'-g^', label = 'fixpoint')
+#handwritten = plt.plot(pl1,'-bs', label = 'handwritten')
+
+    plt.xlabel("Model")
+    plt.ylabel("Lines of Code")
+    plt.legend(loc = 'upper left')
+    fig.savefig("loc.pdf")
+
 
 ################################################################################################
 ################################################################################################
@@ -199,6 +258,7 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir):
 
 
     file.close()
+    print(NestList_overhead)
 
 
 #do the run_smtlib2c.................................................
@@ -257,6 +317,10 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir):
         sys.stdout.write("({} of {}) {} [".format(i+1, len(lus_files), lus_file))
         sys.stdout.flush()
         run_makefile(os.path.splitext(lus_file)[0])
+
+
+
+
         sys.stdout.write(".")
         sys.stdout.flush()
         sys.stdout.write("]\n")
@@ -291,6 +355,12 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir):
         sys.stdout.write("({} of {}) {} [".format(i+1, len(lus_files), lus_file))
         sys.stdout.flush()
         run_executables(os.path.splitext(lus_file)[0])
+
+        empty = []
+        empty.append(os.path.splitext(lus_file)[0]+".c")
+        NestList_size_name.append(empty)
+    
+
         sys.stdout.write(".")
         sys.stdout.flush()
         sys.stdout.write("]\n")
@@ -300,6 +370,7 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir):
     os.chdir("..")
 
     print("path =" + os.getcwd())
+
 
 
 #################################################################################################
@@ -342,9 +413,29 @@ execute(EXPERIMENTS_DIR, PUSH_PATH, ANOTHER_PUSH_PATH, IMPLEMENT_DIR)
 
 
 #fill the NestList_overhead
-#parse("debug_jkind.txt", "overhead.txt")
-#writeOverhead(NestList_overhead, "overhead.txt")
-#print(NestList_overhead)
+parse("debug_jkind.txt", "overhead.txt")
+writeOverhead(NestList_overhead, "overhead.txt")
+drawOverhead()
+print(NestList_overhead)
+
+print()
+
+print(NestList_size_name)
+print("current path =" + os.getcwd())
+
+
+measureSizeOfC(IMPLEMENT_DIR)
+
+
+
+
+
+
+
+
+
+
+
 
 
 
