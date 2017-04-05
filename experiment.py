@@ -6,7 +6,12 @@ import os, subprocess, sys, glob, shutil
 
 EXPERIMENTS_DIR = 'verification'
 PUSH_PATH = 'kind'
+ANOTHER_PUSH_PATH = 'fixpoint'
 IMPLEMENT_DIR = 'verification/kind'
+ANOTHER_IMPLEMENT_DIR = "verification/fixpoint"
+
+
+NestList_overhead = []
 
 #TIMEOUT = 3600
 
@@ -51,7 +56,7 @@ print("Using JKind: " + jkind_jar)
 def run_realizability(file_path):
     #delete "xml"
     args = ['java', '-jar', jkind_jar, '-jrealizability',
-            '-timeout', '10000', '-n', '1000000', file_path]
+            '-timeout', '300', '-n', '1000000', file_path]
     with open("debug_jkind.txt", "a") as debug:
         debug.write("Running jkind with arguments: {}\n".format(args))
         proc = subprocess.Popen(args, stdout=debug)
@@ -60,17 +65,26 @@ def run_realizability(file_path):
 
 def run_synthesis(file_path):
     args = ['java', '-jar', jkind_jar, '-jrealizability',
-            '-synthesis', '-timeout', '10000', '-n', '1000000', file_path]
+            '-synthesis', '-timeout', '300', '-n', '1000000', file_path]
     with open("debug_jkind.txt", "a") as debug:
         debug.write("Running jkind with arguments: {}\n".format(args))
         proc = subprocess.Popen(args, stdout=debug)
         proc.wait()
         debug.write("\n")
 
+def run_fixpoint(file_path):
+    args = ['java', '-jar', jkind_jar, '-jrealizability',
+            '-fixpoint', '-timeout', '300', '-n', '1000000', file_path]
+    with open("debug_jkind.txt", "a") as debug:
+        debug.write("Running jkind with arguments: {}\n".format(args))
+        proc = subprocess.Popen(args, stdout=debug)
+        proc.wait()
+        debug.write("\n")
+
+
 def run_both(lus_file):
 
     lus_path = os.path.join(EXPERIMENTS_DIR, lus_file)
-
     run_realizability(lus_path)
     sys.stdout.write(".")
     sys.stdout.flush()
@@ -80,44 +94,58 @@ def run_both(lus_file):
     sys.stdout.write(".")
     sys.stdout.flush()
 
-def move_impl():
+def run_last(lus_file):
+    lus_path = os.path.join(EXPERIMENTS_DIR, lus_file)
+    run_fixpoint(lus_path)
+    sys.stdout.write(".")
+    sys.stdout.flush()
+
+
+
+def move_impl(outpath):
     impl_files = glob.glob("*.impl")
-    print(impl_files[1])
     if len(impl_files) == 0:
         print("No implement files found in '" + EXPERIMENTS_DIR + "' directory")
         sys.exit(-1)
-
-  #  smt_files = glob.glob("*.smt2")
-  #  if len(smt_files) == 0:
-   #     print("No stm2 files found in '" + EXPERIMENTS_DIR + "' directory")
-    #    sys.exit(-1)
 
 #move the impl files to PUSH_PATH
     print("moving impl files")
     for i, impl_file in enumerate(impl_files):
         old_implPath = impl_file
-        new_implPath = os.path.join(PUSH_PATH, impl_file)
+        new_implPath = os.path.join(outpath, impl_file)
         shutil.move(old_implPath, new_implPath)
-
-#delete all smt files
-    #print("deleting smt2 files")
-    #for i, smt_file in enumerate(smt_files):
-     #   os.remove(smt_file)
-
-
 
 
 #exeute...................................................
+with open("lustreName.txt", "a") as file:
+    for i, lus_file in enumerate(lus_files):
 
-for i, lus_file in enumerate(lus_files):
-    sys.stdout.write("({} of {}) {} [".format(i+1, len(lus_files), lus_file))
-    sys.stdout.flush()
-    run_both(lus_file)
-    sys.stdout.write("]\n")
-    sys.stdout.flush()
+        empty = []
+        empty.append(lus_file)
+        NestList_overhead.append(empty)  # set the name of file 
 
-os.chdir(EXPERIMENTS_DIR)
-move_impl()
+        file.write(lus_file+"\n")
+
+        sys.stdout.write("({} of {}) {} [".format(i+1, len(lus_files), lus_file))
+        sys.stdout.flush()
+
+        run_both(lus_file)
+        os.chdir(EXPERIMENTS_DIR)
+        move_impl(PUSH_PATH)
+        os.chdir("..")
+    
+        run_last(lus_file)
+        os.chdir(EXPERIMENTS_DIR)
+        move_impl(ANOTHER_PUSH_PATH)
+        os.chdir("..")
+
+
+        sys.stdout.write("]\n")
+        sys.stdout.flush()
+
+
+file.close()
+
 
 
 
@@ -125,7 +153,7 @@ move_impl()
 
 print("Running run_smtlib2c")
 
-os.chdir("..")
+#os.chdir("..")
 if not os.path.exists(IMPLEMENT_DIR):
     print("'" + IMPLEMENT_DIR + "' directory does not exist")
     sys.exit(-1)
@@ -265,40 +293,44 @@ for i, lus_file in enumerate(lus_files):
     sys.stdout.write("]\n")
     sys.stdout.flush()
 
+os.chdir("..")
+os.chdir("..")
+
+print("path =" + os.getcwd())
+
+#fill the NestList_overhead
+def parse(target, output):
+    with open(target,'r') as f:
+        with open(output, 'a') as op:
+            for line in f:
+                if ("REALIZABLE" in line):
+                    op.write(line)
+
+    op.close()
+    f.close()
+
+
+def writeOverhead(nestList, tempOverhead):
+    with open(tempOverhead,'r') as f:
+        count = 0
+        index = 0
+        for line in f:
+            lst = line.split(" ")
+            time = lst[-1].replace("s","").strip()
+            nestList[index].append(time)
+            count = count + 1
+            if (count==3):
+                index = index+1
+                count = 0
+            
+    f.close()
+
+
+parse("debug_jkind.txt", "overhead.txt")
+writeOverhead(NestList_overhead, "overhead.txt")
+print(NestList_overhead)
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#os.chdir(EXPERIMENTS_DIR)
-#xml_files = glob.glob("*.xml")
-#for xml_file in xml_files:
-#	mv = subprocess.Popen(['mv', xml_file, 'xml'])
-#	mv.wait()
