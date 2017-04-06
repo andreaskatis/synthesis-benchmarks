@@ -209,6 +209,31 @@ def drawSize():
     fig.savefig("loc.pdf")
 
 
+
+def combineTxt(file1, file2):
+    with open(file1, "r") as f1:
+        count= 0 
+        for line1 in f1:
+            tempList1 = []
+            lst = line1.strip().split(" ")
+
+            tempList1.append(lst[1])
+            tempList1.append(lst[0])
+
+            with open(file2, "r") as f2:
+                for line2 in f2:
+                    tempList2 = line2.strip().split(" ")
+                    print(tempList1)
+                    if (tempList2[1] == tempList1[0]):
+                        tempList1.append(tempList2[0])
+
+            NestList_sizen.append(tempList1)
+            
+
+    f1.close()
+    f2.close()
+
+
 ################################################################################################
 ################################################################################################
 ################################################################################################
