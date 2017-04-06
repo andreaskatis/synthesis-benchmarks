@@ -20,6 +20,7 @@ SECOND_ANOTHER_IMPLEMENT_DIR = 'smaccm/fixpoint'
 NestList_overhead = []
 NestList_size = [] 
 NestList_size_name = []
+NestList_performance = []
 #TIMEOUT = 3600
 
 
@@ -210,7 +211,7 @@ def drawSize():
 
 
 
-def combineTxt(file1, file2):
+def combineSizeTxt(file1, file2):
     with open(file1, "r") as f1:
         count= 0 
         for line1 in f1:
@@ -223,15 +224,59 @@ def combineTxt(file1, file2):
             with open(file2, "r") as f2:
                 for line2 in f2:
                     tempList2 = line2.strip().split(" ")
-                    print(tempList1)
                     if (tempList2[1] == tempList1[0]):
                         tempList1.append(tempList2[0])
 
-            NestList_sizen.append(tempList1)
+            NestList_size.append(tempList1)
             
 
     f1.close()
     f2.close()
+
+#same folder
+def combineResultTxt(file1, file2):
+    with open(file1, "r") as f1:
+        count= 0 
+        for line1 in f1:
+            tempList1 = []
+            lst = line1.strip().split(" ")
+
+            tempList1.append(lst[0])
+            tempList1.append(lst[1])
+
+            with open(file2, "r") as f2:
+                for line2 in f2:
+                    tempList2 = line2.strip().split(" ")
+                
+                    if (tempList2[0] == tempList1[0]):
+                        tempList1.append(tempList2[1])
+
+            NestList_performance.append(tempList1)
+            
+
+    f1.close()
+    f2.close()
+
+
+def drawPerformance():
+    font = {'family' : 'normal','weight' : 'bold','size' : 20}
+    plt.rc('font', **font)
+
+
+    pl1 = np.array([float(j[1]) for j in (sorted(NestList_performance, key=lambda x: x[1]))])
+    pl2 = np.array([float(j[2]) for j in (sorted(NestList_performance, key=lambda x: x[1]))])
+
+    fig = plt.figure()
+    plt.yscale('log')
+    
+    synthesized = plt.plot(pl1,'-r^', label = 'synthesized')
+    fixpoint = plt.plot(pl2,'-g^', label = 'fixpoint')
+#handwritten = plt.plot(pl1,'-bs', label = 'handwritten')
+
+    plt.xlabel("Model")
+    plt.ylabel("Performance")
+    plt.legend(loc = 'upper left')
+    fig.savefig("performance.pdf")
 
 
 ################################################################################################
@@ -450,13 +495,14 @@ print("current path =" + os.getcwd())
 
 
 measureSizeOfC(IMPLEMENT_DIR)
+#measureSizeOfC(ANOTHER_IMPLEMENT_DIR)
+#combineSizeTxt(IMPLEMENT_DIR+"/loc.txt", ANOTHER_IMPLEMENT_DIR+"/loc.txt")
+##need to take care different folder???
+#drawSize()
 
 
-
-
-
-
-
+#combineResultTxt(IMPLEMENT_DIR+"/results.txt",ANOTHER_IMPLEMENT_DIR+"/results.txt")
+#drawPerformance()
 
 
 
