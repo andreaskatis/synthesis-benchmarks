@@ -201,7 +201,7 @@ def drawSize():
     plt.yscale('log')
     
     synthesized = plt.plot(pl2,'-r^', label = 'synthesized')
-    fixpoint = plt.plot(pl4,'-g^', label = 'fixpoint')
+    fixpoint = plt.plot(pl4,'-bs', label = 'fixpoint')
 #handwritten = plt.plot(pl1,'-bs', label = 'handwritten')
 
     plt.xlabel("Model")
@@ -270,7 +270,7 @@ def drawPerformance():
     plt.yscale('log')
     
     synthesized = plt.plot(pl1,'-r^', label = 'synthesized')
-    fixpoint = plt.plot(pl2,'-g^', label = 'fixpoint')
+    fixpoint = plt.plot(pl2,'-bs', label = 'fixpoint')
 #handwritten = plt.plot(pl1,'-bs', label = 'handwritten')
 
     plt.xlabel("Model")
@@ -285,7 +285,7 @@ def drawPerformance():
 
 # Gather Lustre files
 
-def execute(experiments_dir, push_path, another_push_path, implement_dir):
+def execute(experiments_dir, push_path, another_push_path, implement_dir, another_implement_dir):
     if not os.path.exists(experiments_dir):
         print("'" + experiments_dir + "' directory does not exist")
         sys.exit(-1)
@@ -335,6 +335,10 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir):
 
     print("Running run_smtlib2c")
 
+
+
+#execute run_smtlib2c in kind
+
     if not os.path.exists(implement_dir):
         print("'" + implement_dir + "' directory does not exist")
         sys.exit(-1)
@@ -346,15 +350,8 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir):
     os.chdir("..")
     os.chdir("..")
 
-
-
-#
-# Find smtlib2c_jar
-#
-
     
 
-#execute run_smtlib2c
 
     for i, impl_file in enumerate(impl_files):
         sys.stdout.write("({} of {}) {} [".format(i+1, len(impl_files), impl_file))
@@ -366,8 +363,34 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir):
         sys.stdout.flush()
 
 
-    print("Running run_make")
+#execute run_smtlib2c in fixpoint
 
+    if not os.path.exists(another_implement_dir):
+        print("'" + another_implement_dir + "' directory does not exist")
+        sys.exit(-1)
+    os.chdir(another_implement_dir)
+    impl_files = glob.glob("*.impl")
+    if len(impl_files) == 0:
+        print("No Skolem files found in '" + another_implement_dir + "' directory")
+        sys.exit(-1)
+    os.chdir("..")
+    os.chdir("..")
+
+    
+
+
+    for i, impl_file in enumerate(impl_files):
+        sys.stdout.write("({} of {}) {} [".format(i+1, len(impl_files), impl_file))
+        sys.stdout.flush()
+        run_smtlib2c(impl_file, another_implement_dir)
+        sys.stdout.write(".")
+        sys.stdout.flush()
+        sys.stdout.write("]\n")
+        sys.stdout.flush()
+
+
+
+    print("Running run_make")
 
     if not os.path.exists(experiments_dir):
         print("'" + experiments_dir + "' directory does not exist")
@@ -380,21 +403,34 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir):
     os.chdir("..")
 
 
-#execute run_make..................................
+
+#execute run_make in kind..................................
 
     os.chdir(implement_dir)
     for i, lus_file in enumerate(lus_files):
         sys.stdout.write("({} of {}) {} [".format(i+1, len(lus_files), lus_file))
         sys.stdout.flush()
         run_makefile(os.path.splitext(lus_file)[0])
-
-
-
-
         sys.stdout.write(".")
         sys.stdout.flush()
         sys.stdout.write("]\n")
         sys.stdout.flush()
+
+
+#execute run_make in fixpoint..................................
+    os.chdir("..")
+    os.chdir("..")
+
+    os.chdir(another_implement_dir)
+    for i, lus_file in enumerate(lus_files):
+        sys.stdout.write("({} of {}) {} [".format(i+1, len(lus_files), lus_file))
+        sys.stdout.flush()
+        run_makefile(os.path.splitext(lus_file)[0])
+        sys.stdout.write(".")
+        sys.stdout.flush()
+        sys.stdout.write("]\n")
+        sys.stdout.flush()
+
 
 
 
@@ -416,9 +452,9 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir):
     os.chdir("..")
 
 
-#
-# Run JKind
-#
+#run executable in kind .........................
+
+
     os.chdir(implement_dir)
 
     for i, lus_file in enumerate(lus_files):
@@ -435,6 +471,35 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir):
         sys.stdout.flush()
         sys.stdout.write("]\n")
         sys.stdout.flush()
+
+    os.chdir("..")
+    os.chdir("..")
+
+
+#run executable in fixpoint .........................
+
+
+    os.chdir(another_implement_dir)
+
+    for i, lus_file in enumerate(lus_files):
+        sys.stdout.write("({} of {}) {} [".format(i+1, len(lus_files), lus_file))
+        sys.stdout.flush()
+        run_executables(os.path.splitext(lus_file)[0])
+
+        #empty = []
+        #empty.append(os.path.splitext(lus_file)[0]+".c")
+        #NestList_size_name.append(empty)
+    
+
+        sys.stdout.write(".")
+        sys.stdout.flush()
+        sys.stdout.write("]\n")
+        sys.stdout.flush()
+
+
+
+
+
 
     os.chdir("..")
     os.chdir("..")
@@ -478,7 +543,7 @@ print("Using SMTLib2C: " + smtlib2c_jar)
 
 
 ##############################################################
-execute(EXPERIMENTS_DIR, PUSH_PATH, ANOTHER_PUSH_PATH, IMPLEMENT_DIR)
+execute(EXPERIMENTS_DIR, PUSH_PATH, ANOTHER_PUSH_PATH, IMPLEMENT_DIR, ANOTHER_IMPLEMENT_DIR)
 #execute(SECOND_EXPERIMENTS_DIR, PUSH_PATH, ANOTHER_PUSH_PATH, SECOND_IMPLEMENT_DIR)
 
 
@@ -495,14 +560,20 @@ print("current path =" + os.getcwd())
 
 
 measureSizeOfC(IMPLEMENT_DIR)
-#measureSizeOfC(ANOTHER_IMPLEMENT_DIR)
-#combineSizeTxt(IMPLEMENT_DIR+"/loc.txt", ANOTHER_IMPLEMENT_DIR+"/loc.txt")
+measureSizeOfC(ANOTHER_IMPLEMENT_DIR)
+combineSizeTxt(IMPLEMENT_DIR+"/loc.txt", ANOTHER_IMPLEMENT_DIR+"/loc.txt")
+print("NestList_size")
+print(NestList_size)
+drawSize()
+
 ##need to take care different folder???
-#drawSize()
 
 
-#combineResultTxt(IMPLEMENT_DIR+"/results.txt",ANOTHER_IMPLEMENT_DIR+"/results.txt")
-#drawPerformance()
+combineResultTxt(IMPLEMENT_DIR+"/results.txt",ANOTHER_IMPLEMENT_DIR+"/results.txt")
+drawPerformance()
+print("NestList_performance")
+print(NestList_performance)
+
 
 
 
