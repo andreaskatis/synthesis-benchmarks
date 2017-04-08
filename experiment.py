@@ -20,6 +20,8 @@ SECOND_ANOTHER_IMPLEMENT_DIR = 'smaccm/fixpoint'
 NestList_overhead = []
 NestList_size = [] 
 NestList_size_name = []
+NestList_size_name_verification = []
+NestList_size_name_smaccm = []
 NestList_performance = []
 #TIMEOUT = 3600
 
@@ -84,7 +86,7 @@ def move_impl(outpath, experiments_dir):
     if len(impl_files) == 0:
         print("No implement files found in '" + experiments_dir + "' directory")
         sys.exit(-1)
-    print("moving impl files")
+    #print("moving impl files")
     for i, impl_file in enumerate(impl_files):
         old_implPath = impl_file
         new_implPath = os.path.join(outpath, impl_file)
@@ -158,7 +160,7 @@ def drawOverhead():
     pl2 = np.array([float(j[2]) for j in sorted(NestList_overhead, key=lambda res: res[1])])
     pl3 = np.array([float(j[3]) for j in sorted(NestList_overhead, key=lambda res: res[1])])
 
-    print(sorted(NestList_overhead, key=lambda res: res[1]))
+    #print(sorted(NestList_overhead, key=lambda res: res[1]))
 
     fig = plt.figure()
 
@@ -177,9 +179,9 @@ def drawOverhead():
 
 
 
-def measureSizeOfC(path):
+def measureSizeOfC(path, NestList_size_name_var):
     os.chdir(path)
-    for cname in NestList_size_name:
+    for cname in NestList_size_name_var:
         os.system('wc -l ' + cname[0] + ' |grep -v total >> loc.txt' )
     os.chdir("..")
     os.chdir("..")
@@ -285,7 +287,7 @@ def drawPerformance():
 
 # Gather Lustre files
 
-def execute(experiments_dir, push_path, another_push_path, implement_dir, another_implement_dir):
+def execute(experiments_dir, push_path, another_push_path, implement_dir, another_implement_dir, NestList_size_name_var):
     if not os.path.exists(experiments_dir):
         print("'" + experiments_dir + "' directory does not exist")
         sys.exit(-1)
@@ -328,7 +330,7 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir, anothe
 
 
     file.close()
-    print(NestList_overhead)
+    #print(NestList_overhead)
 
 
 #do the run_smtlib2c.................................................
@@ -464,7 +466,7 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir, anothe
 
         empty = []
         empty.append(os.path.splitext(lus_file)[0]+".c")
-        NestList_size_name.append(empty)
+        NestList_size_name_var.append(empty)
     
 
         sys.stdout.write(".")
@@ -543,36 +545,52 @@ print("Using SMTLib2C: " + smtlib2c_jar)
 
 
 ##############################################################
-execute(EXPERIMENTS_DIR, PUSH_PATH, ANOTHER_PUSH_PATH, IMPLEMENT_DIR, ANOTHER_IMPLEMENT_DIR)
-#execute(SECOND_EXPERIMENTS_DIR, PUSH_PATH, ANOTHER_PUSH_PATH, SECOND_IMPLEMENT_DIR)
+execute(EXPERIMENTS_DIR, PUSH_PATH, ANOTHER_PUSH_PATH, IMPLEMENT_DIR, ANOTHER_IMPLEMENT_DIR, NestList_size_name_verification)
+#execute(SECOND_EXPERIMENTS_DIR, PUSH_PATH, ANOTHER_PUSH_PATH, SECOND_IMPLEMENT_DIR,SECOND_ANOTHER_IMPLEMENT_DIR, NestList_size_name_smaccm)
 
 
 #fill the NestList_overhead
 parse("debug_jkind.txt", "overhead.txt")
 writeOverhead(NestList_overhead, "overhead.txt")
 drawOverhead()
+print("NestList_overhead")
 print(NestList_overhead)
 
 print()
 
-print(NestList_size_name)
+print("NestList_size_name_verification")
+print(NestList_size_name_verification)
+print("NestList_size_name_smaccm")
+print(NestList_size_name_smaccm)
+
+
 print("current path =" + os.getcwd())
 
+#create both verification (kind and fixpoint) loc.txt 
+measureSizeOfC(IMPLEMENT_DIR, NestList_size_name_verification)
+measureSizeOfC(ANOTHER_IMPLEMENT_DIR, NestList_size_name_verification)
+#create both smaccm (kind and fixpoint) loc.txt
+#measureSizeOfC(SECOND_IMPLEMENT_DIR, NestList_size_name_smaccm)
+#measureSizeOfC(SECOND_ANOTHER_IMPLEMENT_DIR, NestList_size_name_smaccm)
 
-measureSizeOfC(IMPLEMENT_DIR)
-measureSizeOfC(ANOTHER_IMPLEMENT_DIR)
+#append to NestList_size
 combineSizeTxt(IMPLEMENT_DIR+"/loc.txt", ANOTHER_IMPLEMENT_DIR+"/loc.txt")
+#combineSizeTxt(SECOND_IMPLEMENT_DIR+"/loc.txt", SECOND_ANOTHER_IMPLEMENT_DIR+"/loc.txt")
+
 print("NestList_size")
 print(NestList_size)
+
 drawSize()
+print()
 
-##need to take care different folder???
-
-
+#append to NestList_performance
 combineResultTxt(IMPLEMENT_DIR+"/results.txt",ANOTHER_IMPLEMENT_DIR+"/results.txt")
-drawPerformance()
+#combineResultTxt(SECOND_IMPLEMENT_DIR+"/results.txt",SECOND_ANOTHER_IMPLEMENT_DIR+"/results.txt")
+
 print("NestList_performance")
 print(NestList_performance)
+
+drawPerformance()
 
 
 
