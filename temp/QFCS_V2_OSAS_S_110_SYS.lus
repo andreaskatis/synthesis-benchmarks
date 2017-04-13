@@ -1,0 +1,28 @@
+node main(
+  fault : bool;
+  count : int
+) returns (
+
+);
+var
+  __GUARANTEE0 : bool;
+let
+  --%MAIN;
+  __GUARANTEE0 = ((if fault then ((0 -> (pre count)) + 1) else (if (RUN_LENGTH__f((not fault)) >= 5) then 0 else (0 -> (pre count)))) = (if fault then ((0 -> (pre count)) + 1) else (if ((((fault = (true -> (pre fault))) and ((true -> (pre fault)) = (true -> (pre (true -> (pre fault)))))) and ((true -> (pre (true -> (pre fault)))) = (true -> (pre (true -> (pre (true -> (pre fault)))))))) and ((true -> (pre (true -> (pre (true -> (pre fault)))))) = (true -> (pre (true -> (pre (true -> (pre (true -> (pre fault)))))))))) then 0 else (0 -> (pre count)))));
+
+  --%PROPERTY __GUARANTEE0;
+
+  --%REALIZABLE fault;
+
+tel;
+
+node RUN_LENGTH__f(
+  sig : bool
+) returns (
+  count : int
+);
+let
+  count = (if sig then ((0 -> (pre count)) + 1) else 0);
+
+tel;
+

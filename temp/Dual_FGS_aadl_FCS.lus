@@ -1,0 +1,68 @@
+type FGS__Guidance_Data__Guidance_Data_Impl = struct {cmds : FGS__Guidance_Commands__Guidance_Commands_Impl; mds : FGS__Flight_Modes__Flight_Modes_Impl};
+type APS__Control_Surface_Actuator_Data__Control_Surface_Actuator_Data_Impl = struct {CSA_Pitch_Delta : real; CSA_Pitch_Valid : bool};
+type ADS__Airspeed__Airspeed_Impl = struct {Val : real; Valid : bool};
+type ADS__Pitch__Pitch_Impl = struct {Val : real; Valid : bool};
+type FGS__Lateral_Modes__Lateral_Modes_Impl = struct {HDG_active : bool; ROLL_active : bool};
+type ADS__Air_Data__Air_Data_Impl = struct {AirSpeed : ADS__Airspeed__Airspeed_Impl; Pitch : ADS__Pitch__Pitch_Impl};
+type FGS__Flight_Modes__Flight_Modes_Impl = struct {active : bool; lat : FGS__Lateral_Modes__Lateral_Modes_Impl; ver : int};
+type FGS__Guidance_Commands__Guidance_Commands_Impl = struct {Pitch_Delta : real; Pitch_Valid : bool};
+
+node main(
+  AD_L : ADS__Air_Data__Air_Data_Impl;
+  AD_R : ADS__Air_Data__Air_Data_Impl;
+  FD_L : FGS__Guidance_Data__Guidance_Data_Impl;
+  FD_R : FGS__Guidance_Data__Guidance_Data_Impl;
+  CSA : APS__Control_Surface_Actuator_Data__Control_Surface_Actuator_Data_Impl
+) returns (
+
+);
+var
+  __GUARANTEE0 : bool;
+  __GUARANTEE1 : bool;
+  AD_L_Pitch_Step_Delta_Valid : bool;
+  AD_R_Pitch_Step_Delta_Valid : bool;
+  pitch_lr_ok : bool;
+  left_side_valid : bool;
+  right_side_valid : bool;
+  some_side_valid : bool;
+let
+  --%MAIN;
+  __GUARANTEE0 = (true -> (FCS__Flight_Control_System__abs(CSA.CSA_Pitch_Delta) < 5.0));
+
+  __GUARANTEE1 = (true -> (FCS__Flight_Control_System__abs((CSA.CSA_Pitch_Delta - (0.0 -> (pre CSA.CSA_Pitch_Delta)))) < 5.0));
+
+  AD_L_Pitch_Step_Delta_Valid = (true -> (FCS__Flight_Control_System__abs((AD_L.Pitch.Val - (0.0 -> (pre AD_L.Pitch.Val)))) < 1.0));
+
+  AD_R_Pitch_Step_Delta_Valid = (true -> (FCS__Flight_Control_System__abs((AD_R.Pitch.Val - (0.0 -> (pre AD_R.Pitch.Val)))) < 1.0));
+
+  pitch_lr_ok = (FCS__Flight_Control_System__abs((AD_L.Pitch.Val - AD_R.Pitch.Val)) < 2.0);
+
+  left_side_valid = AD_L.Pitch.Valid;
+
+  right_side_valid = AD_R.Pitch.Valid;
+
+  some_side_valid = (left_side_valid or right_side_valid);
+
+  assert some_side_valid;
+
+  assert (((false -> (pre (false -> (pre (not left_side_valid))))) and (false -> (pre left_side_valid))) => left_side_valid);
+
+  assert ((AD_L_Pitch_Step_Delta_Valid and AD_R_Pitch_Step_Delta_Valid) and pitch_lr_ok);
+
+  --%PROPERTY __GUARANTEE0;
+  --%PROPERTY __GUARANTEE1;
+
+  --%REALIZABLE AD_L, AD_R;
+
+tel;
+
+node FCS__Flight_Control_System__abs(
+  x : real
+) returns (
+  _outvar : real
+);
+let
+  _outvar = (if (x > 0.0) then x else (-x));
+
+tel;
+

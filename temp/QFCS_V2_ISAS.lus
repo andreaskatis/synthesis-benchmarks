@@ -1,0 +1,1029 @@
+type DATA_TYPES__EGI__treal = struct {ALT : real; AOA : real; FPACCEL : real; GAMLNS : real; GS : real; HDD : real; HDOT : real; LAT : real; LON : real; NX : real; NY : real; NZ : real; PB : real; PHI : real; PSI : real; Pres : real; QB : real; RB : real; TAT : real; THETA : real; TIME_STAMP : int; Temp : real; TotPres : real; VE : real; VGOT : real; VN : real; XTACC : real};
+type DATA_TYPES__Spoilers__tbool = struct {SPLIB : bool; SPLOB : bool; SPRIB : bool; SPROB : bool};
+type DATA_TYPES__QUAD_Stabilizer__treal = struct {STAB1 : DATA_TYPES__Stabilizer__treal; STAB2 : DATA_TYPES__Stabilizer__treal; STAB3 : DATA_TYPES__Stabilizer__treal; STAB4 : DATA_TYPES__Stabilizer__treal};
+type DATA_TYPES__AoA__tbool = struct {AOA : bool};
+type DATA_TYPES__QUAD_Flaps__tbool = struct {FLAPS1 : DATA_TYPES__Flaps__tbool; FLAPS2 : DATA_TYPES__Flaps__tbool; FLAPS3 : DATA_TYPES__Flaps__tbool; FLAPS4 : DATA_TYPES__Flaps__tbool};
+type DATA_TYPES__AoA__treal = struct {AOA : real; TIME_STAMP : int};
+type DATA_TYPES__DUAL_AirData__treal = struct {AD1 : DATA_TYPES__AirData__treal; AD2 : DATA_TYPES__AirData__treal};
+type DATA_TYPES__QUAD_Ailerons__tbool = struct {AIL1 : DATA_TYPES__Ailerons__tbool; AIL2 : DATA_TYPES__Ailerons__tbool; AIL3 : DATA_TYPES__Ailerons__tbool; AIL4 : DATA_TYPES__Ailerons__tbool};
+type DATA_TYPES__DUAL_AoA__treal = struct {AOA1 : DATA_TYPES__AoA__treal; AOA2 : DATA_TYPES__AoA__treal};
+type DATA_TYPES__Rudders__treal = struct {RUDL : real; RUDU : real; TIME_STAMP : int};
+type DATA_TYPES__Flaps__tbool = struct {FLLIB : bool; FLLOB : bool; FLRIB : bool; FLROB : bool};
+type DATA_TYPES__QUAD_EGI__tbool = struct {egi1 : DATA_TYPES__EGI__tbool; egi2 : DATA_TYPES__EGI__tbool; egi3 : DATA_TYPES__EGI__tbool; egi4 : DATA_TYPES__EGI__tbool};
+type DATA_TYPES__QUAD_Spoilers__tbool = struct {SPOIL1 : DATA_TYPES__Spoilers__tbool; SPOIL2 : DATA_TYPES__Spoilers__tbool; SPOIL3 : DATA_TYPES__Spoilers__tbool; SPOIL4 : DATA_TYPES__Spoilers__tbool};
+type DATA_TYPES__QUAD_EGI__treal = struct {egi1 : DATA_TYPES__EGI__treal; egi2 : DATA_TYPES__EGI__treal; egi3 : DATA_TYPES__EGI__treal; egi4 : DATA_TYPES__EGI__treal};
+type DATA_TYPES__QUAD_Spoilers__treal = struct {SPOIL1 : DATA_TYPES__Spoilers__treal; SPOIL2 : DATA_TYPES__Spoilers__treal; SPOIL3 : DATA_TYPES__Spoilers__treal; SPOIL4 : DATA_TYPES__Spoilers__treal};
+type DATA_TYPES__EGI__tbool = struct {ALT : bool; AOA : bool; FPACCEL : bool; GAMLNS : bool; GS : bool; HDD : bool; HDOT : bool; LAT : bool; LON : bool; NX : bool; NY : bool; NZ : bool; PB : bool; PHI : bool; PSI : bool; Pres : bool; QB : bool; RB : bool; TAT : bool; THETA : bool; Temp : bool; TotPres : bool; VE : bool; VGOT : bool; VN : bool; XTACC : bool};
+type DATA_TYPES__Elevators__treal = struct {ELLIB : real; ELLOB : real; ELRIB : real; ELROB : real; TIME_STAMP : int};
+type DATA_TYPES__AirData__tbool = struct {Pres : bool; TAT : bool; Temp : bool; TotPres : bool};
+type DATA_TYPES__Rudders__tbool = struct {RUDL : bool; RUDU : bool};
+type DATA_TYPES__DUAL_AoA__tbool = struct {AOA1 : DATA_TYPES__AoA__tbool; AOA2 : DATA_TYPES__AoA__tbool};
+type DATA_TYPES__DUAL_AirData__tbool = struct {AD1 : DATA_TYPES__AirData__tbool; AD2 : DATA_TYPES__AirData__tbool};
+type DATA_TYPES__Ailerons__treal = struct {AILL : real; AILR : real; TIME_STAMP : int};
+type DATA_TYPES__Flaps__treal = struct {FLLIB : real; FLLOB : real; FLRIB : real; FLROB : real; TIME_STAMP : int};
+type DATA_TYPES__quad_bool = struct {val1 : bool; val2 : bool; val3 : bool; val4 : bool};
+type DATA_TYPES__Spoilers__treal = struct {SPLIB : real; SPLOB : real; SPRIB : real; SPROB : real; TIME_STAMP : int};
+type DATA_TYPES__QUAD_Ailerons__treal = struct {AIL1 : DATA_TYPES__Ailerons__treal; AIL2 : DATA_TYPES__Ailerons__treal; AIL3 : DATA_TYPES__Ailerons__treal; AIL4 : DATA_TYPES__Ailerons__treal};
+type DATA_TYPES__QUAD_Elevators__tbool = struct {EL1 : DATA_TYPES__Elevators__tbool; EL2 : DATA_TYPES__Elevators__tbool; EL3 : DATA_TYPES__Elevators__tbool; EL4 : DATA_TYPES__Elevators__tbool};
+type DATA_TYPES__QUAD_Elevators__treal = struct {EL1 : DATA_TYPES__Elevators__treal; EL2 : DATA_TYPES__Elevators__treal; EL3 : DATA_TYPES__Elevators__treal; EL4 : DATA_TYPES__Elevators__treal};
+type DATA_TYPES__QUAD_Flaps__treal = struct {FLAPS1 : DATA_TYPES__Flaps__treal; FLAPS2 : DATA_TYPES__Flaps__treal; FLAPS3 : DATA_TYPES__Flaps__treal; FLAPS4 : DATA_TYPES__Flaps__treal};
+type DATA_TYPES__dual_bool = struct {val1 : bool; val2 : bool};
+type DATA_TYPES__AirData__treal = struct {Pres : real; TAT : real; TIME_STAMP : int; Temp : real; TotPres : real};
+type DATA_TYPES__QUAD_Stabilizer__tbool = struct {STAB1 : bool; STAB2 : bool; STAB3 : bool; STAB4 : bool};
+type DATA_TYPES__Elevators__tbool = struct {ELLIB : bool; ELLOB : bool; ELRIB : bool; ELROB : bool};
+type DATA_TYPES__QUAD_Rudders__treal = struct {RUDD1 : DATA_TYPES__Rudders__treal; RUDD2 : DATA_TYPES__Rudders__treal; RUDD3 : DATA_TYPES__Rudders__treal; RUDD4 : DATA_TYPES__Rudders__treal};
+type DATA_TYPES__Stabilizer__treal = struct {TIME_STAMP : int; VAL : real};
+type DATA_TYPES__QUAD_Rudders__tbool = struct {RUDD1 : DATA_TYPES__Rudders__tbool; RUDD2 : DATA_TYPES__Rudders__tbool; RUDD3 : DATA_TYPES__Rudders__tbool; RUDD4 : DATA_TYPES__Rudders__tbool};
+type DATA_TYPES__Ailerons__tbool = struct {AILL : bool; AILR : bool};
+
+node main(
+  elevators : DATA_TYPES__QUAD_Elevators__treal;
+  ailerons : DATA_TYPES__QUAD_Ailerons__treal;
+  rudders : DATA_TYPES__QUAD_Rudders__treal;
+  flaps : DATA_TYPES__QUAD_Flaps__treal;
+  aoa : DATA_TYPES__DUAL_AoA__treal;
+  air_data : DATA_TYPES__DUAL_AirData__treal;
+  egi : DATA_TYPES__QUAD_EGI__treal;
+  spoilers : DATA_TYPES__QUAD_Spoilers__treal;
+  stabilizers : DATA_TYPES__QUAD_Stabilizer__treal;
+  elevators_failed_update : DATA_TYPES__quad_bool;
+  ailerons_failed_update : DATA_TYPES__quad_bool;
+  rudders_failed_update : DATA_TYPES__quad_bool;
+  flaps_failed_update : DATA_TYPES__quad_bool;
+  aoa_failed_update : DATA_TYPES__dual_bool;
+  air_data_failed_update : DATA_TYPES__dual_bool;
+  spoilers_failed_update : DATA_TYPES__quad_bool;
+  stabilizers_failed_update : DATA_TYPES__quad_bool;
+  elevators_in_range : DATA_TYPES__QUAD_Elevators__tbool;
+  ailerons_in_range : DATA_TYPES__QUAD_Ailerons__tbool;
+  rudders_in_range : DATA_TYPES__QUAD_Rudders__tbool;
+  flaps_in_range : DATA_TYPES__QUAD_Flaps__tbool;
+  aoa_in_range : DATA_TYPES__DUAL_AoA__tbool;
+  air_data_in_range : DATA_TYPES__DUAL_AirData__tbool;
+  spoilers_in_range : DATA_TYPES__QUAD_Spoilers__tbool;
+  stabilizer_in_range : DATA_TYPES__QUAD_Stabilizer__tbool;
+  elevators_within_tol : DATA_TYPES__QUAD_Elevators__tbool;
+  ailerons_within_tol : DATA_TYPES__QUAD_Ailerons__tbool;
+  rudders_within_tol : DATA_TYPES__QUAD_Rudders__tbool;
+  flaps_within_tol : DATA_TYPES__QUAD_Flaps__tbool;
+  aoa_within_tol : DATA_TYPES__DUAL_AoA__tbool;
+  air_data_within_tol : DATA_TYPES__DUAL_AirData__tbool;
+  spoilers_within_tol : DATA_TYPES__QUAD_Spoilers__tbool;
+  stabilizer_within_tol : DATA_TYPES__QUAD_Stabilizer__tbool;
+  egi_select_fault : DATA_TYPES__EGI__tbool;
+  elevators_select : DATA_TYPES__Elevators__treal;
+  ailerons_select : DATA_TYPES__Ailerons__treal;
+  rudders_select : DATA_TYPES__Rudders__treal;
+  flaps_select : DATA_TYPES__Flaps__treal;
+  aoa_select : DATA_TYPES__AoA__treal;
+  air_data_select : DATA_TYPES__AirData__treal;
+  egi_select : DATA_TYPES__EGI__treal;
+  spoilers_select : DATA_TYPES__Spoilers__treal;
+  stabilizers_select : DATA_TYPES__Stabilizer__treal;
+  elevators_faults : DATA_TYPES__QUAD_Elevators__tbool;
+  ailerons_faults : DATA_TYPES__QUAD_Ailerons__tbool;
+  rudders_faults : DATA_TYPES__QUAD_Rudders__tbool;
+  flaps_faults : DATA_TYPES__QUAD_Flaps__tbool;
+  aoa_faults : DATA_TYPES__DUAL_AoA__tbool;
+  air_data_faults : DATA_TYPES__DUAL_AirData__tbool;
+  egi_faults : DATA_TYPES__QUAD_EGI__tbool;
+  spoilers_faults : DATA_TYPES__QUAD_Spoilers__tbool;
+  stabilizers_faults : DATA_TYPES__QUAD_Stabilizer__tbool
+) returns (
+
+);
+var
+  __GUARANTEE0 : bool;
+  __GUARANTEE1 : bool;
+  __GUARANTEE2 : bool;
+  __GUARANTEE3 : bool;
+  __GUARANTEE4 : bool;
+  __GUARANTEE5 : bool;
+  __GUARANTEE6 : bool;
+  __GUARANTEE7 : bool;
+  __GUARANTEE8 : bool;
+  __GUARANTEE9 : bool;
+  __GUARANTEE10 : bool;
+  elevators_sig_tol : DATA_TYPES__Elevators__treal;
+  ailerons_sig_tol : DATA_TYPES__Ailerons__treal;
+  rudders_sig_tol : DATA_TYPES__Rudders__treal;
+  flaps_sig_tol : DATA_TYPES__Flaps__treal;
+  aoa_sig_tol : DATA_TYPES__AoA__treal;
+  air_data_sig_tol : DATA_TYPES__AirData__treal;
+  spoilers_sig_tol : DATA_TYPES__Spoilers__treal;
+  stabilizer_sig_tol : DATA_TYPES__Stabilizer__treal;
+let
+  --%MAIN;
+  __GUARANTEE0 = ISAS_S_100_130__req(elevators, ailerons, rudders, flaps, aoa, air_data, spoilers, stabilizers, elevators_failed_update, ailerons_failed_update, rudders_failed_update, flaps_failed_update, aoa_failed_update, air_data_failed_update, spoilers_failed_update, stabilizers_failed_update);
+
+  __GUARANTEE1 = ISAS_S_110__req(elevators, ailerons, rudders, flaps, aoa, air_data, spoilers, stabilizers, elevators_in_range, ailerons_in_range, rudders_in_range, flaps_in_range, aoa_in_range, air_data_in_range, spoilers_in_range, stabilizer_in_range);
+
+  __GUARANTEE2 = ISAS_S_140__req(aoa, air_data, aoa_failed_update, air_data_failed_update, aoa_in_range, air_data_in_range, aoa_within_tol, air_data_within_tol);
+
+  __GUARANTEE3 = ISAS_S_140_150__req(elevators, ailerons, rudders, flaps, aoa, air_data, spoilers, stabilizers, elevators_within_tol, ailerons_within_tol, rudders_within_tol, flaps_within_tol, aoa_within_tol, air_data_within_tol, spoilers_within_tol, stabilizer_within_tol);
+
+  __GUARANTEE4 = ISAS_S_170__req(aoa, air_data, aoa_within_tol, air_data_within_tol, aoa_failed_update, air_data_failed_update, aoa_in_range, air_data_in_range, aoa_select, air_data_select);
+
+  __GUARANTEE5 = ISAS_S_190__req(aoa, air_data, aoa_failed_update, air_data_failed_update, aoa_in_range, air_data_in_range, egi_select, egi_select_fault, aoa_within_tol, air_data_within_tol);
+
+  __GUARANTEE6 = ISAS_S_200__req(aoa, air_data, aoa_faults, air_data_faults, egi_select, aoa_select, air_data_select);
+
+  __GUARANTEE7 = ISAS_S_210__req(aoa, air_data, aoa_faults, air_data_faults, egi_select, aoa_select, air_data_select);
+
+  __GUARANTEE8 = ISAS_S_220__req(aoa, air_data, aoa_failed_update, air_data_failed_update, aoa_in_range, air_data_in_range, egi_select, egi_select_fault, aoa_select, air_data_select);
+
+  __GUARANTEE9 = ISAS_S_260__req(elevators, ailerons, rudders, flaps, spoilers, stabilizers, elevators_faults, ailerons_faults, rudders_faults, flaps_faults, spoilers_faults, stabilizers_faults, elevators_sig_tol, ailerons_sig_tol, rudders_sig_tol, flaps_sig_tol, spoilers_sig_tol, stabilizer_sig_tol, elevators_select, ailerons_select, rudders_select, flaps_select, spoilers_select, stabilizers_select);
+
+  __GUARANTEE10 = ISAS_S_240__req(elevators_within_tol, ailerons_within_tol, rudders_within_tol, flaps_within_tol, spoilers_within_tol, stabilizer_within_tol, aoa_within_tol, air_data_within_tol, elevators_failed_update, ailerons_failed_update, rudders_failed_update, flaps_failed_update, spoilers_failed_update, stabilizers_failed_update, aoa_failed_update, air_data_failed_update, elevators_in_range, ailerons_in_range, rudders_in_range, flaps_in_range, spoilers_in_range, stabilizer_in_range, aoa_in_range, air_data_in_range, elevators_faults, ailerons_faults, rudders_faults, flaps_faults, spoilers_faults, stabilizers_faults, aoa_faults, air_data_faults);
+
+  elevators_sig_tol = DATA_TYPES__Elevators__treal {ELLIB = (0.1 * 50.0); ELLOB = (0.1 * 50.0); ELRIB = (0.1 * 50.0); ELROB = (0.1 * 50.0); TIME_STAMP = 0};
+
+  ailerons_sig_tol = DATA_TYPES__Ailerons__treal {AILL = (0.1 * 50.0); AILR = (0.1 * 50.0); TIME_STAMP = 0};
+
+  rudders_sig_tol = DATA_TYPES__Rudders__treal {RUDL = (0.1 * 50.0); RUDU = (0.1 * 50.0); TIME_STAMP = 0};
+
+  flaps_sig_tol = DATA_TYPES__Flaps__treal {FLLIB = (0.1 * 50.0); FLLOB = (0.1 * 50.0); FLRIB = (0.1 * 50.0); FLROB = (0.1 * 50.0); TIME_STAMP = 0};
+
+  aoa_sig_tol = DATA_TYPES__AoA__treal {AOA = (0.1 * 50.0); TIME_STAMP = 0};
+
+  air_data_sig_tol = DATA_TYPES__AirData__treal {Pres = (0.1 * 50.0); TAT = (0.1 * 50.0); TIME_STAMP = 0; Temp = (0.1 * 50.0); TotPres = (0.1 * 50.0)};
+
+  spoilers_sig_tol = DATA_TYPES__Spoilers__treal {SPLIB = (0.1 * 50.0); SPLOB = (0.1 * 50.0); SPRIB = (0.1 * 50.0); SPROB = (0.1 * 50.0); TIME_STAMP = 0};
+
+  stabilizer_sig_tol = DATA_TYPES__Stabilizer__treal {TIME_STAMP = 0; VAL = (0.1 * 50.0)};
+
+  --%PROPERTY __GUARANTEE0;
+  --%PROPERTY __GUARANTEE1;
+  --%PROPERTY __GUARANTEE2;
+  --%PROPERTY __GUARANTEE3;
+  --%PROPERTY __GUARANTEE4;
+  --%PROPERTY __GUARANTEE5;
+  --%PROPERTY __GUARANTEE6;
+  --%PROPERTY __GUARANTEE7;
+  --%PROPERTY __GUARANTEE8;
+  --%PROPERTY __GUARANTEE9;
+  --%PROPERTY __GUARANTEE10;
+
+  --%REALIZABLE elevators, ailerons, rudders, flaps, aoa, air_data, egi, spoilers, stabilizers;
+
+tel;
+
+node ISAS_S_100_130__failed_update(
+  timestamp : int;
+  failed : bool
+) returns (
+  ret : bool
+);
+let
+  ret = (failed = (false -> (timestamp = (pre timestamp))));
+
+tel;
+
+node ISAS_S_100_130__single_req(
+  elevators : DATA_TYPES__Elevators__treal;
+  ailerons : DATA_TYPES__Ailerons__treal;
+  rudders : DATA_TYPES__Rudders__treal;
+  flaps : DATA_TYPES__Flaps__treal;
+  aoa : DATA_TYPES__AoA__treal;
+  air_data : DATA_TYPES__AirData__treal;
+  spoilers : DATA_TYPES__Spoilers__treal;
+  stabilizer : DATA_TYPES__Stabilizer__treal;
+  elevators_failed_update : bool;
+  ailerons_failed_update : bool;
+  rudders_failed_update : bool;
+  flaps_failed_update : bool;
+  aoa_failed_update : bool;
+  air_data_failed_update : bool;
+  spoilers_failed_update : bool;
+  stabilizer_failed_update : bool
+) returns (
+  ret : bool
+);
+let
+  ret = (((((((ISAS_S_100_130__failed_update(elevators.TIME_STAMP, elevators_failed_update) and ISAS_S_100_130__failed_update(ailerons.TIME_STAMP, ailerons_failed_update)) and ISAS_S_100_130__failed_update(rudders.TIME_STAMP, rudders_failed_update)) and ISAS_S_100_130__failed_update(flaps.TIME_STAMP, elevators_failed_update)) and ISAS_S_100_130__failed_update(aoa.TIME_STAMP, aoa_failed_update)) and ISAS_S_100_130__failed_update(air_data.TIME_STAMP, air_data_failed_update)) and ISAS_S_100_130__failed_update(spoilers.TIME_STAMP, spoilers_failed_update)) and ISAS_S_100_130__failed_update(stabilizer.TIME_STAMP, stabilizer_failed_update));
+
+tel;
+
+node ISAS_S_100_130__req(
+  elevators : DATA_TYPES__QUAD_Elevators__treal;
+  ailerons : DATA_TYPES__QUAD_Ailerons__treal;
+  rudders : DATA_TYPES__QUAD_Rudders__treal;
+  flaps : DATA_TYPES__QUAD_Flaps__treal;
+  aoa : DATA_TYPES__DUAL_AoA__treal;
+  air_data : DATA_TYPES__DUAL_AirData__treal;
+  spoilers : DATA_TYPES__QUAD_Spoilers__treal;
+  stabilizer : DATA_TYPES__QUAD_Stabilizer__treal;
+  elevators_failed_update : DATA_TYPES__quad_bool;
+  ailerons_failed_update : DATA_TYPES__quad_bool;
+  rudders_failed_update : DATA_TYPES__quad_bool;
+  flaps_failed_update : DATA_TYPES__quad_bool;
+  aoa_failed_update : DATA_TYPES__dual_bool;
+  air_data_failed_update : DATA_TYPES__dual_bool;
+  spoilers_failed_update : DATA_TYPES__quad_bool;
+  stabilizer_failed_update : DATA_TYPES__quad_bool
+) returns (
+  ret : bool
+);
+let
+  ret = (((ISAS_S_100_130__single_req(elevators.EL1, ailerons.AIL1, rudders.RUDD1, flaps.FLAPS1, aoa.AOA1, air_data.AD1, spoilers.SPOIL1, stabilizer.STAB1, elevators_failed_update.val1, ailerons_failed_update.val1, rudders_failed_update.val1, flaps_failed_update.val1, aoa_failed_update.val1, air_data_failed_update.val1, spoilers_failed_update.val1, stabilizer_failed_update.val1) and ISAS_S_100_130__single_req(elevators.EL2, ailerons.AIL2, rudders.RUDD2, flaps.FLAPS2, aoa.AOA2, air_data.AD2, spoilers.SPOIL2, stabilizer.STAB2, elevators_failed_update.val2, ailerons_failed_update.val2, rudders_failed_update.val2, flaps_failed_update.val2, aoa_failed_update.val2, air_data_failed_update.val2, spoilers_failed_update.val2, stabilizer_failed_update.val2)) and ISAS_S_100_130__single_req(elevators.EL3, ailerons.AIL3, rudders.RUDD3, flaps.FLAPS3, aoa.AOA2, air_data.AD2, spoilers.SPOIL3, stabilizer.STAB3, elevators_failed_update.val3, ailerons_failed_update.val3, rudders_failed_update.val3, flaps_failed_update.val3, aoa_failed_update.val2, air_data_failed_update.val2, spoilers_failed_update.val3, stabilizer_failed_update.val3)) and ISAS_S_100_130__single_req(elevators.EL4, ailerons.AIL4, rudders.RUDD4, flaps.FLAPS4, aoa.AOA2, air_data.AD2, spoilers.SPOIL4, stabilizer.STAB4, elevators_failed_update.val4, ailerons_failed_update.val4, rudders_failed_update.val4, flaps_failed_update.val4, aoa_failed_update.val2, air_data_failed_update.val2, spoilers_failed_update.val4, stabilizer_failed_update.val4));
+
+tel;
+
+node ISAS_S_110__els_in_range(
+  elevators : DATA_TYPES__Elevators__treal;
+  elevators_in_range : DATA_TYPES__Elevators__tbool
+) returns (
+  ret : bool
+);
+let
+  ret = ((((elevators_in_range.ELLIB = ((0.0 <= elevators.ELLIB) and (50.0 >= elevators.ELLIB))) and (elevators_in_range.ELLOB = ((0.0 <= elevators.ELLOB) and (50.0 >= elevators.ELLOB)))) and (elevators_in_range.ELROB = ((0.0 <= elevators.ELROB) and (50.0 >= elevators.ELROB)))) and (elevators_in_range.ELRIB = ((0.0 <= elevators.ELRIB) and (50.0 >= elevators.ELRIB))));
+
+tel;
+
+node ISAS_S_110__rud_in_range(
+  rudders : DATA_TYPES__Rudders__treal;
+  rudders_in_range : DATA_TYPES__Rudders__tbool
+) returns (
+  ret : bool
+);
+let
+  ret = ((rudders_in_range.RUDU = ((0.0 <= rudders.RUDU) and (50.0 >= rudders.RUDU))) and (rudders_in_range.RUDL = ((0.0 <= rudders.RUDL) and (50.0 >= rudders.RUDL))));
+
+tel;
+
+node ISAS_S_110__ails_in_range(
+  ailerons : DATA_TYPES__Ailerons__treal;
+  ailerons_in_range : DATA_TYPES__Ailerons__tbool
+) returns (
+  ret : bool
+);
+let
+  ret = ((ailerons_in_range.AILL = ((0.0 <= ailerons.AILL) and (50.0 >= ailerons.AILL))) and (ailerons_in_range.AILR = ((0.0 <= ailerons.AILR) and (50.0 >= ailerons.AILR))));
+
+tel;
+
+node ISAS_S_110__fl_in_range(
+  flaps : DATA_TYPES__Flaps__treal;
+  flaps_in_range : DATA_TYPES__Flaps__tbool
+) returns (
+  ret : bool
+);
+let
+  ret = ((((flaps_in_range.FLLIB = ((0.0 <= flaps.FLLIB) and (50.0 >= flaps.FLLIB))) and (flaps_in_range.FLLOB = ((0.0 <= flaps.FLLOB) and (50.0 >= flaps.FLLOB)))) and (flaps_in_range.FLROB = ((0.0 <= flaps.FLROB) and (50.0 >= flaps.FLROB)))) and (flaps_in_range.FLRIB = ((0.0 <= flaps.FLRIB) and (50.0 >= flaps.FLRIB))));
+
+tel;
+
+node ISAS_S_110__aoa_range(
+  aoa : DATA_TYPES__AoA__treal;
+  aoa_in_range : DATA_TYPES__AoA__tbool
+) returns (
+  ret : bool
+);
+let
+  ret = (aoa_in_range.AOA = ((0.0 <= aoa.AOA) and (50.0 >= aoa.AOA)));
+
+tel;
+
+node ISAS_S_110__ad_in_range(
+  air_data : DATA_TYPES__AirData__treal;
+  air_data_in_range : DATA_TYPES__AirData__tbool
+) returns (
+  ret : bool
+);
+let
+  ret = ((((air_data_in_range.TAT = ((0.0 <= air_data.TAT) and (50.0 >= air_data.TAT))) and (air_data_in_range.TotPres = ((0.0 <= air_data.TotPres) and (50.0 >= air_data.TotPres)))) and (air_data_in_range.Pres = ((0.0 <= air_data.Pres) and (50.0 >= air_data.Pres)))) and (air_data_in_range.Temp = ((0.0 <= air_data.Temp) and (50.0 >= air_data.Temp))));
+
+tel;
+
+node ISAS_S_110__spoils_in_range(
+  spoilers : DATA_TYPES__Spoilers__treal;
+  spoilers_in_range : DATA_TYPES__Spoilers__tbool
+) returns (
+  ret : bool
+);
+let
+  ret = ((((spoilers_in_range.SPLIB = ((0.0 <= spoilers.SPLIB) and (50.0 >= spoilers.SPLIB))) and (spoilers_in_range.SPLOB = ((0.0 <= spoilers.SPLOB) and (50.0 >= spoilers.SPLOB)))) and (spoilers_in_range.SPROB = ((0.0 <= spoilers.SPROB) and (50.0 >= spoilers.SPROB)))) and (spoilers_in_range.SPRIB = ((0.0 <= spoilers.SPRIB) and (50.0 >= spoilers.SPRIB))));
+
+tel;
+
+node ISAS_S_110__stab_in_range(
+  stabilizer : DATA_TYPES__Stabilizer__treal;
+  stabilizer_in_range : bool
+) returns (
+  ret : bool
+);
+let
+  ret = (stabilizer_in_range = ((0.0 <= stabilizer.VAL) and (50.0 >= stabilizer.VAL)));
+
+tel;
+
+node ISAS_S_110__req(
+  elevators : DATA_TYPES__QUAD_Elevators__treal;
+  ailerons : DATA_TYPES__QUAD_Ailerons__treal;
+  rudders : DATA_TYPES__QUAD_Rudders__treal;
+  flaps : DATA_TYPES__QUAD_Flaps__treal;
+  aoa : DATA_TYPES__DUAL_AoA__treal;
+  air_data : DATA_TYPES__DUAL_AirData__treal;
+  spoilers : DATA_TYPES__QUAD_Spoilers__treal;
+  stabilizer : DATA_TYPES__QUAD_Stabilizer__treal;
+  elevators_in_range : DATA_TYPES__QUAD_Elevators__tbool;
+  ailerons_in_range : DATA_TYPES__QUAD_Ailerons__tbool;
+  rudders_in_range : DATA_TYPES__QUAD_Rudders__tbool;
+  flaps_in_range : DATA_TYPES__QUAD_Flaps__tbool;
+  aoa_in_range : DATA_TYPES__DUAL_AoA__tbool;
+  air_data_in_range : DATA_TYPES__DUAL_AirData__tbool;
+  spoilers_in_range : DATA_TYPES__QUAD_Spoilers__tbool;
+  stabilizer_in_range : DATA_TYPES__QUAD_Stabilizer__tbool
+) returns (
+  ret : bool
+);
+let
+  ret = (((((((((((((((((((((((((((ISAS_S_110__els_in_range(elevators.EL1, elevators_in_range.EL1) and ISAS_S_110__els_in_range(elevators.EL2, elevators_in_range.EL2)) and ISAS_S_110__els_in_range(elevators.EL3, elevators_in_range.EL3)) and ISAS_S_110__els_in_range(elevators.EL4, elevators_in_range.EL4)) and ISAS_S_110__rud_in_range(rudders.RUDD1, rudders_in_range.RUDD1)) and ISAS_S_110__rud_in_range(rudders.RUDD2, rudders_in_range.RUDD2)) and ISAS_S_110__rud_in_range(rudders.RUDD3, rudders_in_range.RUDD3)) and ISAS_S_110__rud_in_range(rudders.RUDD4, rudders_in_range.RUDD4)) and ISAS_S_110__ails_in_range(ailerons.AIL1, ailerons_in_range.AIL1)) and ISAS_S_110__ails_in_range(ailerons.AIL2, ailerons_in_range.AIL2)) and ISAS_S_110__ails_in_range(ailerons.AIL3, ailerons_in_range.AIL3)) and ISAS_S_110__ails_in_range(ailerons.AIL4, ailerons_in_range.AIL4)) and ISAS_S_110__fl_in_range(flaps.FLAPS1, flaps_in_range.FLAPS1)) and ISAS_S_110__fl_in_range(flaps.FLAPS2, flaps_in_range.FLAPS2)) and ISAS_S_110__fl_in_range(flaps.FLAPS3, flaps_in_range.FLAPS3)) and ISAS_S_110__fl_in_range(flaps.FLAPS4, flaps_in_range.FLAPS4)) and ISAS_S_110__aoa_range(aoa.AOA1, aoa_in_range.AOA1)) and ISAS_S_110__aoa_range(aoa.AOA2, aoa_in_range.AOA2)) and ISAS_S_110__ad_in_range(air_data.AD1, air_data_in_range.AD1)) and ISAS_S_110__ad_in_range(air_data.AD2, air_data_in_range.AD2)) and ISAS_S_110__spoils_in_range(spoilers.SPOIL1, spoilers_in_range.SPOIL1)) and ISAS_S_110__spoils_in_range(spoilers.SPOIL2, spoilers_in_range.SPOIL2)) and ISAS_S_110__spoils_in_range(spoilers.SPOIL3, spoilers_in_range.SPOIL3)) and ISAS_S_110__spoils_in_range(spoilers.SPOIL4, spoilers_in_range.SPOIL4)) and ISAS_S_110__stab_in_range(stabilizer.STAB1, stabilizer_in_range.STAB1)) and ISAS_S_110__stab_in_range(stabilizer.STAB2, stabilizer_in_range.STAB2)) and ISAS_S_110__stab_in_range(stabilizer.STAB3, stabilizer_in_range.STAB3)) and ISAS_S_110__stab_in_range(stabilizer.STAB4, stabilizer_in_range.STAB4));
+
+tel;
+
+node ISAS_S_140__matches_tolerance_real(
+  val1 : real;
+  val2 : real;
+  tol : real
+) returns (
+  return : bool
+);
+let
+  return = (if (val1 <= val2) then (val2 <= (val1 + tol)) else (val1 <= (val2 + tol)));
+
+tel;
+
+node ISAS_S_140__req(
+  aoa : DATA_TYPES__DUAL_AoA__treal;
+  air_data : DATA_TYPES__DUAL_AirData__treal;
+  aoa_failed_update : DATA_TYPES__dual_bool;
+  air_failed_update : DATA_TYPES__dual_bool;
+  aoa_in_range : DATA_TYPES__DUAL_AoA__tbool;
+  air_data_in_range : DATA_TYPES__DUAL_AirData__tbool;
+  aoa_within_tol : DATA_TYPES__DUAL_AoA__tbool;
+  air_data_within_tol : DATA_TYPES__DUAL_AirData__tbool
+) returns (
+  ret : bool
+);
+let
+  ret = ((((((((not aoa_failed_update.val1) and aoa_in_range.AOA1.AOA) and ((not aoa_failed_update.val2) and aoa_in_range.AOA2.AOA)) => ((aoa_within_tol.AOA1.AOA = ISAS_S_140__matches_tolerance_real(aoa.AOA1.AOA, aoa.AOA2.AOA, (0.1 * 50.0))) and (aoa_within_tol.AOA2.AOA = ISAS_S_140__matches_tolerance_real(aoa.AOA2.AOA, aoa.AOA1.AOA, (0.1 * 50.0))))) and ((((not air_failed_update.val1) and air_data_in_range.AD1.TAT) and ((not air_failed_update.val2) and air_data_in_range.AD2.TAT)) => ((air_data_within_tol.AD1.TAT = ISAS_S_140__matches_tolerance_real(air_data.AD1.TAT, air_data.AD2.TAT, (0.1 * 50.0))) and (air_data_within_tol.AD2.TAT = ISAS_S_140__matches_tolerance_real(air_data.AD2.TAT, air_data.AD1.TAT, (0.1 * 50.0)))))) and ((((not air_failed_update.val1) and air_data_in_range.AD1.TotPres) and ((not air_failed_update.val2) and air_data_in_range.AD2.TotPres)) => ((air_data_within_tol.AD1.TotPres = ISAS_S_140__matches_tolerance_real(air_data.AD1.TotPres, air_data.AD2.TotPres, (0.1 * 50.0))) and (air_data_within_tol.AD2.TotPres = ISAS_S_140__matches_tolerance_real(air_data.AD2.TotPres, air_data.AD1.TotPres, (0.1 * 50.0)))))) and ((((not air_failed_update.val1) and air_data_in_range.AD1.Pres) and ((not air_failed_update.val2) and air_data_in_range.AD2.Pres)) => ((air_data_within_tol.AD1.Pres = ISAS_S_140__matches_tolerance_real(air_data.AD1.Pres, air_data.AD2.Pres, (0.1 * 50.0))) and (air_data_within_tol.AD2.Pres = ISAS_S_140__matches_tolerance_real(air_data.AD2.Pres, air_data.AD1.Pres, (0.1 * 50.0)))))) and ((((not air_failed_update.val1) and air_data_in_range.AD1.Temp) and ((not air_failed_update.val2) and air_data_in_range.AD2.Temp)) => ((air_data_within_tol.AD1.Temp = ISAS_S_140__matches_tolerance_real(air_data.AD1.Temp, air_data.AD2.Temp, (0.1 * 50.0))) and (air_data_within_tol.AD2.Temp = ISAS_S_140__matches_tolerance_real(air_data.AD2.Temp, air_data.AD1.Temp, (0.1 * 50.0))))));
+
+tel;
+
+node ISAS_S_140_150__matches_tol_real(
+  val1 : real;
+  val2 : real;
+  tol : real
+) returns (
+  return : bool
+);
+let
+  return = (if (val1 <= val2) then (val2 <= (val1 + tol)) else (val1 <= (val2 + tol)));
+
+tel;
+
+node ISAS_S_140_150__quad_matches_real(
+  target : real;
+  val1 : real;
+  val2 : real;
+  val3 : real;
+  tol : real
+) returns (
+  result : bool
+);
+let
+  result = ((ISAS_S_140_150__matches_tol_real(target, val1, tol) or ISAS_S_140_150__matches_tol_real(target, val2, tol)) or ISAS_S_140_150__matches_tol_real(target, val3, tol));
+
+tel;
+
+node ISAS_S_140_150__stabilizer_matches(
+  e1 : DATA_TYPES__Stabilizer__treal;
+  e2 : DATA_TYPES__Stabilizer__treal;
+  e3 : DATA_TYPES__Stabilizer__treal;
+  e4 : DATA_TYPES__Stabilizer__treal;
+  e_tol : bool
+) returns (
+  ret : bool
+);
+let
+  ret = (e_tol = ISAS_S_140_150__quad_matches_real(e1.VAL, e2.VAL, e3.VAL, e4.VAL, (0.1 * 50.0)));
+
+tel;
+
+node ISAS_S_140_150__stabilizer_quad_matches(
+  stabilizers : DATA_TYPES__QUAD_Stabilizer__treal;
+  stabilizers_within_tol : DATA_TYPES__QUAD_Stabilizer__tbool
+) returns (
+  ret : bool
+);
+let
+  ret = (((ISAS_S_140_150__stabilizer_matches(stabilizers.STAB1, stabilizers.STAB2, stabilizers.STAB3, stabilizers.STAB4, stabilizers_within_tol.STAB1) and ISAS_S_140_150__stabilizer_matches(stabilizers.STAB2, stabilizers.STAB1, stabilizers.STAB3, stabilizers.STAB4, stabilizers_within_tol.STAB2)) and ISAS_S_140_150__stabilizer_matches(stabilizers.STAB3, stabilizers.STAB2, stabilizers.STAB1, stabilizers.STAB4, stabilizers_within_tol.STAB3)) and ISAS_S_140_150__stabilizer_matches(stabilizers.STAB4, stabilizers.STAB2, stabilizers.STAB3, stabilizers.STAB1, stabilizers_within_tol.STAB4));
+
+tel;
+
+node ISAS_S_140_150__spoiler_matches(
+  e1 : DATA_TYPES__Spoilers__treal;
+  e2 : DATA_TYPES__Spoilers__treal;
+  e3 : DATA_TYPES__Spoilers__treal;
+  e4 : DATA_TYPES__Spoilers__treal;
+  e_tol : DATA_TYPES__Spoilers__tbool
+) returns (
+  ret : bool
+);
+let
+  ret = ((((e_tol.SPLIB = ISAS_S_140_150__quad_matches_real(e1.SPLIB, e2.SPLIB, e3.SPLIB, e4.SPLIB, (0.1 * 50.0))) and (e_tol.SPLOB = ISAS_S_140_150__quad_matches_real(e1.SPLOB, e2.SPLOB, e3.SPLOB, e4.SPLOB, (0.1 * 50.0)))) and (e_tol.SPROB = ISAS_S_140_150__quad_matches_real(e1.SPROB, e2.SPROB, e3.SPROB, e4.SPROB, (0.1 * 50.0)))) and (e_tol.SPRIB = ISAS_S_140_150__quad_matches_real(e1.SPRIB, e2.SPRIB, e3.SPRIB, e4.SPRIB, (0.1 * 50.0))));
+
+tel;
+
+node ISAS_S_140_150__spoiler_quad_matches(
+  spoilers : DATA_TYPES__QUAD_Spoilers__treal;
+  spoilers_within_tol : DATA_TYPES__QUAD_Spoilers__tbool
+) returns (
+  ret : bool
+);
+let
+  ret = (((ISAS_S_140_150__spoiler_matches(spoilers.SPOIL1, spoilers.SPOIL2, spoilers.SPOIL3, spoilers.SPOIL4, spoilers_within_tol.SPOIL1) and ISAS_S_140_150__spoiler_matches(spoilers.SPOIL2, spoilers.SPOIL1, spoilers.SPOIL3, spoilers.SPOIL4, spoilers_within_tol.SPOIL2)) and ISAS_S_140_150__spoiler_matches(spoilers.SPOIL3, spoilers.SPOIL2, spoilers.SPOIL1, spoilers.SPOIL4, spoilers_within_tol.SPOIL3)) and ISAS_S_140_150__spoiler_matches(spoilers.SPOIL4, spoilers.SPOIL2, spoilers.SPOIL3, spoilers.SPOIL1, spoilers_within_tol.SPOIL4));
+
+tel;
+
+node ISAS_S_140_150__air_data_dual_matches(
+  air_data : DATA_TYPES__DUAL_AirData__treal;
+  air_data_within_tol : DATA_TYPES__DUAL_AirData__tbool
+) returns (
+  ret : bool
+);
+let
+  ret = ((((((((air_data_within_tol.AD1.TAT = ISAS_S_140_150__matches_tol_real(air_data.AD1.TAT, air_data.AD2.TAT, (0.1 * 50.0))) and (air_data_within_tol.AD2.TAT = ISAS_S_140_150__matches_tol_real(air_data.AD1.TAT, air_data.AD2.TAT, (0.1 * 50.0)))) and (air_data_within_tol.AD1.TotPres = ISAS_S_140_150__matches_tol_real(air_data.AD1.TotPres, air_data.AD2.TotPres, (0.1 * 50.0)))) and (air_data_within_tol.AD2.TotPres = ISAS_S_140_150__matches_tol_real(air_data.AD1.TotPres, air_data.AD2.TotPres, (0.1 * 50.0)))) and (air_data_within_tol.AD1.Pres = ISAS_S_140_150__matches_tol_real(air_data.AD1.Pres, air_data.AD2.Pres, (0.1 * 50.0)))) and (air_data_within_tol.AD2.Pres = ISAS_S_140_150__matches_tol_real(air_data.AD1.Pres, air_data.AD2.Pres, (0.1 * 50.0)))) and (air_data_within_tol.AD1.Temp = ISAS_S_140_150__matches_tol_real(air_data.AD1.Temp, air_data.AD2.Temp, (0.1 * 50.0)))) and (air_data_within_tol.AD2.Temp = ISAS_S_140_150__matches_tol_real(air_data.AD1.Temp, air_data.AD2.Temp, (0.1 * 50.0))));
+
+tel;
+
+node ISAS_S_140_150__aoa_dual_matches(
+  aoa : DATA_TYPES__DUAL_AoA__treal;
+  aoa_within_tol : DATA_TYPES__DUAL_AoA__tbool
+) returns (
+  ret : bool
+);
+let
+  ret = ((aoa_within_tol.AOA1.AOA = ISAS_S_140_150__matches_tol_real(aoa.AOA1.AOA, aoa.AOA2.AOA, (0.1 * 50.0))) and (aoa_within_tol.AOA2.AOA = ISAS_S_140_150__matches_tol_real(aoa.AOA1.AOA, aoa.AOA2.AOA, (0.1 * 50.0))));
+
+tel;
+
+node ISAS_S_140_150__flap_matches(
+  e1 : DATA_TYPES__Flaps__treal;
+  e2 : DATA_TYPES__Flaps__treal;
+  e3 : DATA_TYPES__Flaps__treal;
+  e4 : DATA_TYPES__Flaps__treal;
+  e_tol : DATA_TYPES__Flaps__tbool
+) returns (
+  ret : bool
+);
+let
+  ret = ((((e_tol.FLLIB = ISAS_S_140_150__quad_matches_real(e1.FLLIB, e2.FLLIB, e3.FLLIB, e4.FLLIB, (0.1 * 50.0))) and (e_tol.FLLOB = ISAS_S_140_150__quad_matches_real(e1.FLLOB, e2.FLLOB, e3.FLLOB, e4.FLLOB, (0.1 * 50.0)))) and (e_tol.FLROB = ISAS_S_140_150__quad_matches_real(e1.FLROB, e2.FLROB, e3.FLROB, e4.FLROB, (0.1 * 50.0)))) and (e_tol.FLRIB = ISAS_S_140_150__quad_matches_real(e1.FLRIB, e2.FLRIB, e3.FLRIB, e4.FLRIB, (0.1 * 50.0))));
+
+tel;
+
+node ISAS_S_140_150__flap_quad_matches(
+  flaps : DATA_TYPES__QUAD_Flaps__treal;
+  flaps_within_tol : DATA_TYPES__QUAD_Flaps__tbool
+) returns (
+  ret : bool
+);
+let
+  ret = (((ISAS_S_140_150__flap_matches(flaps.FLAPS1, flaps.FLAPS2, flaps.FLAPS3, flaps.FLAPS4, flaps_within_tol.FLAPS1) and ISAS_S_140_150__flap_matches(flaps.FLAPS2, flaps.FLAPS1, flaps.FLAPS3, flaps.FLAPS4, flaps_within_tol.FLAPS2)) and ISAS_S_140_150__flap_matches(flaps.FLAPS3, flaps.FLAPS2, flaps.FLAPS1, flaps.FLAPS4, flaps_within_tol.FLAPS3)) and ISAS_S_140_150__flap_matches(flaps.FLAPS4, flaps.FLAPS2, flaps.FLAPS3, flaps.FLAPS1, flaps_within_tol.FLAPS4));
+
+tel;
+
+node ISAS_S_140_150__rudder_matches(
+  e1 : DATA_TYPES__Rudders__treal;
+  e2 : DATA_TYPES__Rudders__treal;
+  e3 : DATA_TYPES__Rudders__treal;
+  e4 : DATA_TYPES__Rudders__treal;
+  e_tol : DATA_TYPES__Rudders__tbool
+) returns (
+  ret : bool
+);
+let
+  ret = ((e_tol.RUDL = ISAS_S_140_150__quad_matches_real(e1.RUDL, e2.RUDL, e3.RUDL, e4.RUDL, (0.1 * 50.0))) and (e_tol.RUDU = ISAS_S_140_150__quad_matches_real(e1.RUDU, e2.RUDU, e3.RUDU, e4.RUDU, (0.1 * 50.0))));
+
+tel;
+
+node ISAS_S_140_150__rudder_quad_matches(
+  rudders : DATA_TYPES__QUAD_Rudders__treal;
+  rudders_within_tol : DATA_TYPES__QUAD_Rudders__tbool
+) returns (
+  ret : bool
+);
+let
+  ret = (((ISAS_S_140_150__rudder_matches(rudders.RUDD1, rudders.RUDD2, rudders.RUDD3, rudders.RUDD4, rudders_within_tol.RUDD1) and ISAS_S_140_150__rudder_matches(rudders.RUDD2, rudders.RUDD1, rudders.RUDD3, rudders.RUDD4, rudders_within_tol.RUDD2)) and ISAS_S_140_150__rudder_matches(rudders.RUDD3, rudders.RUDD2, rudders.RUDD1, rudders.RUDD4, rudders_within_tol.RUDD3)) and ISAS_S_140_150__rudder_matches(rudders.RUDD4, rudders.RUDD2, rudders.RUDD3, rudders.RUDD1, rudders_within_tol.RUDD4));
+
+tel;
+
+node ISAS_S_140_150__aileron_matches(
+  e1 : DATA_TYPES__Ailerons__treal;
+  e2 : DATA_TYPES__Ailerons__treal;
+  e3 : DATA_TYPES__Ailerons__treal;
+  e4 : DATA_TYPES__Ailerons__treal;
+  e_tol : DATA_TYPES__Ailerons__tbool
+) returns (
+  ret : bool
+);
+let
+  ret = ((e_tol.AILL = ISAS_S_140_150__quad_matches_real(e1.AILL, e2.AILL, e3.AILL, e4.AILL, (0.1 * 50.0))) and (e_tol.AILR = ISAS_S_140_150__quad_matches_real(e1.AILR, e2.AILR, e3.AILR, e4.AILR, (0.1 * 50.0))));
+
+tel;
+
+node ISAS_S_140_150__aileron_quad_matches(
+  ailerons : DATA_TYPES__QUAD_Ailerons__treal;
+  ailerons_within_tol : DATA_TYPES__QUAD_Ailerons__tbool
+) returns (
+  ret : bool
+);
+let
+  ret = (((ISAS_S_140_150__aileron_matches(ailerons.AIL1, ailerons.AIL2, ailerons.AIL3, ailerons.AIL4, ailerons_within_tol.AIL1) and ISAS_S_140_150__aileron_matches(ailerons.AIL2, ailerons.AIL1, ailerons.AIL3, ailerons.AIL4, ailerons_within_tol.AIL2)) and ISAS_S_140_150__aileron_matches(ailerons.AIL3, ailerons.AIL2, ailerons.AIL1, ailerons.AIL4, ailerons_within_tol.AIL3)) and ISAS_S_140_150__aileron_matches(ailerons.AIL4, ailerons.AIL2, ailerons.AIL3, ailerons.AIL1, ailerons_within_tol.AIL4));
+
+tel;
+
+node ISAS_S_140_150__elevator_matches(
+  e1 : DATA_TYPES__Elevators__treal;
+  e2 : DATA_TYPES__Elevators__treal;
+  e3 : DATA_TYPES__Elevators__treal;
+  e4 : DATA_TYPES__Elevators__treal;
+  e_tol : DATA_TYPES__Elevators__tbool
+) returns (
+  ret : bool
+);
+let
+  ret = ((((e_tol.ELLIB = ISAS_S_140_150__quad_matches_real(e1.ELLIB, e2.ELLIB, e3.ELLIB, e4.ELLIB, (0.1 * 50.0))) and (e_tol.ELLOB = ISAS_S_140_150__quad_matches_real(e1.ELLOB, e2.ELLOB, e3.ELLOB, e4.ELLOB, (0.1 * 50.0)))) and (e_tol.ELROB = ISAS_S_140_150__quad_matches_real(e1.ELROB, e2.ELROB, e3.ELROB, e4.ELROB, (0.1 * 50.0)))) and (e_tol.ELRIB = ISAS_S_140_150__quad_matches_real(e1.ELRIB, e2.ELRIB, e3.ELRIB, e4.ELRIB, (0.1 * 50.0))));
+
+tel;
+
+node ISAS_S_140_150__elevator_quad_matches(
+  elevators : DATA_TYPES__QUAD_Elevators__treal;
+  elevators_within_tol : DATA_TYPES__QUAD_Elevators__tbool
+) returns (
+  ret : bool
+);
+let
+  ret = (((ISAS_S_140_150__elevator_matches(elevators.EL1, elevators.EL2, elevators.EL3, elevators.EL4, elevators_within_tol.EL1) and ISAS_S_140_150__elevator_matches(elevators.EL2, elevators.EL1, elevators.EL3, elevators.EL4, elevators_within_tol.EL2)) and ISAS_S_140_150__elevator_matches(elevators.EL3, elevators.EL2, elevators.EL1, elevators.EL4, elevators_within_tol.EL3)) and ISAS_S_140_150__elevator_matches(elevators.EL4, elevators.EL2, elevators.EL3, elevators.EL1, elevators_within_tol.EL4));
+
+tel;
+
+node ISAS_S_140_150__req(
+  elevators : DATA_TYPES__QUAD_Elevators__treal;
+  ailerons : DATA_TYPES__QUAD_Ailerons__treal;
+  rudders : DATA_TYPES__QUAD_Rudders__treal;
+  flaps : DATA_TYPES__QUAD_Flaps__treal;
+  aoa : DATA_TYPES__DUAL_AoA__treal;
+  air_data : DATA_TYPES__DUAL_AirData__treal;
+  spoilers : DATA_TYPES__QUAD_Spoilers__treal;
+  stabilizers : DATA_TYPES__QUAD_Stabilizer__treal;
+  elevators_within_tol : DATA_TYPES__QUAD_Elevators__tbool;
+  ailerons_within_tol : DATA_TYPES__QUAD_Ailerons__tbool;
+  rudders_within_tol : DATA_TYPES__QUAD_Rudders__tbool;
+  flaps_within_tol : DATA_TYPES__QUAD_Flaps__tbool;
+  aoa_within_tol : DATA_TYPES__DUAL_AoA__tbool;
+  air_data_within_tol : DATA_TYPES__DUAL_AirData__tbool;
+  spoilers_within_tol : DATA_TYPES__QUAD_Spoilers__tbool;
+  stabilizer_within_tol : DATA_TYPES__QUAD_Stabilizer__tbool
+) returns (
+  ret : bool
+);
+let
+  ret = (((((((ISAS_S_140_150__stabilizer_quad_matches(stabilizers, stabilizer_within_tol) and ISAS_S_140_150__spoiler_quad_matches(spoilers, spoilers_within_tol)) and ISAS_S_140_150__air_data_dual_matches(air_data, air_data_within_tol)) and ISAS_S_140_150__aoa_dual_matches(aoa, aoa_within_tol)) and ISAS_S_140_150__flap_quad_matches(flaps, flaps_within_tol)) and ISAS_S_140_150__rudder_quad_matches(rudders, rudders_within_tol)) and ISAS_S_140_150__aileron_quad_matches(ailerons, ailerons_within_tol)) and ISAS_S_140_150__elevator_quad_matches(elevators, elevators_within_tol));
+
+tel;
+
+node ISAS_S_170__dual_select(
+  within_tol : bool;
+  in_range1 : bool;
+  in_range2 : bool;
+  select : real;
+  val1 : real;
+  val2 : real
+) returns (
+  ret : bool
+);
+let
+  ret = (((within_tol and in_range1) and in_range2) => (select = ((val1 + val2) / 2.0)));
+
+tel;
+
+node ISAS_S_170__req(
+  aoa : DATA_TYPES__DUAL_AoA__treal;
+  air_data : DATA_TYPES__DUAL_AirData__treal;
+  aoa_within_tol : DATA_TYPES__DUAL_AoA__tbool;
+  air_data_within_tol : DATA_TYPES__DUAL_AirData__tbool;
+  aoa_failed_update : DATA_TYPES__dual_bool;
+  air_failed_update : DATA_TYPES__dual_bool;
+  aoa_in_range : DATA_TYPES__DUAL_AoA__tbool;
+  air_data_in_range : DATA_TYPES__DUAL_AirData__tbool;
+  aoa_select : DATA_TYPES__AoA__treal;
+  air_data_select : DATA_TYPES__AirData__treal
+) returns (
+  ret : bool
+);
+let
+  ret = ((((((((not aoa_failed_update.val1) and (not aoa_failed_update.val2)) and aoa_within_tol.AOA1.AOA) and aoa_within_tol.AOA2.AOA) and aoa_in_range.AOA1.AOA) and aoa_in_range.AOA2.AOA) => (aoa_select.AOA = ((aoa.AOA1.AOA + aoa.AOA2.AOA) / 2.0))) and (((not air_failed_update.val1) and (not air_failed_update.val2)) => (((ISAS_S_170__dual_select((air_data_within_tol.AD1.TAT and air_data_within_tol.AD2.TAT), air_data_in_range.AD1.TAT, air_data_in_range.AD2.TAT, air_data_select.TAT, air_data.AD1.TAT, air_data.AD2.TAT) and ISAS_S_170__dual_select((air_data_within_tol.AD1.TotPres and air_data_within_tol.AD2.TotPres), air_data_in_range.AD1.TotPres, air_data_in_range.AD2.TotPres, air_data_select.TotPres, air_data.AD1.TotPres, air_data.AD2.TotPres)) and ISAS_S_170__dual_select((air_data_within_tol.AD1.Pres and air_data_within_tol.AD2.Pres), air_data_in_range.AD1.Pres, air_data_in_range.AD2.Pres, air_data_select.Pres, air_data.AD1.Pres, air_data.AD2.Pres)) and ISAS_S_170__dual_select((air_data_within_tol.AD1.Temp and air_data_within_tol.AD2.Temp), air_data_in_range.AD1.Temp, air_data_in_range.AD2.Temp, air_data_select.Temp, air_data.AD1.Temp, air_data.AD2.Temp))));
+
+tel;
+
+node ISAS_S_190__matches_tolerance_real(
+  val1 : real;
+  val2 : real;
+  tol : real
+) returns (
+  return : bool
+);
+let
+  return = (if (val1 <= val2) then (val2 <= (val1 + tol)) else (val1 <= (val2 + tol)));
+
+tel;
+
+node ISAS_S_190__req(
+  aoa : DATA_TYPES__DUAL_AoA__treal;
+  air_data : DATA_TYPES__DUAL_AirData__treal;
+  aoa_failed_update : DATA_TYPES__dual_bool;
+  air_failed_update : DATA_TYPES__dual_bool;
+  aoa_in_range : DATA_TYPES__DUAL_AoA__tbool;
+  air_data_in_range : DATA_TYPES__DUAL_AirData__tbool;
+  egi_select : DATA_TYPES__EGI__treal;
+  egi_select_fault : DATA_TYPES__EGI__tbool;
+  aoa_within_tol : DATA_TYPES__DUAL_AoA__tbool;
+  air_data_within_tol : DATA_TYPES__DUAL_AirData__tbool
+) returns (
+  ret : bool
+);
+let
+  ret = ((((((((((((aoa_failed_update.val1 or (not aoa_in_range.AOA1.AOA)) or (not ISAS_S_190__matches_tolerance_real(aoa.AOA1.AOA, aoa.AOA2.AOA, (0.1 * 50.0)))) => (aoa_within_tol.AOA2.AOA = ((((not aoa_failed_update.val2) and aoa_in_range.AOA2.AOA) and (not egi_select_fault.AOA)) and ISAS_S_190__matches_tolerance_real(aoa.AOA2.AOA, egi_select.AOA, (0.1 * 50.0))))) and (((aoa_failed_update.val2 or (not aoa_in_range.AOA2.AOA)) or (not ISAS_S_190__matches_tolerance_real(aoa.AOA1.AOA, aoa.AOA2.AOA, (0.1 * 50.0)))) => (aoa_within_tol.AOA1.AOA = ((((not aoa_failed_update.val1) and aoa_in_range.AOA1.AOA) and (not egi_select_fault.AOA)) and ISAS_S_190__matches_tolerance_real(aoa.AOA1.AOA, egi_select.AOA, (0.1 * 50.0)))))) and ((air_failed_update.val1 or (not air_data_in_range.AD1.TAT)) => (air_data_within_tol.AD2.TAT = ((((not air_failed_update.val2) and air_data_in_range.AD2.TAT) and (not egi_select_fault.TAT)) and ISAS_S_190__matches_tolerance_real(air_data.AD2.TAT, egi_select.TAT, (0.1 * 50.0)))))) and ((air_failed_update.val2 or (not air_data_in_range.AD2.TAT)) => (air_data_within_tol.AD1.TAT = ((((not air_failed_update.val1) and air_data_in_range.AD1.TAT) and (not egi_select_fault.TAT)) and ISAS_S_190__matches_tolerance_real(air_data.AD1.TAT, egi_select.TAT, (0.1 * 50.0)))))) and ((air_failed_update.val1 or (not air_data_in_range.AD1.TotPres)) => (air_data_within_tol.AD2.TotPres = ((((not air_failed_update.val2) and air_data_in_range.AD2.TotPres) and (not egi_select_fault.TotPres)) and ISAS_S_190__matches_tolerance_real(air_data.AD2.TotPres, egi_select.TotPres, (0.1 * 50.0)))))) and ((air_failed_update.val2 or (not air_data_in_range.AD2.TotPres)) => (air_data_within_tol.AD1.TotPres = ((((not air_failed_update.val1) and air_data_in_range.AD1.TotPres) and (not egi_select_fault.TotPres)) and ISAS_S_190__matches_tolerance_real(air_data.AD1.TotPres, egi_select.TotPres, (0.1 * 50.0)))))) and ((air_failed_update.val1 or (not air_data_in_range.AD1.Pres)) => (air_data_within_tol.AD2.Pres = ((((not air_failed_update.val2) and air_data_in_range.AD2.Pres) and (not egi_select_fault.Pres)) and ISAS_S_190__matches_tolerance_real(air_data.AD2.Pres, egi_select.Pres, (0.1 * 50.0)))))) and ((air_failed_update.val2 or (not air_data_in_range.AD2.Pres)) => (air_data_within_tol.AD1.Pres = ((((not air_failed_update.val1) and air_data_in_range.AD1.Pres) and (not egi_select_fault.Pres)) and ISAS_S_190__matches_tolerance_real(air_data.AD1.Pres, egi_select.Pres, (0.1 * 50.0)))))) and ((air_failed_update.val1 or (not air_data_in_range.AD1.Temp)) => (air_data_within_tol.AD2.Temp = ((((not air_failed_update.val2) and air_data_in_range.AD2.Temp) and (not egi_select_fault.Temp)) and ISAS_S_190__matches_tolerance_real(air_data.AD2.Temp, egi_select.Temp, (0.1 * 50.0)))))) and ((air_failed_update.val2 or (not air_data_in_range.AD2.Temp)) => (air_data_within_tol.AD1.Temp = ((((not air_failed_update.val1) and air_data_in_range.AD1.Temp) and (not egi_select_fault.Temp)) and ISAS_S_190__matches_tolerance_real(air_data.AD1.Temp, egi_select.Temp, (0.1 * 50.0))))));
+
+tel;
+
+node ISAS_S_200__req(
+  aoa : DATA_TYPES__DUAL_AoA__treal;
+  air_data : DATA_TYPES__DUAL_AirData__treal;
+  aoa_faults : DATA_TYPES__DUAL_AoA__tbool;
+  air_data_faults : DATA_TYPES__DUAL_AirData__tbool;
+  egi_select : DATA_TYPES__EGI__treal;
+  aoa_select : DATA_TYPES__AoA__treal;
+  air_data_select : DATA_TYPES__AirData__treal
+) returns (
+  ret : bool
+);
+let
+  ret = (((((((((((aoa_faults.AOA1.AOA and (not aoa_faults.AOA2.AOA)) => (aoa_select.AOA = ((aoa.AOA2.AOA + egi_select.AOA) / 2.0))) and (((not aoa_faults.AOA1.AOA) and aoa_faults.AOA2.AOA) => (aoa_select.AOA = ((aoa.AOA1.AOA + egi_select.AOA) / 2.0)))) and ((air_data_faults.AD1.TAT and (not air_data_faults.AD2.TAT)) => (air_data_select.TAT = ((air_data.AD2.TAT + egi_select.TAT) / 2.0)))) and (((not air_data_faults.AD1.TAT) and air_data_faults.AD2.TAT) => (air_data_select.TAT = ((air_data.AD1.TAT + egi_select.TAT) / 2.0)))) and ((air_data_faults.AD1.TotPres and (not air_data_faults.AD2.TotPres)) => (air_data_select.TotPres = ((air_data.AD2.TotPres + egi_select.TotPres) / 2.0)))) and (((not air_data_faults.AD1.TotPres) and air_data_faults.AD2.TotPres) => (air_data_select.TotPres = ((air_data.AD1.TotPres + egi_select.TotPres) / 2.0)))) and ((air_data_faults.AD1.Pres and (not air_data_faults.AD2.Pres)) => (air_data_select.Pres = ((air_data.AD2.Pres + egi_select.Pres) / 2.0)))) and (((not air_data_faults.AD1.Pres) and air_data_faults.AD2.Pres) => (air_data_select.Pres = ((air_data.AD1.Pres + egi_select.Pres) / 2.0)))) and ((air_data_faults.AD1.Temp and (not air_data_faults.AD2.Temp)) => (air_data_select.Temp = ((air_data.AD2.Temp + egi_select.Temp) / 2.0)))) and (((not air_data_faults.AD1.Temp) and air_data_faults.AD2.Temp) => (air_data_select.Temp = ((air_data.AD1.Temp + egi_select.Temp) / 2.0))));
+
+tel;
+
+node ISAS_S_210__req(
+  aoa : DATA_TYPES__DUAL_AoA__treal;
+  air_data : DATA_TYPES__DUAL_AirData__treal;
+  aoa_faults : DATA_TYPES__DUAL_AoA__tbool;
+  air_data_faults : DATA_TYPES__DUAL_AirData__tbool;
+  egi_select : DATA_TYPES__EGI__treal;
+  aoa_select : DATA_TYPES__AoA__treal;
+  air_data_select : DATA_TYPES__AirData__treal
+) returns (
+  ret : bool
+);
+let
+  ret = ((((((aoa_faults.AOA1.AOA and aoa_faults.AOA2.AOA) => (aoa_select.AOA = egi_select.AOA)) and ((air_data_faults.AD1.TAT and air_data_faults.AD2.TAT) => (air_data_select.TAT = egi_select.TAT))) and ((air_data_faults.AD1.TotPres and air_data_faults.AD2.TotPres) => (air_data_select.TotPres = egi_select.TotPres))) and ((air_data_faults.AD1.Pres and air_data_faults.AD2.Pres) => (air_data_select.Pres = egi_select.Pres))) and ((air_data_faults.AD1.Temp and air_data_faults.AD2.Temp) => (air_data_select.Temp = egi_select.Temp)));
+
+tel;
+
+node ISAS_S_220__matches_tolerance_real(
+  val1 : real;
+  val2 : real;
+  tol : real
+) returns (
+  return : bool
+);
+let
+  return = (if (val1 <= val2) then (val2 <= (val1 + tol)) else (val1 <= (val2 + tol)));
+
+tel;
+
+node ISAS_S_220__req(
+  aoa : DATA_TYPES__DUAL_AoA__treal;
+  air_data : DATA_TYPES__DUAL_AirData__treal;
+  aoa_failed_update : DATA_TYPES__dual_bool;
+  air_data_failed_update : DATA_TYPES__dual_bool;
+  aoa_in_range : DATA_TYPES__DUAL_AoA__tbool;
+  air_data_in_range : DATA_TYPES__DUAL_AirData__tbool;
+  egi_select : DATA_TYPES__EGI__treal;
+  egi_select_fault : DATA_TYPES__EGI__tbool;
+  aoa_select : DATA_TYPES__AoA__treal;
+  air_data_select : DATA_TYPES__AirData__treal
+) returns (
+  ret : bool
+);
+let
+  ret = ((((((((((not aoa_failed_update.val1) and aoa_in_range.AOA1.AOA) and ((not aoa_failed_update.val2) and aoa_in_range.AOA2.AOA)) and (not ISAS_S_220__matches_tolerance_real(aoa.AOA1.AOA, aoa.AOA2.AOA, (0.1 * 50.0)))) and (not egi_select_fault.AOA)) => (aoa_select.AOA = egi_select.AOA)) and ((((((not air_data_failed_update.val1) and air_data_in_range.AD1.TAT) and ((not air_data_failed_update.val2) and air_data_in_range.AD2.TAT)) and (not ISAS_S_220__matches_tolerance_real(air_data.AD1.TAT, air_data.AD2.TAT, (0.1 * 50.0)))) and (not egi_select_fault.TAT)) => (air_data_select.TAT = egi_select.TAT))) and ((((((not air_data_failed_update.val1) and air_data_in_range.AD1.TotPres) and ((not air_data_failed_update.val2) and air_data_in_range.AD2.TotPres)) and (not ISAS_S_220__matches_tolerance_real(air_data.AD1.TotPres, air_data.AD2.TotPres, (0.1 * 50.0)))) and (not egi_select_fault.TotPres)) => (air_data_select.TotPres = egi_select.TotPres))) and ((((((not air_data_failed_update.val1) and air_data_in_range.AD1.Pres) and ((not air_data_failed_update.val2) and air_data_in_range.AD2.Pres)) and (not ISAS_S_220__matches_tolerance_real(air_data.AD1.Pres, air_data.AD2.Pres, (0.1 * 50.0)))) and (not egi_select_fault.Pres)) => (air_data_select.Pres = egi_select.Pres))) and ((((((not air_data_failed_update.val1) and air_data_in_range.AD1.Temp) and ((not air_data_failed_update.val2) and air_data_in_range.AD2.Temp)) and (not ISAS_S_220__matches_tolerance_real(air_data.AD1.Temp, air_data.AD2.Temp, (0.1 * 50.0)))) and (not egi_select_fault.Temp)) => (air_data_select.Temp = egi_select.Temp)));
+
+tel;
+
+node ISAS_S_260__min(
+  val1 : real;
+  val2 : real
+) returns (
+  ret : real
+);
+let
+  ret = (if (val1 < val2) then val1 else val2);
+
+tel;
+
+node ISAS_S_260__max(
+  val1 : real;
+  val2 : real
+) returns (
+  ret : real
+);
+let
+  ret = (if (val1 > val2) then val1 else val2);
+
+tel;
+
+node ISAS_S_260__value_select4(
+  val1 : real;
+  val2 : real;
+  val3 : real;
+  val4 : real;
+  sig_tol : real
+) returns (
+  ret : real
+);
+var
+  min_val : real;
+  max_val : real;
+  mid_val1 : real;
+  mid_val2 : real;
+let
+  min_val = ISAS_S_260__min(ISAS_S_260__min(val1, val2), ISAS_S_260__min(val3, val4));
+
+  max_val = ISAS_S_260__max(ISAS_S_260__max(val1, val2), ISAS_S_260__max(val3, val4));
+
+  mid_val1 = ISAS_S_260__max(ISAS_S_260__min(val1, val2), ISAS_S_260__min(val3, val4));
+
+  mid_val2 = ISAS_S_260__min(ISAS_S_260__max(val1, val2), ISAS_S_260__max(val3, val4));
+
+  ret = (if ((max_val - min_val) < sig_tol) then ((((val1 + val2) + val3) + val4) / 4.0) else ((mid_val1 + mid_val2) / 2.0));
+
+tel;
+
+node ISAS_S_260__value_select3(
+  val1 : real;
+  val2 : real;
+  val3 : real;
+  sig_tol : real
+) returns (
+  ret : real
+);
+var
+  min_val : real;
+  max_val : real;
+  mid_val : real;
+let
+  min_val = ISAS_S_260__min(ISAS_S_260__min(val1, val2), val3);
+
+  max_val = ISAS_S_260__max(ISAS_S_260__max(val1, val2), val3);
+
+  mid_val = ISAS_S_260__max(ISAS_S_260__max(ISAS_S_260__min(val1, val2), ISAS_S_260__min(val2, val3)), ISAS_S_260__min(val1, val3));
+
+  ret = (if ((max_val - min_val) < sig_tol) then (((val1 + val2) + val3) / 3.0) else mid_val);
+
+tel;
+
+node ISAS_S_260__value_select(
+  val1 : real;
+  val2 : real;
+  val3 : real;
+  val4 : real;
+  f1 : bool;
+  f2 : bool;
+  f3 : bool;
+  f4 : bool;
+  sig_tol : real;
+  select : real
+) returns (
+  ret : bool
+);
+var
+  nf1 : bool;
+  nf2 : bool;
+  nf3 : bool;
+  nf4 : bool;
+let
+  nf1 = (not f1);
+
+  nf2 = (not f2);
+
+  nf3 = (not f3);
+
+  nf4 = (not f4);
+
+  ret = (if (((nf1 and nf2) and nf3) and nf4) then (select = ISAS_S_260__value_select4(val1, val2, val3, val4, sig_tol)) else (if ((nf1 and nf2) and nf3) then (select = ISAS_S_260__value_select3(val1, val2, val3, sig_tol)) else (if ((nf4 and nf2) and nf3) then (select = ISAS_S_260__value_select3(val4, val2, val3, sig_tol)) else (if ((nf1 and nf4) and nf3) then (select = ISAS_S_260__value_select3(val1, val4, val3, sig_tol)) else (if ((nf1 and nf2) and nf4) then (select = ISAS_S_260__value_select3(val1, val2, val4, sig_tol)) else (if (nf1 and nf2) then (select = ((val1 + val2) / 2.0)) else (if (nf1 and nf3) then (select = ((val1 + val3) / 2.0)) else (if (nf1 and nf4) then (select = ((val1 + val4) / 2.0)) else (if (nf2 and nf3) then (select = ((val2 + val3) / 2.0)) else (if (nf2 and nf4) then (select = ((val2 + val2) / 2.0)) else (if (nf3 and nf4) then (select = ((val3 + val4) / 2.0)) else true)))))))))));
+
+tel;
+
+node ISAS_S_260__req(
+  elevators : DATA_TYPES__QUAD_Elevators__treal;
+  ailerons : DATA_TYPES__QUAD_Ailerons__treal;
+  rudders : DATA_TYPES__QUAD_Rudders__treal;
+  flaps : DATA_TYPES__QUAD_Flaps__treal;
+  spoilers : DATA_TYPES__QUAD_Spoilers__treal;
+  stabilizers : DATA_TYPES__QUAD_Stabilizer__treal;
+  elevators_fault : DATA_TYPES__QUAD_Elevators__tbool;
+  ailerons_fault : DATA_TYPES__QUAD_Ailerons__tbool;
+  rudders_fault : DATA_TYPES__QUAD_Rudders__tbool;
+  flaps_fault : DATA_TYPES__QUAD_Flaps__tbool;
+  spoilers_fault : DATA_TYPES__QUAD_Spoilers__tbool;
+  stabilizers_fault : DATA_TYPES__QUAD_Stabilizer__tbool;
+  elevators_sig_tol : DATA_TYPES__Elevators__treal;
+  ailerons_sig_tol : DATA_TYPES__Ailerons__treal;
+  rudders_sig_tol : DATA_TYPES__Rudders__treal;
+  flaps_sig_tol : DATA_TYPES__Flaps__treal;
+  spoilers_sig_tol : DATA_TYPES__Spoilers__treal;
+  stabilizers_sig_tol : DATA_TYPES__Stabilizer__treal;
+  elevators_select : DATA_TYPES__Elevators__treal;
+  ailerons_select : DATA_TYPES__Ailerons__treal;
+  rudders_select : DATA_TYPES__Rudders__treal;
+  flaps_select : DATA_TYPES__Flaps__treal;
+  spoilers_select : DATA_TYPES__Spoilers__treal;
+  stabilizers_select : DATA_TYPES__Stabilizer__treal
+) returns (
+  ret : bool
+);
+let
+  ret = ((((((((((((((((ISAS_S_260__value_select(elevators.EL1.ELLOB, elevators.EL2.ELLOB, elevators.EL3.ELLOB, elevators.EL4.ELLOB, elevators_fault.EL1.ELLOB, elevators_fault.EL2.ELLOB, elevators_fault.EL3.ELLOB, elevators_fault.EL4.ELLOB, elevators_sig_tol.ELLOB, elevators_select.ELLOB) and ISAS_S_260__value_select(elevators.EL1.ELLIB, elevators.EL2.ELLIB, elevators.EL3.ELLIB, elevators.EL4.ELLIB, elevators_fault.EL1.ELLIB, elevators_fault.EL2.ELLIB, elevators_fault.EL3.ELLIB, elevators_fault.EL4.ELLIB, elevators_sig_tol.ELLIB, elevators_select.ELLIB)) and ISAS_S_260__value_select(elevators.EL1.ELROB, elevators.EL2.ELROB, elevators.EL3.ELROB, elevators.EL4.ELROB, elevators_fault.EL1.ELROB, elevators_fault.EL2.ELROB, elevators_fault.EL3.ELROB, elevators_fault.EL4.ELROB, elevators_sig_tol.ELROB, elevators_select.ELROB)) and ISAS_S_260__value_select(elevators.EL1.ELRIB, elevators.EL2.ELRIB, elevators.EL3.ELRIB, elevators.EL4.ELRIB, elevators_fault.EL1.ELRIB, elevators_fault.EL2.ELRIB, elevators_fault.EL3.ELRIB, elevators_fault.EL4.ELRIB, elevators_sig_tol.ELRIB, elevators_select.ELRIB)) and ISAS_S_260__value_select(ailerons.AIL1.AILL, ailerons.AIL2.AILL, ailerons.AIL3.AILL, ailerons.AIL4.AILL, ailerons_fault.AIL1.AILL, ailerons_fault.AIL2.AILL, ailerons_fault.AIL3.AILL, ailerons_fault.AIL4.AILL, ailerons_sig_tol.AILL, ailerons_select.AILL)) and ISAS_S_260__value_select(ailerons.AIL1.AILR, ailerons.AIL2.AILR, ailerons.AIL3.AILR, ailerons.AIL4.AILR, ailerons_fault.AIL1.AILR, ailerons_fault.AIL2.AILR, ailerons_fault.AIL3.AILR, ailerons_fault.AIL4.AILR, ailerons_sig_tol.AILR, ailerons_select.AILR)) and ISAS_S_260__value_select(rudders.RUDD1.RUDU, rudders.RUDD2.RUDU, rudders.RUDD3.RUDU, rudders.RUDD4.RUDU, rudders_fault.RUDD1.RUDU, rudders_fault.RUDD2.RUDU, rudders_fault.RUDD3.RUDU, rudders_fault.RUDD4.RUDU, rudders_sig_tol.RUDU, rudders_select.RUDU)) and ISAS_S_260__value_select(rudders.RUDD1.RUDL, rudders.RUDD2.RUDL, rudders.RUDD3.RUDL, rudders.RUDD4.RUDL, rudders_fault.RUDD1.RUDL, rudders_fault.RUDD2.RUDL, rudders_fault.RUDD3.RUDL, rudders_fault.RUDD4.RUDL, rudders_sig_tol.RUDL, rudders_select.RUDL)) and ISAS_S_260__value_select(flaps.FLAPS1.FLLOB, flaps.FLAPS2.FLLOB, flaps.FLAPS3.FLLOB, flaps.FLAPS4.FLLOB, flaps_fault.FLAPS1.FLLOB, flaps_fault.FLAPS2.FLLOB, flaps_fault.FLAPS3.FLLOB, flaps_fault.FLAPS4.FLLOB, flaps_sig_tol.FLLOB, flaps_select.FLLOB)) and ISAS_S_260__value_select(flaps.FLAPS1.FLLIB, flaps.FLAPS2.FLLIB, flaps.FLAPS3.FLLIB, flaps.FLAPS4.FLLIB, flaps_fault.FLAPS1.FLLIB, flaps_fault.FLAPS2.FLLIB, flaps_fault.FLAPS3.FLLIB, flaps_fault.FLAPS4.FLLIB, flaps_sig_tol.FLLIB, flaps_select.FLLIB)) and ISAS_S_260__value_select(flaps.FLAPS1.FLROB, flaps.FLAPS2.FLROB, flaps.FLAPS3.FLROB, flaps.FLAPS4.FLROB, flaps_fault.FLAPS1.FLROB, flaps_fault.FLAPS2.FLROB, flaps_fault.FLAPS3.FLROB, flaps_fault.FLAPS4.FLROB, flaps_sig_tol.FLROB, flaps_select.FLROB)) and ISAS_S_260__value_select(flaps.FLAPS1.FLRIB, flaps.FLAPS2.FLRIB, flaps.FLAPS3.FLRIB, flaps.FLAPS4.FLRIB, flaps_fault.FLAPS1.FLRIB, flaps_fault.FLAPS2.FLRIB, flaps_fault.FLAPS3.FLRIB, flaps_fault.FLAPS4.FLRIB, flaps_sig_tol.FLRIB, flaps_select.FLRIB)) and ISAS_S_260__value_select(spoilers.SPOIL1.SPLOB, spoilers.SPOIL2.SPLOB, spoilers.SPOIL3.SPLOB, spoilers.SPOIL4.SPLOB, spoilers_fault.SPOIL1.SPLOB, spoilers_fault.SPOIL2.SPLOB, spoilers_fault.SPOIL3.SPLOB, spoilers_fault.SPOIL4.SPLOB, spoilers_sig_tol.SPLOB, spoilers_select.SPLOB)) and ISAS_S_260__value_select(spoilers.SPOIL1.SPLIB, spoilers.SPOIL2.SPLIB, spoilers.SPOIL3.SPLIB, spoilers.SPOIL4.SPLIB, spoilers_fault.SPOIL1.SPLIB, spoilers_fault.SPOIL2.SPLIB, spoilers_fault.SPOIL3.SPLIB, spoilers_fault.SPOIL4.SPLIB, spoilers_sig_tol.SPLIB, spoilers_select.SPLIB)) and ISAS_S_260__value_select(spoilers.SPOIL1.SPROB, spoilers.SPOIL2.SPROB, spoilers.SPOIL3.SPROB, spoilers.SPOIL4.SPROB, spoilers_fault.SPOIL1.SPROB, spoilers_fault.SPOIL2.SPROB, spoilers_fault.SPOIL3.SPROB, spoilers_fault.SPOIL4.SPROB, spoilers_sig_tol.SPROB, spoilers_select.SPROB)) and ISAS_S_260__value_select(spoilers.SPOIL1.SPRIB, spoilers.SPOIL2.SPRIB, spoilers.SPOIL3.SPRIB, spoilers.SPOIL4.SPRIB, spoilers_fault.SPOIL1.SPRIB, spoilers_fault.SPOIL2.SPRIB, spoilers_fault.SPOIL3.SPRIB, spoilers_fault.SPOIL4.SPRIB, spoilers_sig_tol.SPRIB, spoilers_select.SPRIB)) and ISAS_S_260__value_select(stabilizers.STAB1.VAL, stabilizers.STAB2.VAL, stabilizers.STAB3.VAL, stabilizers.STAB4.VAL, stabilizers_fault.STAB1, stabilizers_fault.STAB2, stabilizers_fault.STAB3, stabilizers_fault.STAB4, stabilizers_sig_tol.VAL, stabilizers_select.VAL));
+
+tel;
+
+node ISAS_S_240__fault(
+  in_range : bool;
+  failed_update : bool;
+  within_tol : bool;
+  fault_latch : bool
+) returns (
+  ret : bool
+);
+var
+  consec_faults : int;
+  cur_fault : bool;
+  fault_latched : bool;
+let
+  cur_fault = (((not in_range) or failed_update) or (not within_tol));
+
+  consec_faults = (if cur_fault then 1 else (0 -> (if cur_fault then ((pre consec_faults) + 1) else 0)));
+
+  fault_latched = (false -> ((pre fault_latched) or (if (consec_faults = 5) then true else false)));
+
+  ret = (fault_latch = (if fault_latched then true else cur_fault));
+
+tel;
+
+node ISAS_S_240__elevators_faults(
+  elevators_within_tol : DATA_TYPES__QUAD_Elevators__tbool;
+  elevators_failed_update : DATA_TYPES__quad_bool;
+  elevators_in_range : DATA_TYPES__QUAD_Elevators__tbool;
+  elevators_latched_faults : DATA_TYPES__QUAD_Elevators__tbool
+) returns (
+  ret : bool
+);
+let
+  ret = (((((((((((((((ISAS_S_240__fault(elevators_in_range.EL1.ELLOB, elevators_failed_update.val1, elevators_in_range.EL1.ELLOB, elevators_latched_faults.EL1.ELLOB) and ISAS_S_240__fault(elevators_in_range.EL1.ELLIB, elevators_failed_update.val1, elevators_in_range.EL1.ELLIB, elevators_latched_faults.EL1.ELLIB)) and ISAS_S_240__fault(elevators_in_range.EL1.ELRIB, elevators_failed_update.val1, elevators_in_range.EL1.ELRIB, elevators_latched_faults.EL1.ELRIB)) and ISAS_S_240__fault(elevators_in_range.EL1.ELROB, elevators_failed_update.val1, elevators_in_range.EL1.ELROB, elevators_latched_faults.EL1.ELROB)) and ISAS_S_240__fault(elevators_in_range.EL2.ELLOB, elevators_failed_update.val2, elevators_in_range.EL2.ELLOB, elevators_latched_faults.EL2.ELLOB)) and ISAS_S_240__fault(elevators_in_range.EL2.ELLIB, elevators_failed_update.val2, elevators_in_range.EL2.ELLIB, elevators_latched_faults.EL2.ELLIB)) and ISAS_S_240__fault(elevators_in_range.EL2.ELRIB, elevators_failed_update.val2, elevators_in_range.EL2.ELRIB, elevators_latched_faults.EL2.ELRIB)) and ISAS_S_240__fault(elevators_in_range.EL2.ELROB, elevators_failed_update.val2, elevators_in_range.EL2.ELROB, elevators_latched_faults.EL2.ELROB)) and ISAS_S_240__fault(elevators_in_range.EL3.ELLOB, elevators_failed_update.val3, elevators_in_range.EL3.ELLOB, elevators_latched_faults.EL3.ELLOB)) and ISAS_S_240__fault(elevators_in_range.EL3.ELLIB, elevators_failed_update.val3, elevators_in_range.EL3.ELLIB, elevators_latched_faults.EL3.ELLIB)) and ISAS_S_240__fault(elevators_in_range.EL3.ELRIB, elevators_failed_update.val3, elevators_in_range.EL3.ELRIB, elevators_latched_faults.EL3.ELRIB)) and ISAS_S_240__fault(elevators_in_range.EL3.ELROB, elevators_failed_update.val3, elevators_in_range.EL3.ELROB, elevators_latched_faults.EL3.ELROB)) and ISAS_S_240__fault(elevators_in_range.EL4.ELLOB, elevators_failed_update.val4, elevators_in_range.EL4.ELLOB, elevators_latched_faults.EL4.ELLOB)) and ISAS_S_240__fault(elevators_in_range.EL4.ELLIB, elevators_failed_update.val4, elevators_in_range.EL4.ELLIB, elevators_latched_faults.EL4.ELLIB)) and ISAS_S_240__fault(elevators_in_range.EL4.ELRIB, elevators_failed_update.val4, elevators_in_range.EL4.ELRIB, elevators_latched_faults.EL4.ELRIB)) and ISAS_S_240__fault(elevators_in_range.EL4.ELROB, elevators_failed_update.val4, elevators_in_range.EL4.ELROB, elevators_latched_faults.EL4.ELROB));
+
+tel;
+
+node ISAS_S_240__ailerons_faults(
+  ailerons_within_tol : DATA_TYPES__QUAD_Ailerons__tbool;
+  ailerons_failed_update : DATA_TYPES__quad_bool;
+  ailerons_in_range : DATA_TYPES__QUAD_Ailerons__tbool;
+  ailerons_latched_faults : DATA_TYPES__QUAD_Ailerons__tbool
+) returns (
+  ret : bool
+);
+let
+  ret = (((((((ISAS_S_240__fault(ailerons_in_range.AIL1.AILL, ailerons_failed_update.val1, ailerons_in_range.AIL1.AILL, ailerons_latched_faults.AIL1.AILL) and ISAS_S_240__fault(ailerons_in_range.AIL1.AILR, ailerons_failed_update.val1, ailerons_in_range.AIL1.AILR, ailerons_latched_faults.AIL1.AILR)) and ISAS_S_240__fault(ailerons_in_range.AIL2.AILL, ailerons_failed_update.val2, ailerons_in_range.AIL2.AILL, ailerons_latched_faults.AIL2.AILL)) and ISAS_S_240__fault(ailerons_in_range.AIL2.AILR, ailerons_failed_update.val2, ailerons_in_range.AIL2.AILR, ailerons_latched_faults.AIL2.AILR)) and ISAS_S_240__fault(ailerons_in_range.AIL3.AILL, ailerons_failed_update.val3, ailerons_in_range.AIL3.AILL, ailerons_latched_faults.AIL3.AILL)) and ISAS_S_240__fault(ailerons_in_range.AIL3.AILR, ailerons_failed_update.val3, ailerons_in_range.AIL3.AILR, ailerons_latched_faults.AIL3.AILR)) and ISAS_S_240__fault(ailerons_in_range.AIL4.AILL, ailerons_failed_update.val4, ailerons_in_range.AIL4.AILL, ailerons_latched_faults.AIL4.AILL)) and ISAS_S_240__fault(ailerons_in_range.AIL4.AILR, ailerons_failed_update.val4, ailerons_in_range.AIL4.AILR, ailerons_latched_faults.AIL4.AILR));
+
+tel;
+
+node ISAS_S_240__rudders_faults(
+  rudders_within_tol : DATA_TYPES__QUAD_Rudders__tbool;
+  rudders_failed_update : DATA_TYPES__quad_bool;
+  rudders_in_range : DATA_TYPES__QUAD_Rudders__tbool;
+  rudders_latched_faults : DATA_TYPES__QUAD_Rudders__tbool
+) returns (
+  ret : bool
+);
+let
+  ret = (((((((ISAS_S_240__fault(rudders_in_range.RUDD1.RUDU, rudders_failed_update.val1, rudders_in_range.RUDD1.RUDU, rudders_latched_faults.RUDD1.RUDU) and ISAS_S_240__fault(rudders_in_range.RUDD1.RUDL, rudders_failed_update.val1, rudders_in_range.RUDD1.RUDL, rudders_latched_faults.RUDD1.RUDL)) and ISAS_S_240__fault(rudders_in_range.RUDD2.RUDU, rudders_failed_update.val2, rudders_in_range.RUDD2.RUDU, rudders_latched_faults.RUDD2.RUDU)) and ISAS_S_240__fault(rudders_in_range.RUDD2.RUDL, rudders_failed_update.val2, rudders_in_range.RUDD2.RUDL, rudders_latched_faults.RUDD2.RUDL)) and ISAS_S_240__fault(rudders_in_range.RUDD3.RUDU, rudders_failed_update.val3, rudders_in_range.RUDD3.RUDU, rudders_latched_faults.RUDD3.RUDU)) and ISAS_S_240__fault(rudders_in_range.RUDD3.RUDL, rudders_failed_update.val3, rudders_in_range.RUDD3.RUDL, rudders_latched_faults.RUDD3.RUDL)) and ISAS_S_240__fault(rudders_in_range.RUDD4.RUDU, rudders_failed_update.val4, rudders_in_range.RUDD4.RUDU, rudders_latched_faults.RUDD4.RUDU)) and ISAS_S_240__fault(rudders_in_range.RUDD4.RUDL, rudders_failed_update.val4, rudders_in_range.RUDD4.RUDL, rudders_latched_faults.RUDD4.RUDL));
+
+tel;
+
+node ISAS_S_240__flaps_faults(
+  flaps_within_tol : DATA_TYPES__QUAD_Flaps__tbool;
+  flaps_failed_update : DATA_TYPES__quad_bool;
+  flaps_in_range : DATA_TYPES__QUAD_Flaps__tbool;
+  flaps_latched_faults : DATA_TYPES__QUAD_Flaps__tbool
+) returns (
+  ret : bool
+);
+let
+  ret = (((((((((((((((ISAS_S_240__fault(flaps_in_range.FLAPS1.FLLOB, flaps_failed_update.val1, flaps_in_range.FLAPS1.FLLOB, flaps_latched_faults.FLAPS1.FLLOB) and ISAS_S_240__fault(flaps_in_range.FLAPS1.FLLIB, flaps_failed_update.val1, flaps_in_range.FLAPS1.FLLIB, flaps_latched_faults.FLAPS1.FLLIB)) and ISAS_S_240__fault(flaps_in_range.FLAPS1.FLRIB, flaps_failed_update.val1, flaps_in_range.FLAPS1.FLRIB, flaps_latched_faults.FLAPS1.FLRIB)) and ISAS_S_240__fault(flaps_in_range.FLAPS1.FLROB, flaps_failed_update.val1, flaps_in_range.FLAPS1.FLROB, flaps_latched_faults.FLAPS1.FLROB)) and ISAS_S_240__fault(flaps_in_range.FLAPS2.FLLOB, flaps_failed_update.val2, flaps_in_range.FLAPS2.FLLOB, flaps_latched_faults.FLAPS2.FLLOB)) and ISAS_S_240__fault(flaps_in_range.FLAPS2.FLLIB, flaps_failed_update.val2, flaps_in_range.FLAPS2.FLLIB, flaps_latched_faults.FLAPS2.FLLIB)) and ISAS_S_240__fault(flaps_in_range.FLAPS2.FLRIB, flaps_failed_update.val2, flaps_in_range.FLAPS2.FLRIB, flaps_latched_faults.FLAPS2.FLRIB)) and ISAS_S_240__fault(flaps_in_range.FLAPS2.FLROB, flaps_failed_update.val2, flaps_in_range.FLAPS2.FLROB, flaps_latched_faults.FLAPS2.FLROB)) and ISAS_S_240__fault(flaps_in_range.FLAPS3.FLLOB, flaps_failed_update.val3, flaps_in_range.FLAPS3.FLLOB, flaps_latched_faults.FLAPS3.FLLOB)) and ISAS_S_240__fault(flaps_in_range.FLAPS3.FLLIB, flaps_failed_update.val3, flaps_in_range.FLAPS3.FLLIB, flaps_latched_faults.FLAPS3.FLLIB)) and ISAS_S_240__fault(flaps_in_range.FLAPS3.FLRIB, flaps_failed_update.val3, flaps_in_range.FLAPS3.FLRIB, flaps_latched_faults.FLAPS3.FLRIB)) and ISAS_S_240__fault(flaps_in_range.FLAPS3.FLROB, flaps_failed_update.val3, flaps_in_range.FLAPS3.FLROB, flaps_latched_faults.FLAPS3.FLROB)) and ISAS_S_240__fault(flaps_in_range.FLAPS4.FLLOB, flaps_failed_update.val4, flaps_in_range.FLAPS4.FLLOB, flaps_latched_faults.FLAPS4.FLLOB)) and ISAS_S_240__fault(flaps_in_range.FLAPS4.FLLIB, flaps_failed_update.val4, flaps_in_range.FLAPS4.FLLIB, flaps_latched_faults.FLAPS4.FLLIB)) and ISAS_S_240__fault(flaps_in_range.FLAPS4.FLRIB, flaps_failed_update.val4, flaps_in_range.FLAPS4.FLRIB, flaps_latched_faults.FLAPS4.FLRIB)) and ISAS_S_240__fault(flaps_in_range.FLAPS4.FLROB, flaps_failed_update.val4, flaps_in_range.FLAPS4.FLROB, flaps_latched_faults.FLAPS4.FLROB));
+
+tel;
+
+node ISAS_S_240__spoilers_faults(
+  spoilers_within_tol : DATA_TYPES__QUAD_Spoilers__tbool;
+  spoilers_failed_update : DATA_TYPES__quad_bool;
+  spoilers_in_range : DATA_TYPES__QUAD_Spoilers__tbool;
+  spoilers_latched_faults : DATA_TYPES__QUAD_Spoilers__tbool
+) returns (
+  ret : bool
+);
+let
+  ret = (((((((((((((((ISAS_S_240__fault(spoilers_in_range.SPOIL1.SPLOB, spoilers_failed_update.val1, spoilers_in_range.SPOIL1.SPLOB, spoilers_latched_faults.SPOIL1.SPLOB) and ISAS_S_240__fault(spoilers_in_range.SPOIL1.SPLIB, spoilers_failed_update.val1, spoilers_in_range.SPOIL1.SPLIB, spoilers_latched_faults.SPOIL1.SPLIB)) and ISAS_S_240__fault(spoilers_in_range.SPOIL1.SPRIB, spoilers_failed_update.val1, spoilers_in_range.SPOIL1.SPRIB, spoilers_latched_faults.SPOIL1.SPRIB)) and ISAS_S_240__fault(spoilers_in_range.SPOIL1.SPROB, spoilers_failed_update.val1, spoilers_in_range.SPOIL1.SPROB, spoilers_latched_faults.SPOIL1.SPROB)) and ISAS_S_240__fault(spoilers_in_range.SPOIL2.SPLOB, spoilers_failed_update.val2, spoilers_in_range.SPOIL2.SPLOB, spoilers_latched_faults.SPOIL2.SPLOB)) and ISAS_S_240__fault(spoilers_in_range.SPOIL2.SPLIB, spoilers_failed_update.val2, spoilers_in_range.SPOIL2.SPLIB, spoilers_latched_faults.SPOIL2.SPLIB)) and ISAS_S_240__fault(spoilers_in_range.SPOIL2.SPRIB, spoilers_failed_update.val2, spoilers_in_range.SPOIL2.SPRIB, spoilers_latched_faults.SPOIL2.SPRIB)) and ISAS_S_240__fault(spoilers_in_range.SPOIL2.SPROB, spoilers_failed_update.val2, spoilers_in_range.SPOIL2.SPROB, spoilers_latched_faults.SPOIL2.SPROB)) and ISAS_S_240__fault(spoilers_in_range.SPOIL3.SPLOB, spoilers_failed_update.val3, spoilers_in_range.SPOIL3.SPLOB, spoilers_latched_faults.SPOIL3.SPLOB)) and ISAS_S_240__fault(spoilers_in_range.SPOIL3.SPLIB, spoilers_failed_update.val3, spoilers_in_range.SPOIL3.SPLIB, spoilers_latched_faults.SPOIL3.SPLIB)) and ISAS_S_240__fault(spoilers_in_range.SPOIL3.SPRIB, spoilers_failed_update.val3, spoilers_in_range.SPOIL3.SPRIB, spoilers_latched_faults.SPOIL3.SPRIB)) and ISAS_S_240__fault(spoilers_in_range.SPOIL3.SPROB, spoilers_failed_update.val3, spoilers_in_range.SPOIL3.SPROB, spoilers_latched_faults.SPOIL3.SPROB)) and ISAS_S_240__fault(spoilers_in_range.SPOIL4.SPLOB, spoilers_failed_update.val4, spoilers_in_range.SPOIL4.SPLOB, spoilers_latched_faults.SPOIL4.SPLOB)) and ISAS_S_240__fault(spoilers_in_range.SPOIL4.SPLIB, spoilers_failed_update.val4, spoilers_in_range.SPOIL4.SPLIB, spoilers_latched_faults.SPOIL4.SPLIB)) and ISAS_S_240__fault(spoilers_in_range.SPOIL4.SPRIB, spoilers_failed_update.val4, spoilers_in_range.SPOIL4.SPRIB, spoilers_latched_faults.SPOIL4.SPRIB)) and ISAS_S_240__fault(spoilers_in_range.SPOIL4.SPROB, spoilers_failed_update.val4, spoilers_in_range.SPOIL4.SPROB, spoilers_latched_faults.SPOIL4.SPROB));
+
+tel;
+
+node ISAS_S_240__stabilizers_faults(
+  stabilizers_within_tol : DATA_TYPES__QUAD_Stabilizer__tbool;
+  stabilizers_failed_update : DATA_TYPES__quad_bool;
+  stabilizers_in_range : DATA_TYPES__QUAD_Stabilizer__tbool;
+  stabilizers_latched_faults : DATA_TYPES__QUAD_Stabilizer__tbool
+) returns (
+  ret : bool
+);
+let
+  ret = (((((((((((((((ISAS_S_240__fault(stabilizers_in_range.STAB1, stabilizers_failed_update.val1, stabilizers_in_range.STAB1, stabilizers_latched_faults.STAB1) and ISAS_S_240__fault(stabilizers_in_range.STAB1, stabilizers_failed_update.val1, stabilizers_in_range.STAB1, stabilizers_latched_faults.STAB1)) and ISAS_S_240__fault(stabilizers_in_range.STAB1, stabilizers_failed_update.val1, stabilizers_in_range.STAB1, stabilizers_latched_faults.STAB1)) and ISAS_S_240__fault(stabilizers_in_range.STAB1, stabilizers_failed_update.val1, stabilizers_in_range.STAB2, stabilizers_latched_faults.STAB2)) and ISAS_S_240__fault(stabilizers_in_range.STAB2, stabilizers_failed_update.val2, stabilizers_in_range.STAB2, stabilizers_latched_faults.STAB2)) and ISAS_S_240__fault(stabilizers_in_range.STAB2, stabilizers_failed_update.val2, stabilizers_in_range.STAB2, stabilizers_latched_faults.STAB2)) and ISAS_S_240__fault(stabilizers_in_range.STAB2, stabilizers_failed_update.val2, stabilizers_in_range.STAB2, stabilizers_latched_faults.STAB2)) and ISAS_S_240__fault(stabilizers_in_range.STAB2, stabilizers_failed_update.val2, stabilizers_in_range.STAB2, stabilizers_latched_faults.STAB2)) and ISAS_S_240__fault(stabilizers_in_range.STAB3, stabilizers_failed_update.val3, stabilizers_in_range.STAB3, stabilizers_latched_faults.STAB3)) and ISAS_S_240__fault(stabilizers_in_range.STAB3, stabilizers_failed_update.val3, stabilizers_in_range.STAB3, stabilizers_latched_faults.STAB3)) and ISAS_S_240__fault(stabilizers_in_range.STAB3, stabilizers_failed_update.val3, stabilizers_in_range.STAB3, stabilizers_latched_faults.STAB3)) and ISAS_S_240__fault(stabilizers_in_range.STAB3, stabilizers_failed_update.val3, stabilizers_in_range.STAB3, stabilizers_latched_faults.STAB3)) and ISAS_S_240__fault(stabilizers_in_range.STAB4, stabilizers_failed_update.val4, stabilizers_in_range.STAB4, stabilizers_latched_faults.STAB4)) and ISAS_S_240__fault(stabilizers_in_range.STAB4, stabilizers_failed_update.val4, stabilizers_in_range.STAB4, stabilizers_latched_faults.STAB4)) and ISAS_S_240__fault(stabilizers_in_range.STAB4, stabilizers_failed_update.val4, stabilizers_in_range.STAB4, stabilizers_latched_faults.STAB4)) and ISAS_S_240__fault(stabilizers_in_range.STAB4, stabilizers_failed_update.val4, stabilizers_in_range.STAB4, stabilizers_latched_faults.STAB4));
+
+tel;
+
+node ISAS_S_240__aoa_faults(
+  aoa_within_tol : DATA_TYPES__DUAL_AoA__tbool;
+  aoa_failed_update : DATA_TYPES__dual_bool;
+  aoa_in_range : DATA_TYPES__DUAL_AoA__tbool;
+  aoa_latched_faults : DATA_TYPES__DUAL_AoA__tbool
+) returns (
+  ret : bool
+);
+let
+  ret = (ISAS_S_240__fault(aoa_in_range.AOA1.AOA, aoa_failed_update.val1, aoa_within_tol.AOA1.AOA, aoa_latched_faults.AOA1.AOA) and ISAS_S_240__fault(aoa_in_range.AOA2.AOA, aoa_failed_update.val2, aoa_within_tol.AOA2.AOA, aoa_latched_faults.AOA2.AOA));
+
+tel;
+
+node ISAS_S_240__air_data_faults(
+  air_data_within_tol : DATA_TYPES__DUAL_AirData__tbool;
+  air_data_failed_update : DATA_TYPES__dual_bool;
+  air_data_in_range : DATA_TYPES__DUAL_AirData__tbool;
+  air_data_latched_faults : DATA_TYPES__DUAL_AirData__tbool
+) returns (
+  ret : bool
+);
+let
+  ret = (((((((ISAS_S_240__fault(air_data_in_range.AD1.TAT, air_data_failed_update.val1, air_data_within_tol.AD1.TAT, air_data_latched_faults.AD1.TAT) and ISAS_S_240__fault(air_data_in_range.AD1.TotPres, air_data_failed_update.val1, air_data_within_tol.AD1.TotPres, air_data_latched_faults.AD1.TotPres)) and ISAS_S_240__fault(air_data_in_range.AD1.Pres, air_data_failed_update.val1, air_data_within_tol.AD1.Pres, air_data_latched_faults.AD1.Pres)) and ISAS_S_240__fault(air_data_in_range.AD1.Temp, air_data_failed_update.val1, air_data_within_tol.AD1.Temp, air_data_latched_faults.AD1.Temp)) and ISAS_S_240__fault(air_data_in_range.AD2.TAT, air_data_failed_update.val2, air_data_within_tol.AD2.TAT, air_data_latched_faults.AD2.TAT)) and ISAS_S_240__fault(air_data_in_range.AD2.TotPres, air_data_failed_update.val2, air_data_within_tol.AD2.TotPres, air_data_latched_faults.AD2.TotPres)) and ISAS_S_240__fault(air_data_in_range.AD2.Pres, air_data_failed_update.val2, air_data_within_tol.AD2.Pres, air_data_latched_faults.AD2.Pres)) and ISAS_S_240__fault(air_data_in_range.AD2.Temp, air_data_failed_update.val2, air_data_within_tol.AD2.Temp, air_data_latched_faults.AD2.Temp));
+
+tel;
+
+node ISAS_S_240__req(
+  elevators_within_tol : DATA_TYPES__QUAD_Elevators__tbool;
+  ailerons_within_tol : DATA_TYPES__QUAD_Ailerons__tbool;
+  rudders_within_tol : DATA_TYPES__QUAD_Rudders__tbool;
+  flaps_within_tol : DATA_TYPES__QUAD_Flaps__tbool;
+  spoilers_within_tol : DATA_TYPES__QUAD_Spoilers__tbool;
+  stabilizers_within_tol : DATA_TYPES__QUAD_Stabilizer__tbool;
+  aoa_within_tol : DATA_TYPES__DUAL_AoA__tbool;
+  air_data_within_tol : DATA_TYPES__DUAL_AirData__tbool;
+  elevators_failed_update : DATA_TYPES__quad_bool;
+  ailerons_failed_update : DATA_TYPES__quad_bool;
+  rudders_failed_update : DATA_TYPES__quad_bool;
+  flaps_failed_update : DATA_TYPES__quad_bool;
+  spoilers_failed_update : DATA_TYPES__quad_bool;
+  stabilizers_failed_update : DATA_TYPES__quad_bool;
+  aoa_failed_update : DATA_TYPES__dual_bool;
+  air_data_failed_update : DATA_TYPES__dual_bool;
+  elevators_in_range : DATA_TYPES__QUAD_Elevators__tbool;
+  ailerons_in_range : DATA_TYPES__QUAD_Ailerons__tbool;
+  rudders_in_range : DATA_TYPES__QUAD_Rudders__tbool;
+  flaps_in_range : DATA_TYPES__QUAD_Flaps__tbool;
+  spoilers_in_range : DATA_TYPES__QUAD_Spoilers__tbool;
+  stabilizers_in_range : DATA_TYPES__QUAD_Stabilizer__tbool;
+  aoa_in_range : DATA_TYPES__DUAL_AoA__tbool;
+  air_data_in_range : DATA_TYPES__DUAL_AirData__tbool;
+  elevators_latched_faults : DATA_TYPES__QUAD_Elevators__tbool;
+  ailerons_latched_faults : DATA_TYPES__QUAD_Ailerons__tbool;
+  rudders_latched_faults : DATA_TYPES__QUAD_Rudders__tbool;
+  flaps_latched_faults : DATA_TYPES__QUAD_Flaps__tbool;
+  spoilers_latched_faults : DATA_TYPES__QUAD_Spoilers__tbool;
+  stabilizers_latched_faults : DATA_TYPES__QUAD_Stabilizer__tbool;
+  aoa_latched_faults : DATA_TYPES__DUAL_AoA__tbool;
+  air_data_latched_faults : DATA_TYPES__DUAL_AirData__tbool
+) returns (
+  ret : bool
+);
+let
+  ret = (((((((ISAS_S_240__elevators_faults(elevators_within_tol, elevators_failed_update, elevators_in_range, elevators_latched_faults) and ISAS_S_240__ailerons_faults(ailerons_within_tol, ailerons_failed_update, ailerons_in_range, ailerons_latched_faults)) and ISAS_S_240__rudders_faults(rudders_within_tol, rudders_failed_update, rudders_in_range, rudders_latched_faults)) and ISAS_S_240__flaps_faults(flaps_within_tol, flaps_failed_update, flaps_in_range, flaps_latched_faults)) and ISAS_S_240__spoilers_faults(spoilers_within_tol, spoilers_failed_update, spoilers_in_range, spoilers_latched_faults)) and ISAS_S_240__stabilizers_faults(stabilizers_within_tol, stabilizers_failed_update, stabilizers_in_range, stabilizers_latched_faults)) and ISAS_S_240__aoa_faults(aoa_within_tol, aoa_failed_update, aoa_in_range, aoa_latched_faults)) and ISAS_S_240__air_data_faults(air_data_within_tol, air_data_failed_update, air_data_in_range, air_data_latched_faults));
+
+tel;
+

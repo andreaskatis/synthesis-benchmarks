@@ -1,0 +1,31 @@
+type software_types__motors_data__impl = struct {backleft : real; backright : real; frontleft : real; frontright : real};
+type software_types__controloutput__impl = struct {armed : bool; pitch : real; roll : real; throttle : real; time : int; yaw : real};
+type software_types__control_law__impl = struct {armed_mode : int; autothr_source : int; head_source : int; stab_source : int; thr_mode : int; time : int; ui_source : int; yaw_mode : int};
+
+node main(
+  time : real;
+  control_in___EVENT_ : bool;
+  control_in : software_types__controloutput__impl;
+  control_law_in___EVENT_ : bool;
+  control_law_in : software_types__control_law__impl;
+  motors___EVENT_ : bool;
+  motors : software_types__motors_data__impl
+) returns (
+
+);
+var
+  __GUARANTEE0 : bool;
+  __GUARANTEE1 : bool;
+let
+  --%MAIN;
+  __GUARANTEE0 = ((motors = software_types__motors_data__impl {backleft = 0.0; backright = 0.0; frontleft = 0.0; frontright = 0.0}) -> true);
+
+  __GUARANTEE1 = ((control_law_in.armed_mode = 1) => (motors = software_types__motors_data__impl {backleft = 0.0; backright = 0.0; frontleft = 0.0; frontright = 0.0}));
+
+  --%PROPERTY __GUARANTEE0;
+  --%PROPERTY __GUARANTEE1;
+
+  --%REALIZABLE time, control_in___EVENT_, control_in, control_law_in___EVENT_, control_law_in;
+
+tel;
+
