@@ -313,19 +313,21 @@ def execute_fixpoint_only():
         run_realizability(lus_file)
         run_fixpoint(lus_file)
 
-        impl_files = glob.glob("*_skolem.smt2")
-        if len(impl_files) == 0:
-            print("No implement files found in fixpoint_only directory")
-            sys.exit(-1)
+    print("finish R and fixpoint")
+
+    impl_files = glob.glob("*_skolem.smt2")
+    if len(impl_files) == 0:
+        print("No implement files found in fixpoint_only directory")
+        sys.exit(-1)
     #print("moving impl files")
-        for i, impl_file in enumerate(impl_files):
-            shutil.move(os.getcwd(), "fixpoint")
+    for i, impl_file in enumerate(impl_files):
+        shutil.move(impl_file, "fixpoint")
 
     #remove dummy smt2files
-        smt_files = glob.glob("*.smt2")
-        if (len(smt_files)!=0):
-            for i, smt_file in enumerate(smt_files):
-                os.remove(smt_file)
+    smt_files = glob.glob("*.smt2")
+    if (len(smt_files)!=0):
+        for i, smt_file in enumerate(smt_files):
+            os.remove(smt_file)
 
     os.chdir("fixpoint")
     impl_files = glob.glob("*_skolem.smt2")
@@ -344,17 +346,19 @@ def execute_fixpoint_only():
             proc = subprocess.Popen(args, stdout=debug)
             proc.wait()
             debug.write("\n")
+
+    print("finish smtlib2c")
     
-    #def run_makefile(file_path):
-    target_files = glob.glob("*_skolem.smt2")
+    
+    for i, lus_file in enumerate(lus_files):
+        run_makefile(os.path.splitext(lus_file)[0])
 
+    print("finish run_makefile")
 
     for i, lus_file in enumerate(lus_files):
-        run_makefile(splitext(lus_file)[0])
+        run_executables(os.path.splitext(lus_file)[0])
 
-    for i, lus_file in enumerate(lus_files):
-        run_executables(splitext(lus_file)[0])
-
+    print("finish run_executable")
 
 
 
@@ -381,29 +385,38 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir, anothe
 
 #exeute...................................................
     with open("lustreName.txt", "a") as file:
-        for i, lus_file in enumerate(lus_files):
-            empty = []
-            empty.append(lus_file)
-            NestList_overhead.append(empty)  # set the name of file 
+        if ((len(sys.argv)>1) and (sys.argv[1] == "-skipjkind")):
+            print("skip the jkind")
+            for i, lus_file in enumerate(lus_files):
+                empty = []
+                empty.append(lus_file)
+                NestList_overhead.append(empty)
 
-            file.write(lus_file+"\n")
 
-            sys.stdout.write("({} of {}) {} [".format(i+1, len(lus_files), lus_file))
-            sys.stdout.flush()
+        else:
+            for i, lus_file in enumerate(lus_files):
+                empty = []
+                empty.append(lus_file)
+                NestList_overhead.append(empty)  # set the name of file 
 
-            run_realizability_synthesis(lus_file, experiments_dir)
-            os.chdir(experiments_dir)
-            move_impl(push_path, experiments_dir)
-            os.chdir("..")
+                file.write(lus_file+"\n")
+
+                sys.stdout.write("({} of {}) {} [".format(i+1, len(lus_files), lus_file))
+                sys.stdout.flush()
+
+                run_realizability_synthesis(lus_file, experiments_dir)
+                os.chdir(experiments_dir)
+                move_impl(push_path, experiments_dir)
+                os.chdir("..")
     
-            run_last_fixpoint(lus_file, experiments_dir)
-            os.chdir(experiments_dir)
-            move_impl(another_push_path, experiments_dir)
-            os.chdir("..")
+                run_last_fixpoint(lus_file, experiments_dir)
+                os.chdir(experiments_dir)
+                move_impl(another_push_path, experiments_dir)
+                os.chdir("..")
 
 
-            sys.stdout.write("]\n")
-            sys.stdout.flush()
+                sys.stdout.write("]\n")
+                sys.stdout.flush()
 
 
     file.close()
