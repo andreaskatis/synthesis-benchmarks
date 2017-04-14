@@ -550,83 +550,82 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir, anothe
 #################################################################################################
 
 
-# jkind_jar = None
-# path = os.environ.get("JKIND_HOME") or os.environ.get("PATH") or os.environ.get("path")
+jkind_jar = None
+path = os.environ.get("JKIND_HOME") or os.environ.get("PATH") or os.environ.get("path")
 
-# for dir in path.split(':'):
-#     jar = os.path.join(dir, "jkind.jar")
-#     if os.path.exists(jar):
-#         jkind_jar = jar
-#         break
-# if jkind_jar is None:
-#     print("Unable to find jkind.jar in JKIND_HOME or PATH environment variables")
-#     sys.exit(-1)
-# print("Using JKind: " + jkind_jar)
-
-
-# smtlib2c_jar = None
-# path = os.environ.get("PATH") or os.environ.get("path")
-
-# for dir in path.split(':'):
-#     jar = os.path.join(dir, "SMTLib2C.jar")
-#     if os.path.exists(jar):
-#         smtlib2c_jar = jar
-#         break
-# if smtlib2c_jar is None:
-#     print("Unable to find SMTLib2C.jar in PATH environment variables")
-#     sys.exit(-1)
-
-# print("Using SMTLib2C: " + smtlib2c_jar)
+for dir in path.split(':'):
+    jar = os.path.join(dir, "jkind.jar")
+    if os.path.exists(jar):
+        jkind_jar = jar
+        break
+if jkind_jar is None:
+    print("Unable to find jkind.jar in JKIND_HOME or PATH environment variables")
+    sys.exit(-1)
+print("Using JKind: " + jkind_jar)
 
 
-# ##############################################################
-# execute(EXPERIMENTS_DIR, PUSH_PATH, ANOTHER_PUSH_PATH, IMPLEMENT_DIR, ANOTHER_IMPLEMENT_DIR, NestList_size_name_verification)
-# execute(SECOND_EXPERIMENTS_DIR, PUSH_PATH, ANOTHER_PUSH_PATH, SECOND_IMPLEMENT_DIR,SECOND_ANOTHER_IMPLEMENT_DIR, NestList_size_name_smaccm)
+smtlib2c_jar = None
+path = os.environ.get("PATH") or os.environ.get("path")
+
+for dir in path.split(':'):
+    jar = os.path.join(dir, "SMTLib2C.jar")
+    if os.path.exists(jar):
+        smtlib2c_jar = jar
+        break
+if smtlib2c_jar is None:
+    print("Unable to find SMTLib2C.jar in PATH environment variables")
+    sys.exit(-1)
+
+print("Using SMTLib2C: " + smtlib2c_jar)
 
 
-# #fill the NestList_overhead
-# parse("debug_jkind.txt", "overhead.txt")
-# writeOverhead(NestList_overhead, "overhead.txt")
-# drawOverhead()
-# print("NestList_overhead")
-# print(NestList_overhead)
-
-# print()
-
-# #print("NestList_size_name_verification")
-# #print(NestList_size_name_verification)
-# #print("NestList_size_name_smaccm")
-# #print(NestList_size_name_smaccm)
+##############################################################
+execute(EXPERIMENTS_DIR, PUSH_PATH, ANOTHER_PUSH_PATH, IMPLEMENT_DIR, ANOTHER_IMPLEMENT_DIR, NestList_size_name_verification)
+execute(SECOND_EXPERIMENTS_DIR, PUSH_PATH, ANOTHER_PUSH_PATH, SECOND_IMPLEMENT_DIR,SECOND_ANOTHER_IMPLEMENT_DIR, NestList_size_name_smaccm)
 
 
-# print("current path =" + os.getcwd())
+#fill the NestList_overhead
+parse("debug_jkind.txt", "overhead.txt")
+writeOverhead(NestList_overhead, "overhead.txt")
+drawOverhead()
+print("NestList_overhead")
+print(NestList_overhead)
 
-# #create both verification (kind and fixpoint) loc.txt 
-# measureSizeOfC(IMPLEMENT_DIR, NestList_size_name_verification)
-# measureSizeOfC(ANOTHER_IMPLEMENT_DIR, NestList_size_name_verification)
-# #create both smaccm (kind and fixpoint) loc.txt
-# measureSizeOfC(SECOND_IMPLEMENT_DIR, NestList_size_name_smaccm)
-# measureSizeOfC(SECOND_ANOTHER_IMPLEMENT_DIR, NestList_size_name_smaccm)
+print()
 
-# #append to NestList_size
-# combineSizeTxt(IMPLEMENT_DIR+"/loc.txt", ANOTHER_IMPLEMENT_DIR+"/loc.txt")
-# combineSizeTxt(SECOND_IMPLEMENT_DIR+"/loc.txt", SECOND_ANOTHER_IMPLEMENT_DIR+"/loc.txt")
+#print("NestList_size_name_verification")
+#print(NestList_size_name_verification)
+#print("NestList_size_name_smaccm")
+#print(NestList_size_name_smaccm)
 
-# print("NestList_size")
-# print(NestList_size)
 
-# drawSize()
-# print()
+print("current path =" + os.getcwd())
 
-# #append to NestList_performance
-# combineResultTxt(IMPLEMENT_DIR+"/results.txt",ANOTHER_IMPLEMENT_DIR+"/results.txt")
-# combineResultTxt(SECOND_IMPLEMENT_DIR+"/results.txt",SECOND_ANOTHER_IMPLEMENT_DIR+"/results.txt")
+#create both verification (kind and fixpoint) loc.txt 
+measureSizeOfC(IMPLEMENT_DIR, NestList_size_name_verification)
+measureSizeOfC(ANOTHER_IMPLEMENT_DIR, NestList_size_name_verification)
+#create both smaccm (kind and fixpoint) loc.txt
+measureSizeOfC(SECOND_IMPLEMENT_DIR, NestList_size_name_smaccm)
+measureSizeOfC(SECOND_ANOTHER_IMPLEMENT_DIR, NestList_size_name_smaccm)
 
-# print("NestList_performance")
-# print(NestList_performance)
+#append to NestList_size
+combineSizeTxt(IMPLEMENT_DIR+"/loc.txt", ANOTHER_IMPLEMENT_DIR+"/loc.txt")
+combineSizeTxt(SECOND_IMPLEMENT_DIR+"/loc.txt", SECOND_ANOTHER_IMPLEMENT_DIR+"/loc.txt")
 
-# drawPerformance()
+print("NestList_size")
+print(NestList_size)
 
+drawSize()
+print()
+
+#append to NestList_performance
+combineResultTxt(IMPLEMENT_DIR+"/results.txt",ANOTHER_IMPLEMENT_DIR+"/results.txt")
+combineResultTxt(SECOND_IMPLEMENT_DIR+"/results.txt",SECOND_ANOTHER_IMPLEMENT_DIR+"/results.txt")
+
+print("NestList_performance")
+print(NestList_performance)
+
+drawPerformance()
 
 
 
