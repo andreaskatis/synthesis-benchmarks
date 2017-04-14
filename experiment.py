@@ -16,11 +16,6 @@ SECOND_EXPERIMENTS_DIR = 'smaccm'
 SECOND_IMPLEMENT_DIR = 'smaccm/kind'
 SECOND_ANOTHER_IMPLEMENT_DIR = 'smaccm/fixpoint'
 
-EXTRA_EXPERIMENTS_DIR = "fixpoint_only"
-EXTRA_IMPLEMENT_DIR = 'fixpoint_only/kind'
-EXTRA_ANOTHER_IMPLEMENT_DIR = 'fixpoint_only/fixpoint'
-
-
 
 NestList_overhead = []
 NestList_size = [] 
