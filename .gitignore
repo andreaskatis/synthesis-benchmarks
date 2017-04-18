@@ -1,0 +1,4 @@
+#ignore folder not-working
+not-working
+#ignore my temporary script
+run_synthesis.py
