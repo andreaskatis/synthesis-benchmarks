@@ -364,8 +364,11 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir, anothe
 
 
 #do the run_smtlib2c.................................................
+    print()
+    print("Running run_smtlib2c under")
+    print("path =" + os.getcwd())
+    print()
 
-    print("Running run_smtlib2c")
 
 
 
@@ -422,7 +425,10 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir, anothe
 
 
 
-    print("Running run_make")
+    print("Running run_make under")
+    print("path =" + os.getcwd())
+    print()
+
 
     if not os.path.exists(experiments_dir):
         print("'" + experiments_dir + "' directory does not exist")
@@ -467,6 +473,9 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir, anothe
 
 
     print("Running the run_executable")
+    print("path =" + os.getcwd())
+    print()
+
     os.chdir("..")
     os.chdir("..")
 
@@ -528,15 +537,9 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir, anothe
         sys.stdout.write("]\n")
         sys.stdout.flush()
 
-
-
-
-
-
     os.chdir("..")
     os.chdir("..")
 
-    print("path =" + os.getcwd())
 
 
 
@@ -594,7 +597,7 @@ print()
 #print(NestList_size_name_smaccm)
 
 
-print("current path =" + os.getcwd())
+#print("current path =" + os.getcwd())
 
 #create both verification (kind and fixpoint) loc.txt 
 measureSizeOfC(IMPLEMENT_DIR, NestList_size_name_verification)
