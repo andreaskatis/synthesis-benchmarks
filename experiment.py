@@ -1,4 +1,4 @@
-import os, subprocess, sys, glob, shutil
+import os, subprocess, sys, glob, shutil, csv
 import numpy as np
 import matplotlib.pyplot as plt
 #
@@ -31,6 +31,83 @@ NestList_performance = []
 #
 # '-timeout', str(TIMEOUT)
 #file_path = verification/car_1.lus
+def deleteFile_in_subfolder(folder, lus_files):
+    os.chdir(folder)
+
+    cfileList = glob.glob("*.c")
+    hfileList = glob.glob("*.h")
+    ofileList = glob.glob("*.o")
+    sfileList = glob.glob("*.smt2")
+    txtfileList = glob.glob("*.txt")
+
+    if (len(cfileList)!=0):
+        for f in cfileList:
+            os.remove(f)
+
+    if (len(hfileList)!=0):
+        for h in hfileList:
+            os.remove(h)
+
+    if (len(ofileList)!=0):
+        for o in ofileList:
+            os.remove(o)
+
+    if (len(sfileList)!=0):
+        for s in sfileList:
+            os.remove(s)
+            
+    if (len(txtfileList)!=0):
+        for txt in txtfileList:
+            os.remove(txt)
+
+    if (len(lus_files)!=0):
+        for lus in lus_files:
+            if (os.path.isfile(os.path.splitext(lus)[0])):
+                os.remove(os.path.splitext(lus)[0])
+
+
+    os.chdir("..")
+
+
+def deleteFile_in_folder():
+    lus_files = glob.glob("*.lus")
+    deleteFile_in_subfolder("kind", lus_files)
+    deleteFile_in_subfolder("fixpoint", lus_files)
+
+
+
+
+
+def deleteAll():
+    txtfileList = glob.glob("*.txt")
+    pdffileList = glob.glob("*.pdf")
+    csvfileList = glob.glob("*.csv")
+
+
+    if (len(txtfileList)!=0):
+        for txt in txtfileList:
+            os.remove(txt)
+
+    if (len(pdffileList)!=0):
+        for pdf in pdffileList:
+            os.remove(pdf)
+    
+    if (len(csvfileList)!=0):
+        for csv in csvfileList:
+            os.remove(csv)
+
+    os.chdir("verification")
+    deleteFile_in_folder()
+    os.chdir("..")
+
+    os.chdir("smaccm")
+    deleteFile_in_folder()
+    os.chdir("..")
+    
+
+
+
+
 
 def run_realizability(file_path):
     #delete "xml"
@@ -298,6 +375,23 @@ def drawPerformance():
     plt.legend(loc = 'upper left')
     fig.savefig("performance.pdf")
 
+
+
+def writeCSV():
+    with open("overheadList.csv", "wb") as f:
+        writer = csv.writer(f)
+        writer.writerows(NestList_overhead)
+    f.close()
+
+    with open("locList.csv", "wb") as k:
+        writer = csv.writer(k)
+        writer.writerows(NestList_size)
+    k.close()
+
+    with open("performanceList.csv", "wb") as p:
+        writer = csv.writer(p)
+        writer.writerows(NestList_performance)
+    p.close()
 
 
 
@@ -577,6 +671,18 @@ if smtlib2c_jar is None:
 print("Using SMTLib2C: " + smtlib2c_jar)
 
 
+
+#################################################################################
+print("deleting the remained files")
+if ((len(sys.argv)>1) and (sys.argv[1] == "-skipjkind")):
+    print("skip the jkind")
+
+else:
+    deleteAll()
+
+
+
+
 ##############################################################
 execute(EXPERIMENTS_DIR, PUSH_PATH, ANOTHER_PUSH_PATH, IMPLEMENT_DIR, ANOTHER_IMPLEMENT_DIR, NestList_size_name_verification)
 execute(SECOND_EXPERIMENTS_DIR, PUSH_PATH, ANOTHER_PUSH_PATH, SECOND_IMPLEMENT_DIR,SECOND_ANOTHER_IMPLEMENT_DIR, NestList_size_name_smaccm)
@@ -624,6 +730,9 @@ print("NestList_performance")
 print(NestList_performance)
 
 drawPerformance()
+
+
+writeCSV()
 
 
 
