@@ -1,0 +1,6 @@
+#ignore the following
+*.smt2
+*.c
+*.h
+run_synthesis.py
+debug_jkind.txt
