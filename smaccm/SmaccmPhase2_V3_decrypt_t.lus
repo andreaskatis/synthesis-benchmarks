@@ -1,0 +1,23 @@
+node main(
+  enc_mavlink___EVENT_ : bool;
+  message_passed_decryption : bool;
+  mavlink_out___EVENT_ : bool
+) returns (
+
+);
+var
+  __GUARANTEE0 : bool;
+  __GUARANTEE1 : bool;
+let
+  --%MAIN;
+  __GUARANTEE0 = (mavlink_out___EVENT_ => enc_mavlink___EVENT_);
+
+  __GUARANTEE1 = (mavlink_out___EVENT_ => message_passed_decryption);
+
+  --%PROPERTY __GUARANTEE0;
+  --%PROPERTY __GUARANTEE1;
+
+  --%REALIZABLE enc_mavlink___EVENT_;
+
+tel;
+

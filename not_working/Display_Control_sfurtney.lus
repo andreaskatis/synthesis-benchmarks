@@ -1,0 +1,133 @@
+node main(
+  clear : bool;
+  kp_0 : bool;
+  kp_1 : bool;
+  kp_2 : bool;
+  kp_3 : bool;
+  kp_4 : bool;
+  kp_5 : bool;
+  kp_6 : bool;
+  kp_7 : bool;
+  kp_8 : bool;
+  kp_9 : bool;
+  cooking_mode : int;
+  left_digit : int;
+  middle_digit : int;
+  right_digit : int;
+  seconds_to_cook : int
+) returns (
+
+);
+var
+  __GUARANTEE0 : bool;
+  __GUARANTEE1 : bool;
+  __GUARANTEE2 : bool;
+  __GUARANTEE3 : bool;
+  __GUARANTEE4 : bool;
+  __GUARANTEE5 : bool;
+  __GUARANTEE6 : bool;
+  __GUARANTEE7 : bool;
+  __GUARANTEE8 : bool;
+  kp_0_pressed : bool;
+  kp_1_pressed : bool;
+  kp_2_pressed : bool;
+  kp_3_pressed : bool;
+  kp_4_pressed : bool;
+  kp_5_pressed : bool;
+  kp_6_pressed : bool;
+  kp_7_pressed : bool;
+  kp_8_pressed : bool;
+  kp_9_pressed : bool;
+  clear_pressed : bool;
+  keypad_enabled : bool;
+  any_digit_pressed : bool;
+let
+  --%MAIN;
+  __GUARANTEE0 = ((left_digit >= 0) and (left_digit < 10));
+
+  __GUARANTEE1 = ((middle_digit >= 0) and (middle_digit < 10));
+
+  __GUARANTEE2 = ((right_digit >= 0) and (right_digit < 10));
+
+  __GUARANTEE3 = (seconds_to_cook = (((left_digit * 60) + (middle_digit * 10)) + right_digit));
+
+  __GUARANTEE4 = ((keypad_enabled and clear) => (seconds_to_cook = 0));
+
+  __GUARANTEE5 = (((any_digit_pressed = false) and keypad_enabled) => (seconds_to_cook = seconds_to_cook));
+
+  __GUARANTEE6 = (defs__initially_true((cooking_mode = 1)) => (seconds_to_cook = 0));
+
+  __GUARANTEE7 = ((cooking_mode = 2) => (seconds_to_cook = (seconds_to_cook - 1)));
+
+  __GUARANTEE8 = ((keypad_enabled and any_digit_pressed) => (seconds_to_cook = 0));
+
+  kp_0_pressed = defs__rising_edge(kp_0);
+
+  kp_1_pressed = defs__rising_edge(kp_1);
+
+  kp_2_pressed = defs__rising_edge(kp_2);
+
+  kp_3_pressed = defs__rising_edge(kp_3);
+
+  kp_4_pressed = defs__rising_edge(kp_4);
+
+  kp_5_pressed = defs__rising_edge(kp_5);
+
+  kp_6_pressed = defs__rising_edge(kp_6);
+
+  kp_7_pressed = defs__rising_edge(kp_7);
+
+  kp_8_pressed = defs__rising_edge(kp_8);
+
+  kp_9_pressed = defs__rising_edge(kp_9);
+
+  clear_pressed = defs__rising_edge(clear);
+
+  keypad_enabled = defs__is_setup(cooking_mode);
+
+  any_digit_pressed = (((((((((kp_1_pressed or kp_2_pressed) or kp_3_pressed) or kp_4_pressed) or kp_5_pressed) or kp_6_pressed) or kp_7_pressed) or kp_8_pressed) or kp_9_pressed) or kp_0_pressed);
+
+  --%PROPERTY __GUARANTEE0;
+  --%PROPERTY __GUARANTEE1;
+  --%PROPERTY __GUARANTEE2;
+  --%PROPERTY __GUARANTEE3;
+  --%PROPERTY __GUARANTEE4;
+  --%PROPERTY __GUARANTEE5;
+  --%PROPERTY __GUARANTEE6;
+  --%PROPERTY __GUARANTEE7;
+  --%PROPERTY __GUARANTEE8;
+
+  --%REALIZABLE clear, kp_0, kp_1, kp_2, kp_3, kp_4, kp_5, kp_6, kp_7, kp_8, kp_9, cooking_mode;
+
+tel;
+
+node defs__initially_true(
+  b : bool
+) returns (
+  result : bool
+);
+let
+  result = (b -> (pre true));
+
+tel;
+
+node defs__rising_edge(
+  signal : bool
+) returns (
+  re : bool
+);
+let
+  re = (signal and (not (false -> (pre signal))));
+
+tel;
+
+node defs__is_setup(
+  m : int
+) returns (
+  _outvar : bool
+);
+let
+  _outvar = (m = 1);
+
+tel;
+

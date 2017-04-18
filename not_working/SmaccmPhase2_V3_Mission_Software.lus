@@ -1,0 +1,50 @@
+node main(
+  mission_in___EVENT_ : bool;
+  enc_mavlink_in___EVENT_ : bool;
+  time : real;
+  next_time : real;
+  mission_out___EVENT_ : bool;
+  enc_mavlink_out___EVENT_ : bool
+) returns (
+
+);
+var
+  __GUARANTEE0 : bool;
+  __GUARANTEE1 : bool;
+  __GUARANTEE2 : bool;
+  __GUARANTEE3 : bool;
+  __GUARANTEE4 : bool;
+  last_mavlink_received_time : real;
+  mavlink_received_in_past : bool;
+  mavlink_received_within_bound : bool;
+  time_of_last_can : real;
+let
+  --%MAIN;
+  __GUARANTEE0 = (true -> (((time - (pre time_of_last_can)) < 20.0) => (not mission_out___EVENT_)));
+
+  __GUARANTEE1 = (mission_out___EVENT_ => mavlink_received_within_bound);
+
+  __GUARANTEE2 = ((time = 0.0) -> ((true and (time >= 0.0)) and (true -> (time > (pre time)))));
+
+  __GUARANTEE3 = ((next_time > time) and (true -> ((pre next_time) = time)));
+
+  __GUARANTEE4 = ((5.0 <= (next_time - time)) and ((next_time - time) < 50.0));
+
+  last_mavlink_received_time = (if enc_mavlink_in___EVENT_ then time else (0.0 -> (pre last_mavlink_received_time)));
+
+  mavlink_received_in_past = (enc_mavlink_in___EVENT_ -> ((pre mavlink_received_in_past) or enc_mavlink_in___EVENT_));
+
+  mavlink_received_within_bound = (mavlink_received_in_past and ((time - last_mavlink_received_time) < 150.0));
+
+  time_of_last_can = (((-1.0) * 20.0) -> (if mission_out___EVENT_ then time else (pre time_of_last_can)));
+
+  --%PROPERTY __GUARANTEE0;
+  --%PROPERTY __GUARANTEE1;
+  --%PROPERTY __GUARANTEE2;
+  --%PROPERTY __GUARANTEE3;
+  --%PROPERTY __GUARANTEE4;
+
+  --%REALIZABLE mission_in___EVENT_, enc_mavlink_in___EVENT_;
+
+tel;
+

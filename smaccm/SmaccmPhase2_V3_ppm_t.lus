@@ -1,0 +1,30 @@
+type software_types__Flight_Control_Commands__i = struct {ppm0 : real; ppm1 : real; ppm2 : real; ppm3 : real; ppm4 : real; ppm5 : real; ppm6 : real; ppm7 : real};
+type software_types__control_law_request__impl = struct {set_armed : bool; set_autothr_src_nav : bool; set_autothr_src_ui : bool; set_disarmed : bool; set_head_src_nav : bool; set_head_src_ui : bool; set_safe : bool; set_stab_src_nav : bool; set_stab_src_ui : bool; set_thr_auto : bool; set_thr_direct : bool; set_ui_mavlink : bool; set_ui_ppm : bool; set_yaw_heading : bool; set_yaw_rate : bool; time : int};
+type software_types__userinput_result__impl = struct {pitch : real; roll : real; throttle : real; time : int; xsource : int; yaw : real};
+
+node main(
+  flight_command___EVENT_ : bool;
+  flight_command : software_types__Flight_Control_Commands__i;
+  user_input___EVENT_ : bool;
+  user_input : software_types__userinput_result__impl;
+  control_law_out___EVENT_ : bool;
+  control_law_out : software_types__control_law_request__impl
+) returns (
+
+);
+var
+  __GUARANTEE0 : bool;
+  __GUARANTEE1 : bool;
+let
+  --%MAIN;
+  __GUARANTEE0 = ((user_input___EVENT_ = control_law_out___EVENT_) and (user_input___EVENT_ = flight_command___EVENT_));
+
+  __GUARANTEE1 = (((not control_law_out.set_ui_ppm) and control_law_out.set_ui_mavlink) and (control_law_out.set_ui_ppm or control_law_out.set_ui_mavlink));
+
+  --%PROPERTY __GUARANTEE0;
+  --%PROPERTY __GUARANTEE1;
+
+  --%REALIZABLE flight_command___EVENT_, flight_command;
+
+tel;
+

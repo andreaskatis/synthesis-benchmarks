@@ -2,5 +2,9 @@
 *.smt2
 *.c
 *.h
+*.o
+*.pdf
+kind/
+fixpoint/
 run_synthesis.py
-debug_jkind.txt
+*.txt

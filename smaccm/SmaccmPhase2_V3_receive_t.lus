@@ -1,0 +1,19 @@
+node main(
+  mavlink_in___EVENT_ : bool;
+  nav_mav___EVENT_ : bool;
+  user_input_mav___EVENT_ : bool
+) returns (
+
+);
+var
+  __GUARANTEE0 : bool;
+let
+  --%MAIN;
+  __GUARANTEE0 = ((nav_mav___EVENT_ or user_input_mav___EVENT_) => mavlink_in___EVENT_);
+
+  --%PROPERTY __GUARANTEE0;
+
+  --%REALIZABLE mavlink_in___EVENT_;
+
+tel;
+

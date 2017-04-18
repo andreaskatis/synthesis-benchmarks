@@ -1,0 +1,56 @@
+type software_types__Flight_Control_Commands__i = struct {ppm0 : real; ppm1 : real; ppm2 : real; ppm3 : real; ppm4 : real; ppm5 : real; ppm6 : real; ppm7 : real};
+type software_types__Motion_Data__Impl = struct {vertical_speed : real};
+
+node main(
+  sensors_group__motion : software_types__Motion_Data__Impl;
+  sensors_group__gps___EVENT_ : bool;
+  mission_in___EVENT_ : bool;
+  ppm_in___EVENT_ : bool;
+  ppm_in : software_types__Flight_Control_Commands__i;
+  time : real;
+  next_time : real;
+  control_mode : int;
+  mavlink_armed_in_past : bool;
+  ppm_armed_in_past : bool;
+  mission_out___EVENT_ : bool
+) returns (
+
+);
+var
+  __GUARANTEE0 : bool;
+  __GUARANTEE1 : bool;
+  __GUARANTEE2 : bool;
+  __GUARANTEE3 : bool;
+  __GUARANTEE4 : bool;
+  __GUARANTEE5 : bool;
+  time_of_last_can : real;
+  time_of_last_ppm : real;
+let
+  --%MAIN;
+  __GUARANTEE0 = ((((time = 0.0) -> true) and (time >= 0.0)) and (true -> (time > (pre time))));
+
+  __GUARANTEE1 = ((next_time > time) and (true -> ((pre next_time) = time)));
+
+  __GUARANTEE2 = ((5.0 <= (next_time - time)) and ((next_time - time) < 50.0));
+
+  __GUARANTEE3 = ((((time - time_of_last_ppm) > 500.0) and ((time - time_of_last_can) > 500.0)) => ((control_mode = 3) or (control_mode = 1)));
+
+  __GUARANTEE4 = ((((time_of_last_ppm <= time) and (time_of_last_can <= time)) and (time_of_last_ppm >= 0.0)) and (time_of_last_can >= 0.0));
+
+  __GUARANTEE5 = ((control_mode = 2) => (mavlink_armed_in_past or ppm_armed_in_past));
+
+  time_of_last_can = (0.0 -> (if mission_in___EVENT_ then time else (pre time_of_last_can)));
+
+  time_of_last_ppm = (0.0 -> (if ppm_in___EVENT_ then time else (pre time_of_last_ppm)));
+
+  --%PROPERTY __GUARANTEE0;
+  --%PROPERTY __GUARANTEE1;
+  --%PROPERTY __GUARANTEE2;
+  --%PROPERTY __GUARANTEE3;
+  --%PROPERTY __GUARANTEE4;
+  --%PROPERTY __GUARANTEE5;
+
+  --%REALIZABLE sensors_group__motion, sensors_group__gps___EVENT_, mission_in___EVENT_, ppm_in___EVENT_, ppm_in;
+
+tel;
+
