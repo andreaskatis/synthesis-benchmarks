@@ -1,0 +1,44 @@
+const C = 3.0;
+type turn = enum { CINDERELLA, STEPMOTHER };
+
+-- empty buckets e and e+1 each round
+node game(i1, i2, i3, i4, i5 : real; e : int) returns (ok : bool);
+var
+  turn : turn;
+  b1, b2, b3, b4, b5 : real;
+let
+  turn = CINDERELLA -> if pre turn = CINDERELLA then STEPMOTHER else CINDERELLA;
+
+  assert i1 >= 0.0 and i2 >= 0.0 and i3 >= 0.0 and i4 >= 0.0 and i5 >= 0.0;
+  assert i1 + i2 + i3 + i4 + i5 = 1.0;
+  --assert e = 1 or e = 2 or e = 3 or e = 4 or e = 5;
+
+  b1 = 0.0 -> if turn = STEPMOTHER then
+                i1 + pre b1
+              else
+                if e = 5 or e = 1 then 0.0 else pre b1;
+
+  b2 = 0.0 -> if turn = STEPMOTHER then
+                i2 + pre b2
+              else
+                if e = 1 or e = 2 then 0.0 else pre b2;
+
+  b3 = 0.0 -> if turn = STEPMOTHER then
+                i3 + pre b3
+              else
+                if e = 2 or e = 3 then 0.0 else pre b3;
+
+  b4 = 0.0 -> if turn = STEPMOTHER then
+                i4 + pre b4
+              else
+                if e = 3 or e = 4 then 0.0 else pre b4;
+
+  b5 = 0.0 -> if turn = STEPMOTHER then
+                i5 + pre b5
+              else
+                if e = 4 or e = 5 then 0.0 else pre b5;
+
+  ok = b1 <= C and b2 <= C and b3 <= C and b4 <= C and b5 <= C and (e = 1 or e = 2 or e = 3 or e = 4 or e = 5);
+  --%REALIZABLE i1, i2, i3, i4, i5;
+  --%PROPERTY ok;
+tel;

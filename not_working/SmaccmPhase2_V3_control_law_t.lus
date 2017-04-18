@@ -1,0 +1,57 @@
+type software_types__control_law_request__impl = struct {set_armed : bool; set_autothr_src_nav : bool; set_autothr_src_ui : bool; set_disarmed : bool; set_head_src_nav : bool; set_head_src_ui : bool; set_safe : bool; set_stab_src_nav : bool; set_stab_src_ui : bool; set_thr_auto : bool; set_thr_direct : bool; set_ui_mavlink : bool; set_ui_ppm : bool; set_yaw_heading : bool; set_yaw_rate : bool; time : int};
+type software_types__control_law__impl = struct {armed_mode : int; autothr_source : int; head_source : int; stab_source : int; thr_mode : int; time : int; ui_source : int; yaw_mode : int};
+
+node main(
+  mav_law___EVENT_ : bool;
+  mav_law : software_types__control_law_request__impl;
+  nav_law___EVENT_ : bool;
+  nav_law : software_types__control_law_request__impl;
+  ppm_law___EVENT_ : bool;
+  ppm_law : software_types__control_law_request__impl;
+  out_law___EVENT_ : bool;
+  out_law : software_types__control_law__impl
+) returns (
+
+);
+var
+  __GUARANTEE0 : bool;
+  __GUARANTEE1 : bool;
+  __GUARANTEE2 : bool;
+  __GUARANTEE3 : bool;
+  __GUARANTEE4 : bool;
+  __GUARANTEE5 : bool;
+  __GUARANTEE6 : bool;
+  ui_source_mavlink : bool;
+  ui_source_ppm : bool;
+let
+  --%MAIN;
+  __GUARANTEE0 = (((out_law = software_types__control_law__impl {armed_mode = 0; autothr_source = 0; head_source = 0; stab_source = 0; thr_mode = 0; time = 0; ui_source = 0; yaw_mode = 0}) and out_law___EVENT_) -> true);
+
+  __GUARANTEE1 = (true -> (out_law___EVENT_ = (ppm_law___EVENT_ or mav_law___EVENT_)));
+
+  __GUARANTEE2 = (out_law.ui_source = (if ui_source_mavlink then 1 else 0));
+
+  __GUARANTEE3 = ((out_law.armed_mode = 0) -> true);
+
+  __GUARANTEE4 = (true -> (ppm_law___EVENT_ => (if (((pre out_law.armed_mode) = 0) and (not ppm_law.set_safe)) then (out_law.armed_mode = 1) else (if ppm_law.set_safe then (out_law.armed_mode = 0) else (if ppm_law.set_disarmed then (out_law.armed_mode = 1) else (if ppm_law.set_armed then (out_law.armed_mode = 2) else (out_law.armed_mode = (pre out_law.armed_mode))))))));
+
+  __GUARANTEE5 = (true -> (mav_law___EVENT_ => (if ((pre out_law.armed_mode) = 0) then (out_law.armed_mode = (pre out_law.armed_mode)) else (if mav_law.set_disarmed then (out_law.armed_mode = 1) else (if mav_law.set_armed then (out_law.armed_mode = 2) else (out_law.armed_mode = (pre out_law.armed_mode)))))));
+
+  __GUARANTEE6 = (true -> ((not (ppm_law___EVENT_ or mav_law___EVENT_)) => (out_law.armed_mode = (pre out_law.armed_mode))));
+
+  ui_source_mavlink = (false -> (mav_law.set_ui_mavlink and ppm_law.set_ui_mavlink));
+
+  ui_source_ppm = (not ui_source_mavlink);
+
+  --%PROPERTY __GUARANTEE0;
+  --%PROPERTY __GUARANTEE1;
+  --%PROPERTY __GUARANTEE2;
+  --%PROPERTY __GUARANTEE3;
+  --%PROPERTY __GUARANTEE4;
+  --%PROPERTY __GUARANTEE5;
+  --%PROPERTY __GUARANTEE6;
+
+  --%REALIZABLE mav_law___EVENT_, mav_law, nav_law___EVENT_, nav_law, ppm_law___EVENT_, ppm_law;
+
+tel;
+
