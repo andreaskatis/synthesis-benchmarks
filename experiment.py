@@ -300,62 +300,6 @@ def drawPerformance():
 
 
 
-def execute_fixpoint_only():
-    print("enter fixpoint_only")
-    lus_files = glob.glob("*.lus")
-    if len(lus_files) == 0:
-        print("No Lustre files found in fixpoint_only directory")
-        sys.exit(-1)
-
-   # lus_path = os.path.join(experiments_dir, lus_file)
-
-    for i, lus_file in enumerate(lus_files):
-        run_realizability(lus_file)
-        run_fixpoint(lus_file)
-
-        impl_files = glob.glob("*_skolem.smt2")
-        if len(impl_files) == 0:
-            print("No implement files found in fixpoint_only directory")
-            sys.exit(-1)
-    #print("moving impl files")
-        for i, impl_file in enumerate(impl_files):
-            shutil.move(os.getcwd(), "fixpoint")
-
-    #remove dummy smt2files
-        smt_files = glob.glob("*.smt2")
-        if (len(smt_files)!=0):
-            for i, smt_file in enumerate(smt_files):
-                os.remove(smt_file)
-
-    os.chdir("fixpoint")
-    impl_files = glob.glob("*_skolem.smt2")
-    if len(impl_files) == 0:
-        print("No Skolem files found in fixpoint directory")
-        sys.exit(-1)
-
-
-    for i, impl_file in enumerate(impl_files):
-        args = ['java', '-jar', smtlib2c_jar,
-            '-iter', '1000000',
-            '-c_harness', '-lustrec_harness', '-lustrecnode', 'top', impl_file]
-
-        with open("debug_smtlib2c.txt", "a") as debug:
-            debug.write("Running SMTLib2C with arguments: {}\n".format(args))
-            proc = subprocess.Popen(args, stdout=debug)
-            proc.wait()
-            debug.write("\n")
-    
-    #def run_makefile(file_path):
-    target_files = glob.glob("*_skolem.smt2")
-
-
-    for i, lus_file in enumerate(lus_files):
-        run_makefile(splitext(lus_file)[0])
-
-    for i, lus_file in enumerate(lus_files):
-        run_executables(splitext(lus_file)[0])
-
-
 
 
 ################################################################################################
@@ -381,29 +325,38 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir, anothe
 
 #exeute...................................................
     with open("lustreName.txt", "a") as file:
-        for i, lus_file in enumerate(lus_files):
-            empty = []
-            empty.append(lus_file)
-            NestList_overhead.append(empty)  # set the name of file 
+        if ((len(sys.argv)>1) and (sys.argv[1] == "-skipjkind")):
+            print("skip the jkind")
+            for i, lus_file in enumerate(lus_files):
+                empty = []
+                empty.append(lus_file)
+                NestList_overhead.append(empty)
 
-            file.write(lus_file+"\n")
 
-            sys.stdout.write("({} of {}) {} [".format(i+1, len(lus_files), lus_file))
-            sys.stdout.flush()
+        else:
+            for i, lus_file in enumerate(lus_files):
+                empty = []
+                empty.append(lus_file)
+                NestList_overhead.append(empty)  # set the name of file 
 
-            run_realizability_synthesis(lus_file, experiments_dir)
-            os.chdir(experiments_dir)
-            move_impl(push_path, experiments_dir)
-            os.chdir("..")
+                file.write(lus_file+"\n")
+
+                sys.stdout.write("({} of {}) {} [".format(i+1, len(lus_files), lus_file))
+                sys.stdout.flush()
+
+                run_realizability_synthesis(lus_file, experiments_dir)
+                os.chdir(experiments_dir)
+                move_impl(push_path, experiments_dir)
+                os.chdir("..")
     
-            run_last_fixpoint(lus_file, experiments_dir)
-            os.chdir(experiments_dir)
-            move_impl(another_push_path, experiments_dir)
-            os.chdir("..")
+                run_last_fixpoint(lus_file, experiments_dir)
+                os.chdir(experiments_dir)
+                move_impl(another_push_path, experiments_dir)
+                os.chdir("..")
 
 
-            sys.stdout.write("]\n")
-            sys.stdout.flush()
+                sys.stdout.write("]\n")
+                sys.stdout.flush()
 
 
     file.close()
@@ -635,10 +588,10 @@ print(NestList_overhead)
 
 print()
 
-print("NestList_size_name_verification")
-print(NestList_size_name_verification)
-print("NestList_size_name_smaccm")
-print(NestList_size_name_smaccm)
+#print("NestList_size_name_verification")
+#print(NestList_size_name_verification)
+#print("NestList_size_name_smaccm")
+#print(NestList_size_name_smaccm)
 
 
 print("current path =" + os.getcwd())
@@ -669,11 +622,6 @@ print(NestList_performance)
 
 drawPerformance()
 
-
-
-#run fixpoint_only 
-os.chdir("fixpoint_only")
-#execute_fixpoint_only()
 
 
 
