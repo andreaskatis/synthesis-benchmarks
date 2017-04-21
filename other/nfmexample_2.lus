@@ -1,0 +1,12 @@
+node top(x : int; y : int ; z : bool) returns ();
+var
+  guarantee1 : bool;
+  guarantee2 : bool;
+let
+  assert x <> y;
+  guarantee1 = true -> (pre((x >= y) -> pre(x >= y)) => z = true);
+  guarantee2 = true -> (pre((x <= y) -> pre(x <= y)) => z = false);
+  --%PROPERTY guarantee1;
+  --%PROPERTY guarantee2;
+  --%REALIZABLE x,y;
+tel;
