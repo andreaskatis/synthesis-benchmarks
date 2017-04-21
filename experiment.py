@@ -219,6 +219,14 @@ def run_executables(file_path):
         proc.wait()
 
 
+def getMax(nList):
+    sList1 = sorted(nList, key=lambda x: float(x[1]))
+    sList2 = sorted(nList, key=lambda x: float(x[2]))
+    if (sList1[-1][1] >= sList2[-1][2]):
+        return sList1[-1][1]
+    else:
+        return sList2[-1][2]
+
 
 def parse(target, output):
     with open(target,'r') as f:
@@ -308,10 +316,16 @@ def drawSize():
 # Plot the results
     fig = plt.figure()
     plt.yscale('log')
-    
     synthesized = plt.plot(pl1,'-r^', label = 'synthesized')
     fixpoint = plt.plot(pl2,'-bs', label = 'fixpoint')
-#handwritten = plt.plot(pl1,'-bs', label = 'handwritten')
+
+
+   # plt.scatter(pl1,pl2,c="g")
+
+  #  plt.axis([0,400,0,400])
+
+  #  plt.plot([0,400],[0,400])
+
 
     plt.xlabel("Model")
     plt.ylabel("Lines of Code")
@@ -392,9 +406,9 @@ def drawPerformance():
 
     plt.scatter(pl1,pl2,c="g")
 
-    plt.axis([0,400,0,400])
+    plt.axis([0,(float(getMax(NestList_performance))+100),0,(float(getMax(NestList_performance))+100)])
 
-    plt.plot([0,400],[0,400])
+    plt.plot([0,(float(getMax(NestList_performance))+100)],[0,(float(getMax(NestList_performance))+100)])
 
 
 
