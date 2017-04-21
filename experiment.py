@@ -16,12 +16,17 @@ SECOND_EXPERIMENTS_DIR = 'smaccm'
 SECOND_IMPLEMENT_DIR = 'smaccm/kind'
 SECOND_ANOTHER_IMPLEMENT_DIR = 'smaccm/fixpoint'
 
+THIRD_EXPERIMENTS_DIR = 'other'
+THIRD_IMPLEMENT_DIR = 'other/kind'
+THIRD_ANOTHER_IMPLEMENT_DIR = 'other/fixpoint'
+
 
 NestList_overhead = []
 NestList_size = [] 
 NestList_size_name = []
 NestList_size_name_verification = []
 NestList_size_name_smaccm = []
+NestList_size_name_other = []
 NestList_performance = []
 #TIMEOUT = 3600
 
@@ -103,7 +108,10 @@ def deleteAll():
     os.chdir("smaccm")
     deleteFile_in_folder()
     os.chdir("..")
-    
+
+    os.chdir("other")
+    deleteFile_in_folder()
+    os.chdir("..")
 
 
 
@@ -230,6 +238,16 @@ def writeOverhead(nestList, tempOverhead):
         for line in f:
             lst = line.split(" ")
             time = lst[-1].replace("s","").strip()
+            m = 0
+            h = 0
+            if ("m" in lst[-2]):
+                m = float(lst[-2].replace("m","")) * 60
+            if ("h" in lst[-3]):
+                h = float(lst[-3].replace("h","")) * 60 * 60
+
+            temp = float(time) + m + h
+            time = str(temp)
+
             nestList[index].append(time)
             count = count + 1
             if (count==3):
@@ -250,12 +268,6 @@ def drawOverhead():
     pl1 = np.array([float(j[1]) for j in sorted(NestList_overhead,key=lambda  x: float(x[1]))])
     pl2 = np.array([float(j[2]) for j in sorted(NestList_overhead,key=lambda  x: float(x[1]))])
     pl3 = np.array([float(j[3]) for j in sorted(NestList_overhead,key=lambda  x: float(x[1]))])
-
-    print("sorted overhead")
-    print(sorted(NestList_overhead, key=lambda x: float(x[1])))
-
-
-    #print(sorted(NestList_overhead, key=lambda res: res[1]))
 
     fig = plt.figure()
 
@@ -292,8 +304,7 @@ def drawSize():
     pl1 = np.array([j[1] for j in sorted(NestList_size, key=lambda x: float(x[1]))])
     pl2 = np.array([j[2] for j in sorted(NestList_size, key=lambda x: float(x[1]))])
 
-    print("sorted size")
-    print(sorted(NestList_size, key=lambda x: float(x[1])))
+   
 # Plot the results
     fig = plt.figure()
     plt.yscale('log')
@@ -371,8 +382,8 @@ def drawPerformance():
 
 
     fig = plt.figure()
-    plt.xscale('log')
-    plt.yscale('log')
+    #plt.xscale('log')
+    #plt.yscale('log')
     
    # synthesized = plt.plot(pl1,'-r^', label = 'synthesized')
    # fixpoint = plt.plot(pl2,'-bs', label = 'fixpoint')
@@ -381,7 +392,9 @@ def drawPerformance():
 
     plt.scatter(pl1,pl2,c="g")
 
-    plt.plot(x,x)
+    plt.axis([0,400,0,400])
+
+    plt.plot([0,400],[0,400])
 
 
 
@@ -437,7 +450,10 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir, anothe
 
 #
 # Find jkind.jar
-#
+
+    print("")
+    print("====Running Jkind under " + experiments_dir + "===")
+    print("")
 
 #exeute...................................................
     with open("lustreName.txt", "a") as file:
@@ -476,17 +492,7 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir, anothe
 
 
     file.close()
-    #print(NestList_overhead)
-
-
-#do the run_smtlib2c.................................................
-    print()
-    print("Running run_smtlib2c under")
-    print("path =" + os.getcwd())
-    print()
-
-
-
+    
 
 #execute run_smtlib2c in kind
 
@@ -502,7 +508,10 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir, anothe
     os.chdir("..")
 
     
-
+    print("")
+    print("====Running smtlib2c under " + implement_dir + "===")
+    print("")
+ 
 
     for i, impl_file in enumerate(impl_files):
         sys.stdout.write("({} of {}) {} [".format(i+1, len(impl_files), impl_file))
@@ -528,6 +537,10 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir, anothe
     os.chdir("..")
 
     
+    print("")
+    print("====Running run_smtlib2c under " + another_implement_dir + "===")
+    print("")
+ 
 
 
     for i, impl_file in enumerate(impl_files):
@@ -541,10 +554,8 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir, anothe
 
 
 
-    print("Running run_make under")
-    print("path =" + os.getcwd())
-    print()
 
+ 
 
     if not os.path.exists(experiments_dir):
         print("'" + experiments_dir + "' directory does not exist")
@@ -559,6 +570,10 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir, anothe
 
 
 #execute run_make in kind..................................
+
+    print("")
+    print("====Running Makefile under " + implement_dir + "===")
+    print("")
 
     os.chdir(implement_dir)
     for i, lus_file in enumerate(lus_files):
@@ -575,6 +590,12 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir, anothe
     os.chdir("..")
     os.chdir("..")
 
+
+
+    print("")
+    print("====Running Makefile under " + another_implement_dir + "===")
+    print("")
+
     os.chdir(another_implement_dir)
     for i, lus_file in enumerate(lus_files):
         sys.stdout.write("({} of {}) {} [".format(i+1, len(lus_files), lus_file))
@@ -585,18 +606,8 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir, anothe
         sys.stdout.write("]\n")
         sys.stdout.flush()
 
-
-
-
-    print("Running the run_executable")
-    print("path =" + os.getcwd())
-    print()
-
     os.chdir("..")
     os.chdir("..")
-
-
-
 
     if not os.path.exists(experiments_dir):
         print("'" + experiments_dir + "' directory does not exist")
@@ -610,6 +621,11 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir, anothe
 
 
 #run executable in kind .........................
+
+
+    print("")
+    print("====Running Executable under " + implement_dir + "===")
+    print("")
 
 
     os.chdir(implement_dir)
@@ -635,6 +651,9 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir, anothe
 
 #run executable in fixpoint .........................
 
+    print("")
+    print("====Running Executable under " + another_implement_dir + "===")
+    print("")
 
     os.chdir(another_implement_dir)
 
@@ -708,6 +727,7 @@ else:
 ##############################################################
 execute(EXPERIMENTS_DIR, PUSH_PATH, ANOTHER_PUSH_PATH, IMPLEMENT_DIR, ANOTHER_IMPLEMENT_DIR, NestList_size_name_verification)
 execute(SECOND_EXPERIMENTS_DIR, PUSH_PATH, ANOTHER_PUSH_PATH, SECOND_IMPLEMENT_DIR,SECOND_ANOTHER_IMPLEMENT_DIR, NestList_size_name_smaccm)
+execute(THIRD_EXPERIMENTS_DIR, PUSH_PATH, ANOTHER_PUSH_PATH, THIRD_IMPLEMENT_DIR,THIRD_ANOTHER_IMPLEMENT_DIR, NestList_size_name_other)
 
 
 #fill the NestList_overhead
@@ -716,8 +736,7 @@ writeOverhead(NestList_overhead, "overhead.txt")
 drawOverhead()
 print("NestList_overhead")
 print(NestList_overhead)
-
-print()
+print("")
 
 #print("NestList_size_name_verification")
 #print(NestList_size_name_verification)
@@ -733,20 +752,27 @@ measureSizeOfC(ANOTHER_IMPLEMENT_DIR, NestList_size_name_verification)
 #create both smaccm (kind and fixpoint) loc.txt
 measureSizeOfC(SECOND_IMPLEMENT_DIR, NestList_size_name_smaccm)
 measureSizeOfC(SECOND_ANOTHER_IMPLEMENT_DIR, NestList_size_name_smaccm)
+#create both other (kind and fixpoint) loc.txt
+measureSizeOfC(THIRD_IMPLEMENT_DIR, NestList_size_name_other)
+measureSizeOfC(THIRD_ANOTHER_IMPLEMENT_DIR, NestList_size_name_other)
 
 #append to NestList_size
 combineSizeTxt(IMPLEMENT_DIR+"/loc.txt", ANOTHER_IMPLEMENT_DIR+"/loc.txt")
 combineSizeTxt(SECOND_IMPLEMENT_DIR+"/loc.txt", SECOND_ANOTHER_IMPLEMENT_DIR+"/loc.txt")
+combineSizeTxt(THIRD_IMPLEMENT_DIR+"/loc.txt", THIRD_ANOTHER_IMPLEMENT_DIR+"/loc.txt")
+
 
 print("NestList_size")
 print(NestList_size)
 
 drawSize()
-print()
+print("")
 
 #append to NestList_performance
 combineResultTxt(IMPLEMENT_DIR+"/results.txt",ANOTHER_IMPLEMENT_DIR+"/results.txt")
 combineResultTxt(SECOND_IMPLEMENT_DIR+"/results.txt",SECOND_ANOTHER_IMPLEMENT_DIR+"/results.txt")
+combineResultTxt(THIRD_ANOTHER_IMPLEMENT_DIR+"/results.txt",THIRD_ANOTHER_IMPLEMENT_DIR+"/results.txt")
+
 
 print("NestList_performance")
 print(NestList_performance)
