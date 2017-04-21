@@ -246,9 +246,13 @@ def drawOverhead():
     # pl2 = np.array([float(j[2]) for j in sorted(NestList_overhead, key=lambda res: res[1])])
     # pl3 = np.array([float(j[3]) for j in sorted(NestList_overhead, key=lambda res: res[1])])
 
-    pl1 = np.array([float(j[1]) for j in NestList_overhead])
-    pl2 = np.array([float(j[2]) for j in NestList_overhead])
-    pl3 = np.array([float(j[3]) for j in NestList_overhead])
+
+    pl1 = np.array([float(j[1]) for j in sorted(NestList_overhead,key=lambda  x: float(x[1]))])
+    pl2 = np.array([float(j[2]) for j in sorted(NestList_overhead,key=lambda  x: float(x[1]))])
+    pl3 = np.array([float(j[3]) for j in sorted(NestList_overhead,key=lambda  x: float(x[1]))])
+
+    print("sorted overhead")
+    print(sorted(NestList_overhead, key=lambda x: float(x[1])))
 
 
     #print(sorted(NestList_overhead, key=lambda res: res[1]))
@@ -285,11 +289,11 @@ def drawSize():
     #pl2 = [j[1] for j in (sorted(NestList_size, key=lambda x: x[1]))]
     #pl4 = [j[2] for j in (sorted(NestList_size, key=lambda x: x[1]))]
 
-    pl1 = np.array([j[1] for j in NestList_size])
-    pl2 = np.array([j[2] for j in NestList_size])
+    pl1 = np.array([j[1] for j in sorted(NestList_size, key=lambda x: float(x[1]))])
+    pl2 = np.array([j[2] for j in sorted(NestList_size, key=lambda x: float(x[1]))])
 
-#(pl1,pl2) = zip(*pl3)
-
+    print("sorted size")
+    print(sorted(NestList_size, key=lambda x: float(x[1])))
 # Plot the results
     fig = plt.figure()
     plt.yscale('log')
@@ -359,19 +363,37 @@ def drawPerformance():
 
 #    pl1 = np.array([float(j[1]) for j in (sorted(NestList_performance, key=lambda x: x[1]))])
 #    pl2 = np.array([float(j[2]) for j in (sorted(NestList_performance, key=lambda x: x[1]))])
-    
+
+
     pl1 = np.array([float(j[1]) for j in NestList_performance])
     pl2 = np.array([float(j[2]) for j in NestList_performance])
 
+
+
     fig = plt.figure()
+    plt.xscale('log')
     plt.yscale('log')
     
-    synthesized = plt.plot(pl1,'-r^', label = 'synthesized')
-    fixpoint = plt.plot(pl2,'-bs', label = 'fixpoint')
+   # synthesized = plt.plot(pl1,'-r^', label = 'synthesized')
+   # fixpoint = plt.plot(pl2,'-bs', label = 'fixpoint')
+  #  plt.scatter(x,pl1,c="r",label = 'synthesized')
+  #  plt.scatter(x,pl2,c="g",label = 'fixpoint')
+
+    plt.scatter(pl1,pl2,c="g")
+
+    plt.plot(x,x)
+
+
+
+
+   
+
 #handwritten = plt.plot(pl1,'-bs', label = 'handwritten')
 
-    plt.xlabel("Model")
-    plt.ylabel("Performance")
+    #plt.xlabel("Model")
+
+    plt.xlabel("kind")
+    plt.ylabel("fixpoint")
     plt.legend(loc = 'upper left')
     fig.savefig("performance.pdf")
 
