@@ -315,20 +315,22 @@ def drawSize():
    
 # Plot the results
     fig = plt.figure()
-    plt.yscale('log')
-    synthesized = plt.plot(pl1,'-r^', label = 'synthesized')
-    fixpoint = plt.plot(pl2,'-bs', label = 'fixpoint')
+  #  plt.yscale('log')
+  #  synthesized = plt.plot(pl1,'-r^', label = 'synthesized')
+  #  fixpoint = plt.plot(pl2,'-bs', label = 'fixpoint')
 
 
-   # plt.scatter(pl1,pl2,c="g")
+    plt.scatter(pl1,pl2,c="g")
 
-  #  plt.axis([0,400,0,400])
+    plt.axis([0,(float(getMax(NestList_size))+100),0,(float(getMax(NestList_size))+100)])
 
-  #  plt.plot([0,400],[0,400])
+    plt.plot([0,(float(getMax(NestList_size))+100)],[0,(float(getMax(NestList_size))+100)])
 
 
-    plt.xlabel("Model")
-    plt.ylabel("Lines of Code")
+
+    #plt.xlabel("Model")
+    plt.xlabel("Lines of Code (Synthesis)")
+    plt.ylabel("Lines of Code (Fixpoint)")
     plt.legend(loc = 'upper left')
     fig.savefig("loc.pdf")
 
@@ -419,8 +421,8 @@ def drawPerformance():
 
     #plt.xlabel("Model")
 
-    plt.xlabel("kind")
-    plt.ylabel("fixpoint")
+    plt.xlabel("Performance at Synthesis")
+    plt.ylabel("Performance at Fixpoint")
     plt.legend(loc = 'upper left')
     fig.savefig("performance.pdf")
 
