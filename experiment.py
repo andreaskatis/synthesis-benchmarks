@@ -273,20 +273,22 @@ def drawOverhead():
     # pl3 = np.array([float(j[3]) for j in sorted(NestList_overhead, key=lambda res: res[1])])
 
 
-    pl1 = np.array([float(j[1]) for j in sorted(NestList_overhead,key=lambda  x: float(x[1]))])
-    pl2 = np.array([float(j[2]) for j in sorted(NestList_overhead,key=lambda  x: float(x[1]))])
-    pl3 = np.array([float(j[3]) for j in sorted(NestList_overhead,key=lambda  x: float(x[1]))])
+    pl1 = np.array([float(j[1]) for j in sorted(NestList_overhead,key=lambda  x: float(x[3]))])
+    pl2 = np.array([float(j[2]) for j in sorted(NestList_overhead,key=lambda  x: float(x[3]))])
+    pl3 = np.array([float(j[3]) for j in sorted(NestList_overhead,key=lambda  x: float(x[3]))])
 
     fig = plt.figure()
 
     plt.yscale('log')
+    #plt.axis([0,(len(NestList_overhead)+10),-10,(float(getMax(NestList_overhead))+100)])
+
     
-    realizability = plt.plot(pl1,'-bs', label = 'JRealizability')
-    synthesis = plt.plot(pl2,'-r^', label = 'Synthesis')
-    fixpoint = plt.plot(pl3,'-g^', label = 'Fixpoint')
+    #realizability = plt.plot(pl1,'-bs', label = 'JRealizability', markersize = 3)
+    synthesis = plt.plot(pl2,'-r^', label = 'JSYN', markersize = 3)
+    fixpoint = plt.plot(pl3,'-ko', label = 'Fixpoint',  markersize = 3)
 
     plt.xlabel("Model")
-    plt.ylabel("Performance (seconds)")
+    plt.ylabel("Performance(seconds)")
 
     plt.legend(bbox_to_anchor=(0.6, 1))
 
@@ -315,22 +317,22 @@ def drawSize():
    
 # Plot the results
     fig = plt.figure()
-  #  plt.yscale('log')
-  #  synthesized = plt.plot(pl1,'-r^', label = 'synthesized')
-  #  fixpoint = plt.plot(pl2,'-bs', label = 'fixpoint')
+    plt.yscale('log')
+    synthesized = plt.plot(pl1,'-r^', label = 'JSYN', markersize = 3)
+    fixpoint = plt.plot(pl2,'-bs', label = 'fixpoint', markersize = 3)
 
 
-    plt.scatter(pl1,pl2,c="g")
+    #plt.scatter(pl1,pl2,c="g")
 
-    plt.axis([0,(float(getMax(NestList_size))+100),0,(float(getMax(NestList_size))+100)])
+    #plt.axis([0,(float(getMax(NestList_size))+100),0,(float(getMax(NestList_size))+100)])
 
-    plt.plot([0,(float(getMax(NestList_size))+100)],[0,(float(getMax(NestList_size))+100)])
+    #plt.plot([0,(float(getMax(NestList_size))+100)],[0,(float(getMax(NestList_size))+100)])
 
 
 
-    #plt.xlabel("Model")
-    plt.xlabel("Lines of Code (Synthesis)")
-    plt.ylabel("Lines of Code (Fixpoint)")
+    plt.xlabel("Model")
+   # plt.xlabel("Lines of Code (Synthesis)")
+    plt.ylabel("Lines of Code")
     plt.legend(loc = 'upper left')
     fig.savefig("loc.pdf")
 
@@ -406,7 +408,7 @@ def drawPerformance():
   #  plt.scatter(x,pl1,c="r",label = 'synthesized')
   #  plt.scatter(x,pl2,c="g",label = 'fixpoint')
 
-    plt.scatter(pl1,pl2,c="g")
+    plt.scatter(pl1,pl2,c="g", s = 3)
 
     plt.axis([0,(float(getMax(NestList_performance))+100),0,(float(getMax(NestList_performance))+100)])
 
@@ -421,8 +423,9 @@ def drawPerformance():
 
     #plt.xlabel("Model")
 
-    plt.xlabel("Performance at Synthesis")
-    plt.ylabel("Performance at Fixpoint")
+    plt.xlabel("JSYN")
+    plt.ylabel("Fixpoint")
+    plt.title("Performance(milliseconds)")
     plt.legend(loc = 'upper left')
     fig.savefig("performance.pdf")
 
