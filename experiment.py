@@ -22,7 +22,7 @@ THIRD_ANOTHER_IMPLEMENT_DIR = 'other/fixpoint'
 
 
 NestList_overhead = []
-NestList_size = [] 
+NestList_size = []
 NestList_size_name = []
 NestList_size_name_verification = []
 NestList_size_name_smaccm = []
@@ -60,7 +60,7 @@ def deleteFile_in_subfolder(folder, lus_files):
     if (len(sfileList)!=0):
         for s in sfileList:
             os.remove(s)
-            
+
     if (len(txtfileList)!=0):
         for txt in txtfileList:
             os.remove(txt)
@@ -96,7 +96,7 @@ def deleteAll():
     if (len(pdffileList)!=0):
         for pdf in pdffileList:
             os.remove(pdf)
-    
+
     if (len(csvfileList)!=0):
         for csv in csvfileList:
             os.remove(csv)
@@ -146,7 +146,7 @@ def run_fixpoint(file_path):
         debug.write("\n")
 
 
-def run_realizability_synthesis(lus_file, experiments_dir): 
+def run_realizability_synthesis(lus_file, experiments_dir):
 
     lus_path = os.path.join(experiments_dir, lus_file)
     run_realizability(lus_path)
@@ -158,7 +158,7 @@ def run_realizability_synthesis(lus_file, experiments_dir):
     sys.stdout.write(".")
     sys.stdout.flush()
 
-def run_last_fixpoint(lus_file, experiments_dir):  
+def run_last_fixpoint(lus_file, experiments_dir):
     lus_path = os.path.join(experiments_dir, lus_file)
     run_fixpoint(lus_path)
     sys.stdout.write(".")
@@ -166,7 +166,7 @@ def run_last_fixpoint(lus_file, experiments_dir):
 
 
 
-def move_impl(outpath, experiments_dir): 
+def move_impl(outpath, experiments_dir):
     impl_files = glob.glob("*_skolem.smt2")
     if len(impl_files) == 0:
         print("No implement files found in '" + experiments_dir + "' directory")
@@ -191,7 +191,7 @@ def move_impl(outpath, experiments_dir):
 
 # '-timeout', str(TIMEOUT)
 
-def run_smtlib2c(impl_file, implement_dir): 
+def run_smtlib2c(impl_file, implement_dir):
     file_path = os.path.join(implement_dir, impl_file)
     args = ['java', '-jar', smtlib2c_jar,
             '-iter', '1000000',
@@ -261,7 +261,7 @@ def writeOverhead(nestList, tempOverhead):
             if (count==3):
                 index = index+1
                 count = 0
-            
+
     f.close()
 
 
@@ -282,7 +282,7 @@ def drawOverhead():
     plt.yscale('log')
     #plt.axis([0,(len(NestList_overhead)+10),-10,(float(getMax(NestList_overhead))+100)])
 
-    
+
     #realizability = plt.plot(pl1,'-bs', label = 'JRealizability', markersize = 3)
     synthesis = plt.plot(pl2,'-r^', label = 'JSYN', markersize = 3)
     fixpoint = plt.plot(pl3,'-ko', label = 'Fixpoint',  markersize = 3)
@@ -314,7 +314,7 @@ def drawSize():
     pl1 = np.array([j[1] for j in sorted(NestList_size, key=lambda x: float(x[1]))])
     pl2 = np.array([j[2] for j in sorted(NestList_size, key=lambda x: float(x[1]))])
 
-   
+
 # Plot the results
     fig = plt.figure()
     plt.yscale('log')
@@ -340,7 +340,7 @@ def drawSize():
 
 def combineSizeTxt(file1, file2):
     with open(file1, "r") as f1:
-        count= 0 
+        count= 0
         for line1 in f1:
             tempList1 = []
             lst = line1.strip().split(" ")
@@ -355,7 +355,7 @@ def combineSizeTxt(file1, file2):
                         tempList1.append(tempList2[0])
 
             NestList_size.append(tempList1)
-            
+
 
     f1.close()
     f2.close()
@@ -363,7 +363,7 @@ def combineSizeTxt(file1, file2):
 #same folder
 def combineResultTxt(file1, file2):
     with open(file1, "r") as f1:
-        count= 0 
+        count= 0
         for line1 in f1:
             tempList1 = []
             lst = line1.strip().split(" ")
@@ -374,12 +374,12 @@ def combineResultTxt(file1, file2):
             with open(file2, "r") as f2:
                 for line2 in f2:
                     tempList2 = line2.strip().split(" ")
-                
+
                     if (tempList2[0] == tempList1[0]):
                         tempList1.append(tempList2[1])
 
             NestList_performance.append(tempList1)
-            
+
 
     f1.close()
     f2.close()
@@ -402,7 +402,7 @@ def drawPerformance():
     fig = plt.figure()
     #plt.xscale('log')
     #plt.yscale('log')
-    
+
    # synthesized = plt.plot(pl1,'-r^', label = 'synthesized')
    # fixpoint = plt.plot(pl2,'-bs', label = 'fixpoint')
   #  plt.scatter(x,pl1,c="r",label = 'synthesized')
@@ -417,7 +417,7 @@ def drawPerformance():
 
 
 
-   
+
 
 #handwritten = plt.plot(pl1,'-bs', label = 'handwritten')
 
@@ -488,7 +488,7 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir, anothe
             for i, lus_file in enumerate(lus_files):
                 empty = []
                 empty.append(lus_file)
-                NestList_overhead.append(empty)  # set the name of file 
+                NestList_overhead.append(empty)  # set the name of file
 
                 file.write(lus_file+"\n")
 
@@ -499,7 +499,7 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir, anothe
                 os.chdir(experiments_dir)
                 move_impl(push_path, experiments_dir)
                 os.chdir("..")
-    
+
                 run_last_fixpoint(lus_file, experiments_dir)
                 os.chdir(experiments_dir)
                 move_impl(another_push_path, experiments_dir)
@@ -511,7 +511,7 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir, anothe
 
 
     file.close()
-    
+
 
 #execute run_smtlib2c in kind
 
@@ -526,11 +526,11 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir, anothe
     os.chdir("..")
     os.chdir("..")
 
-    
+
     print("")
     print("====Running smtlib2c under " + implement_dir + "===")
     print("")
- 
+
 
     for i, impl_file in enumerate(impl_files):
         sys.stdout.write("({} of {}) {} [".format(i+1, len(impl_files), impl_file))
@@ -555,11 +555,11 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir, anothe
     os.chdir("..")
     os.chdir("..")
 
-    
+
     print("")
     print("====Running run_smtlib2c under " + another_implement_dir + "===")
     print("")
- 
+
 
 
     for i, impl_file in enumerate(impl_files):
@@ -574,7 +574,7 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir, anothe
 
 
 
- 
+
 
     if not os.path.exists(experiments_dir):
         print("'" + experiments_dir + "' directory does not exist")
@@ -657,7 +657,7 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir, anothe
         empty = []
         empty.append(os.path.splitext(lus_file)[0]+".c")
         NestList_size_name_var.append(empty)
-    
+
 
         sys.stdout.write(".")
         sys.stdout.flush()
@@ -684,7 +684,7 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir, anothe
         #empty = []
         #empty.append(os.path.splitext(lus_file)[0]+".c")
         #NestList_size_name.append(empty)
-    
+
 
         sys.stdout.write(".")
         sys.stdout.flush()
@@ -765,7 +765,7 @@ print("")
 
 #print("current path =" + os.getcwd())
 
-#create both verification (kind and fixpoint) loc.txt 
+#create both verification (kind and fixpoint) loc.txt
 measureSizeOfC(IMPLEMENT_DIR, NestList_size_name_verification)
 measureSizeOfC(ANOTHER_IMPLEMENT_DIR, NestList_size_name_verification)
 #create both smaccm (kind and fixpoint) loc.txt
@@ -800,9 +800,3 @@ drawPerformance()
 
 
 writeCSV()
-
-
-
-
-
-
