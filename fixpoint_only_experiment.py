@@ -150,28 +150,28 @@ def execute_fixpoint_only():
 
     print("Running run_smtlib2c")
 #execute run_smtlib2c in kind
-    if not os.path.exists(EXTRA_IMPLEMENT_DIR):
-        print("'" + EXTRA_IMPLEMENT_DIR + "' directory does not exist")
-        sys.exit(-1)
-    os.chdir(EXTRA_IMPLEMENT_DIR)
-    impl_files = glob.glob("*_skolem.smt2")
-    if len(impl_files) == 0:
-        print("No Skolem files found in '" + EXTRA_IMPLEMENT_DIR + "' directory")
-        sys.exit(-1)
-    os.chdir("..")
-    os.chdir("..")
+    # if not os.path.exists(EXTRA_IMPLEMENT_DIR):
+    #     print("'" + EXTRA_IMPLEMENT_DIR + "' directory does not exist")
+    #     sys.exit(-1)
+    # os.chdir(EXTRA_IMPLEMENT_DIR)
+    # impl_files = glob.glob("*_skolem.smt2")
+    # if len(impl_files) == 0:
+    #     print("No Skolem files found in '" + EXTRA_IMPLEMENT_DIR + "' directory")
+    #     sys.exit(-1)
+    # os.chdir("..")
+    # os.chdir("..")
 
     
 
 
-    for i, impl_file in enumerate(impl_files):
-        sys.stdout.write("({} of {}) {} [".format(i+1, len(impl_files), impl_file))
-        sys.stdout.flush()
-        run_smtlib2c(impl_file, EXTRA_IMPLEMENT_DIR)
-        sys.stdout.write(".")
-        sys.stdout.flush()
-        sys.stdout.write("]\n")
-        sys.stdout.flush()
+    # for i, impl_file in enumerate(impl_files):
+    #     sys.stdout.write("({} of {}) {} [".format(i+1, len(impl_files), impl_file))
+    #     sys.stdout.flush()
+    #     run_smtlib2c(impl_file, EXTRA_IMPLEMENT_DIR)
+    #     sys.stdout.write(".")
+    #     sys.stdout.flush()
+    #     sys.stdout.write("]\n")
+    #     sys.stdout.flush()
 
 
 #execute run_smtlib2c in fixpoint
@@ -217,20 +217,20 @@ def execute_fixpoint_only():
 
 #execute run_make in kind..................................
 
-    os.chdir(EXTRA_IMPLEMENT_DIR)
-    for i, lus_file in enumerate(lus_files):
-        sys.stdout.write("({} of {}) {} [".format(i+1, len(lus_files), lus_file))
-        sys.stdout.flush()
-        run_makefile(os.path.splitext(lus_file)[0])
-        sys.stdout.write(".")
-        sys.stdout.flush()
-        sys.stdout.write("]\n")
-        sys.stdout.flush()
+#     os.chdir(EXTRA_IMPLEMENT_DIR)
+#     for i, lus_file in enumerate(lus_files):
+#         sys.stdout.write("({} of {}) {} [".format(i+1, len(lus_files), lus_file))
+#         sys.stdout.flush()
+#         run_makefile(os.path.splitext(lus_file)[0])
+#         sys.stdout.write(".")
+#         sys.stdout.flush()
+#         sys.stdout.write("]\n")
+#         sys.stdout.flush()
 
 
-#execute run_make in fixpoint..................................
-    os.chdir("..")
-    os.chdir("..")
+# #execute run_make in fixpoint..................................
+#     os.chdir("..")
+#     os.chdir("..")
 
     os.chdir(EXTRA_ANOTHER_IMPLEMENT_DIR)
     for i, lus_file in enumerate(lus_files):
@@ -257,19 +257,19 @@ def execute_fixpoint_only():
     os.chdir("..")
 
 #run executable in kind .........................
-    os.chdir(EXTRA_IMPLEMENT_DIR)
+    # os.chdir(EXTRA_IMPLEMENT_DIR)
 
-    for i, lus_file in enumerate(lus_files):
-        sys.stdout.write("({} of {}) {} [".format(i+1, len(lus_files), lus_file))
-        sys.stdout.flush()
-        run_executables(os.path.splitext(lus_file)[0])
-        sys.stdout.write(".")
-        sys.stdout.flush()
-        sys.stdout.write("]\n")
-        sys.stdout.flush()
+    # for i, lus_file in enumerate(lus_files):
+    #     sys.stdout.write("({} of {}) {} [".format(i+1, len(lus_files), lus_file))
+    #     sys.stdout.flush()
+    #     run_executables(os.path.splitext(lus_file)[0])
+    #     sys.stdout.write(".")
+    #     sys.stdout.flush()
+    #     sys.stdout.write("]\n")
+    #     sys.stdout.flush()
 
-    os.chdir("..")
-    os.chdir("..")
+    # os.chdir("..")
+    # os.chdir("..")
 
 #run executable in fixpoint .........................
     os.chdir(EXTRA_ANOTHER_IMPLEMENT_DIR)
