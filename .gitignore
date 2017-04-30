@@ -8,3 +8,4 @@ kind/
 fixpoint/
 run_synthesis.py
 *.txt
+*.csv

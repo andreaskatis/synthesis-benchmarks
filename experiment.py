@@ -184,13 +184,6 @@ def move_impl(outpath, experiments_dir):
             os.remove(smt_file)
 
 
-
-
-
-
-
-# '-timeout', str(TIMEOUT)
-
 def run_smtlib2c(impl_file, implement_dir): 
     file_path = os.path.join(implement_dir, impl_file)
     args = ['java', '-jar', smtlib2c_jar,
@@ -268,10 +261,6 @@ def writeOverhead(nestList, tempOverhead):
 def drawOverhead():
     font = {'family' : 'normal','weight' : 'bold', 'size' : 20}
     plt.rc('font', **font)
-    # pl1 = np.array([float(j[1]) for j in sorted(NestList_overhead, key=lambda res: res[1])])
-    # pl2 = np.array([float(j[2]) for j in sorted(NestList_overhead, key=lambda res: res[1])])
-    # pl3 = np.array([float(j[3]) for j in sorted(NestList_overhead, key=lambda res: res[1])])
-
 
     pl1 = np.array([float(j[1]) for j in sorted(NestList_overhead,key=lambda  x: float(x[3]))])
     pl2 = np.array([float(j[2]) for j in sorted(NestList_overhead,key=lambda  x: float(x[3]))])
@@ -282,10 +271,6 @@ def drawOverhead():
     plt.yscale('log')
     plt.ylim(pow(10,-1), pow(10,2.3))
 
-    #plt.axis([0,(len(NestList_overhead)+10),-10,(float(getMax(NestList_overhead))+100)])
-
-    
-    #realizability = plt.plot(pl1,'-bs', label = 'JRealizability', markersize = 3)
     synthesis = plt.plot(pl2,'-r^', label = 'JSYN', markersize = 3)
     fixpoint = plt.plot(pl3,'-bo', label = 'JSYN-VG',  markersize = 3)
 
@@ -310,9 +295,6 @@ def drawSize():
     font = {'family' : 'normal', 'weight' : 'bold', 'size' : 20}
     plt.rc('font', **font)
 
-    #pl2 = [j[1] for j in (sorted(NestList_size, key=lambda x: x[1]))]
-    #pl4 = [j[2] for j in (sorted(NestList_size, key=lambda x: x[1]))]
-
     pl1 = np.array([j[1] for j in sorted(NestList_size, key=lambda x: float(x[2]))])
     pl2 = np.array([j[2] for j in sorted(NestList_size, key=lambda x: float(x[2]))])
 
@@ -324,17 +306,7 @@ def drawSize():
     synthesized = plt.plot(pl1,'-r^', label = 'JSYN', markersize = 3)
     fixpoint = plt.plot(pl2,'-bo', label = 'JSYN-VG', markersize = 3)
 
-
-    #plt.scatter(pl1,pl2,c="g")
-
-    #plt.axis([0,(float(getMax(NestList_size))+100),0,(float(getMax(NestList_size))+100)])
-
-    #plt.plot([0,(float(getMax(NestList_size))+100)],[0,(float(getMax(NestList_size))+100)])
-
-
-
     plt.xlabel("Model")
-   # plt.xlabel("Lines of Code (Synthesis)")
     plt.ylabel("Lines of Code")
     plt.legend(loc = 'upper left')
     fig.savefig("loc.pdf")
@@ -392,39 +364,16 @@ def drawPerformance():
     font = {'family' : 'normal','weight' : 'bold','size' : 20}
     plt.rc('font', **font)
 
-
-#    pl1 = np.array([float(j[1]) for j in (sorted(NestList_performance, key=lambda x: x[1]))])
-#    pl2 = np.array([float(j[2]) for j in (sorted(NestList_performance, key=lambda x: x[1]))])
-
-
     pl1 = np.array([float(j[1]) for j in NestList_performance])
     pl2 = np.array([float(j[2]) for j in NestList_performance])
 
-
-
     fig = plt.figure()
-    #plt.xscale('log')
-    #plt.yscale('log')
-    
-   # synthesized = plt.plot(pl1,'-r^', label = 'synthesized')
-   # fixpoint = plt.plot(pl2,'-bs', label = 'fixpoint')
-  #  plt.scatter(x,pl1,c="r",label = 'synthesized')
-  #  plt.scatter(x,pl2,c="g",label = 'fixpoint')
-
+   
     plt.scatter(pl1,pl2,c="r", s = 8,edgecolor= "")
 
     plt.axis([0,(float(getMax(NestList_performance))+20),0,(float(getMax(NestList_performance))+20)])
 
     plt.plot([0,(float(getMax(NestList_performance))+20)],[0,(float(getMax(NestList_performance))+20)])
-
-
-
-
-   
-
-#handwritten = plt.plot(pl1,'-bs', label = 'handwritten')
-
-    #plt.xlabel("Model")
 
     plt.xlabel("JSYN")
     plt.ylabel("JSYN-VG")
