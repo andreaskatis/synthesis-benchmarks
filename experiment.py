@@ -280,12 +280,14 @@ def drawOverhead():
     fig = plt.figure()
 
     plt.yscale('log')
+    plt.ylim(pow(10,-1), pow(10,2.3))
+
     #plt.axis([0,(len(NestList_overhead)+10),-10,(float(getMax(NestList_overhead))+100)])
 
     
     #realizability = plt.plot(pl1,'-bs', label = 'JRealizability', markersize = 3)
     synthesis = plt.plot(pl2,'-r^', label = 'JSYN', markersize = 3)
-    fixpoint = plt.plot(pl3,'-ko', label = 'Fixpoint',  markersize = 3)
+    fixpoint = plt.plot(pl3,'-bo', label = 'JSYN-VG',  markersize = 3)
 
     plt.xlabel("Model")
     plt.ylabel("Performance(seconds)")
@@ -311,15 +313,16 @@ def drawSize():
     #pl2 = [j[1] for j in (sorted(NestList_size, key=lambda x: x[1]))]
     #pl4 = [j[2] for j in (sorted(NestList_size, key=lambda x: x[1]))]
 
-    pl1 = np.array([j[1] for j in sorted(NestList_size, key=lambda x: float(x[1]))])
-    pl2 = np.array([j[2] for j in sorted(NestList_size, key=lambda x: float(x[1]))])
+    pl1 = np.array([j[1] for j in sorted(NestList_size, key=lambda x: float(x[2]))])
+    pl2 = np.array([j[2] for j in sorted(NestList_size, key=lambda x: float(x[2]))])
 
    
 # Plot the results
     fig = plt.figure()
     plt.yscale('log')
+    plt.ylim(pow(10,1), pow(10,3.5))
     synthesized = plt.plot(pl1,'-r^', label = 'JSYN', markersize = 3)
-    fixpoint = plt.plot(pl2,'-bs', label = 'fixpoint', markersize = 3)
+    fixpoint = plt.plot(pl2,'-bo', label = 'JSYN-VG', markersize = 3)
 
 
     #plt.scatter(pl1,pl2,c="g")
@@ -408,11 +411,11 @@ def drawPerformance():
   #  plt.scatter(x,pl1,c="r",label = 'synthesized')
   #  plt.scatter(x,pl2,c="g",label = 'fixpoint')
 
-    plt.scatter(pl1,pl2,c="g", s = 3)
+    plt.scatter(pl1,pl2,c="r", s = 8,edgecolor= "")
 
-    plt.axis([0,(float(getMax(NestList_performance))+100),0,(float(getMax(NestList_performance))+100)])
+    plt.axis([0,(float(getMax(NestList_performance))+20),0,(float(getMax(NestList_performance))+20)])
 
-    plt.plot([0,(float(getMax(NestList_performance))+100)],[0,(float(getMax(NestList_performance))+100)])
+    plt.plot([0,(float(getMax(NestList_performance))+20)],[0,(float(getMax(NestList_performance))+20)])
 
 
 
@@ -424,7 +427,7 @@ def drawPerformance():
     #plt.xlabel("Model")
 
     plt.xlabel("JSYN")
-    plt.ylabel("Fixpoint")
+    plt.ylabel("JSYN-VG")
     plt.title("Performance(milliseconds)")
     plt.legend(loc = 'upper left')
     fig.savefig("performance.pdf")
@@ -570,10 +573,6 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir, anothe
         sys.stdout.flush()
         sys.stdout.write("]\n")
         sys.stdout.flush()
-
-
-
-
  
 
     if not os.path.exists(experiments_dir):
@@ -681,11 +680,6 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir, anothe
         sys.stdout.flush()
         run_executables(os.path.splitext(lus_file)[0])
 
-        #empty = []
-        #empty.append(os.path.splitext(lus_file)[0]+".c")
-        #NestList_size_name.append(empty)
-    
-
         sys.stdout.write(".")
         sys.stdout.flush()
         sys.stdout.write("]\n")
@@ -757,13 +751,6 @@ print("NestList_overhead")
 print(NestList_overhead)
 print("")
 
-#print("NestList_size_name_verification")
-#print(NestList_size_name_verification)
-#print("NestList_size_name_smaccm")
-#print(NestList_size_name_smaccm)
-
-
-#print("current path =" + os.getcwd())
 
 #create both verification (kind and fixpoint) loc.txt 
 measureSizeOfC(IMPLEMENT_DIR, NestList_size_name_verification)
