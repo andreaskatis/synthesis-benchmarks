@@ -1,0 +1,31 @@
+const C = 2.0;
+
+node bucket_val(fill_amt: real; empty: bool) returns (level: real);
+let
+   level = 0.0 ->
+	   (if (empty) then 0.0 else pre(level)) + fill_amt;
+tel;
+
+-- empty buckets e and e+1 each round
+node game(i1, i2, i3, i4, i5 : real; e : int) returns (ok : bool);
+var
+  b1, b2, b3, b4, b5 : real;
+let
+  assert i1 >= 0.0 and i2 >= 0.0 and i3 >= 0.0 and i4 >= 0.0 and i5 >= 0.0;
+  assert i1 + i2 + i3 + i4 + i5 = 1.0;
+
+  b1 = bucket_val(i1, e = 5 or e = 1);
+  b2 = bucket_val(i2, e = 1 or e = 2);
+  b3 = bucket_val(i3, e = 2 or e = 3);
+  b4 = bucket_val(i4, e = 3 or e = 4);
+  b5 = bucket_val(i5, e = 4 or e = 5);
+
+  ok = (b1 <= C and b2 <= C and b3 <= C and b4 <= C and b5 <= C);
+
+  -- MWW: I don't think that this is necessary.
+  -- and
+  --  (e = 1 or e = 2 or e = 3 or e = 4 or e = 5);
+
+  --%REALIZABLE i1, i2, i3, i4, i5;
+  --%PROPERTY ok;
+tel;
