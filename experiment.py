@@ -277,7 +277,8 @@ def drawOverhead():
     plt.xlabel("Model")
     plt.ylabel("Performance(seconds)")
 
-    plt.legend(bbox_to_anchor=(0.6, 1))
+    #plt.legend(bbox_to_anchor=(0.6, 1))
+    plt.legend(loc = 'upper left')
 
     fig.savefig("overhead.pdf")
 
@@ -739,6 +740,20 @@ writeCSV()
 
 
 
+avg_overhead_s = sum([float(a[2]) for a in NestList_overhead])/len(NestList_overhead)
+avg_overhead_f = sum([float(a[3]) for a in NestList_overhead])/len(NestList_overhead)
+
+avg_size_s = sum([float(b[1]) for b in NestList_size])/len(NestList_size)
+avg_size_f = sum([float(b[2]) for b in NestList_size])/len(NestList_size)
 
 
+print("avg_overhead_s")
+print(avg_overhead_s)
+print("avg_overhead_f")
+print(avg_overhead_f)
+
+print("avg_size_s")
+print(avg_size_s)
+print("avg_size_f")
+print(avg_size_f)
 
