@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 #
 # Configuration
 #
+#
 
 EXPERIMENTS_DIR = 'verification'
 PUSH_PATH = 'kind'
