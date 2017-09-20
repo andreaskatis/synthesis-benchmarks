@@ -13,7 +13,7 @@ ANOTHER_PUSH_PATH = 'fixpoint'
 def run_realizability_fixpoint_only(file_path):
     #delete "xml"
     args = ['java', '-jar', jkind_jar, '-jrealizability',
-            '-scratch', '-timeout', '100', '-n', '1000000', file_path]
+            '-scratch', '-timeout', '1000', '-n', '1000000', file_path]
     with open(EXTRA_EXPERIMENTS_DIR+"/debug_jkind.txt", "a") as debug:
         debug.write("Running jkind with arguments: {}\n".format(args))
         proc = subprocess.Popen(args, stdout=debug)
@@ -22,7 +22,7 @@ def run_realizability_fixpoint_only(file_path):
 
 def run_synthesis_fixpoint_only(file_path):
     args = ['java', '-jar', jkind_jar, '-jrealizability',
-            '-scratch','-synthesis', '-timeout', '100', '-n', '1000000', file_path]
+            '-scratch','-synthesis', '-timeout', '1000', '-n', '1000000', file_path]
     with open(EXTRA_EXPERIMENTS_DIR+"/debug_jkind.txt", "a") as debug:
         debug.write("Running jkind with arguments: {}\n".format(args))
         proc = subprocess.Popen(args, stdout=debug)
