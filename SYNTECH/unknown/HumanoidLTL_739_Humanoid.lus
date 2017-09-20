@@ -1,0 +1,87 @@
+const K = 2.0;
+type env_Obstacle = enum {CLEAR, BLOCKED};
+type env_Noise = enum {QUIET, NOISE};
+type env_Heading = enum {N, NW, W, SW, SO, SE, EA, NE};
+type env_Button = enum {FREE, PRESSED};
+
+type sys_LeftMotor = enum {LM_FWD, LM_BWD, LM_STOP, LM_TURN_FWD, LM_TURN_BWD, LM_CALIB_TURN, LM_CALIB_FWD};
+type sys_RightMotor = enum {RM_FWD, RM_BWD, RM_STOP, RM_TURN_FWD, RM_TURN_BWD, RM_CALIB_TURN, RM_CALIB_FWD};
+type sys_HeadMotor = enum {HM_FWD, HM_BWD, HM_STOP};
+type sys_spec_nextMoveMode = enum {snMM_FWD, snMM_BWD, snMM_TURN_LEFT_1, snMM_TURN_LEFT_2};
+type sys_spec_state = enum {Q0, Q1, Q2, Q3};
+type sys_search = enum {M0, M1};
+-- in JKIND (lustre?) enums can't share the same values. as such, next_head is of type sys_Heading here.
+--type sys_next_head = enum {nh_N, nh_NW, nh_W, nh_SW, nh_SO, nh_SE, nh_EA, nh_NE};
+
+node Initially(i: bool) returns (o: bool);
+let
+  o = i -> true;
+tel;
+
+node respondsTo(trigger, response : bool) returns (ok : bool);
+var
+  responded : bool;
+  counter_gf : real;
+let
+  counter_gf = 0.0 -> if responded then 0.0 else pre(counter_gf) + 1.0;
+  responded = true -> if pre(response or responded and (not trigger)) then true else false;
+  ok = true -> ((responded => pre(response or responded and (not trigger))) and (pre(response or responded and (not trigger)) => responded) and counter_gf < K);
+tel;
+
+node Humanoid(Obstacle : env_Obstacle; Noise : env_Noise; Heading : env_Heading; Button : env_Button; LeftMotor : sys_LeftMotor; RightMotor : sys_RightMotor; HeadMotor : sys_HeadMotor; spec_nextMoveMode : sys_spec_nextMoveMode; spec_state : sys_spec_state; search : sys_search; next_head : env_Heading) returns (ok : bool);
+var
+  counter_gf1, counter_gf2, counter_gf3 : real;
+  ok1, ok2, ok3, ok4, ok5, ok6, ok7, ok8, ok9, ok10, ok11, ok12, ok13, ok14, ok15, ok16, ok17, ok18, ok19, ok20, ok21, ok22, ok23 : bool;
+let
+
+  ok1 = Initially(search = M0 and spec_state = Q0);
+
+  counter_gf1 = 0.0 -> if spec_nextMoveMode = snMM_FWD then 0.0 else pre(counter_gf1) + 1.0;
+  ok2 = counter_gf1 < K;
+  counter_gf2 = 0.0 -> if search = M0 then 0.0 else pre(counter_gf2) +1.0;
+  ok3 = counter_gf2 < K;
+
+  ok4 = (pre(spec_state = Q0 and spec_nextMoveMode = snMM_FWD) and spec_nextMoveMode = snMM_BWD) => spec_state = Q1;
+  ok5 = (pre(spec_state = Q1 and spec_nextMoveMode = snMM_BWD) and spec_nextMoveMode = snMM_FWD) => spec_state = Q2;
+  ok6 = (not (pre(spec_state = Q2 and spec_nextMoveMode = snMM_FWD) and spec_nextMoveMode = snMM_BWD));
+  ok7 = pre(spec_nextMoveMode = snMM_TURN_LEFT_1 or spec_nextMoveMode = snMM_TURN_LEFT_2) => spec_state = Q0;
+
+
+  ok8 = true ->((pre(search = M0) and Noise = NOISE and Heading <> next_head and Button <> PRESSED) => search = M1);
+  ok9 = (pre(search = M1) and Heading = next_head) => search = M0;
+  ok10 = true -> ((pre(search = M1) and Heading <> next_head) => search = M1);
+
+  ok11 = (Button = PRESSED and pre(search = M0)) => next_head = Heading;
+  ok12 = (Button = FREE or pre(search = M1)) => next_head = pre(next_head);
+
+  ok13 = (Obstacle = BLOCKED and (not pre(spec_nextMoveMode = snMM_TURN_LEFT_2))) => (not (spec_nextMoveMode = snMM_FWD));
+  ok14 = ((pre(spec_nextMoveMode = snMM_BWD) and spec_nextMoveMode = snMM_FWD) => (LeftMotor = LM_FWD and RightMotor = RM_BWD)) and ((LeftMotor = LM_FWD and RightMotor = RM_BWD) => (pre(spec_nextMoveMode = snMM_BWD) and spec_nextMoveMode = snMM_FWD));
+  ok15 = ((pre(spec_nextMoveMode = snMM_FWD) and spec_nextMoveMode = snMM_BWD) => (LeftMotor = LM_BWD and RightMotor = RM_FWD)) and ((LeftMotor = LM_BWD and RightMotor = RM_FWD) => (pre(spec_nextMoveMode = snMM_FWD) and spec_nextMoveMode = snMM_BWD));
+  ok16 = (spec_nextMoveMode = snMM_BWD) => pre(spec_nextMoveMode = snMM_FWD or spec_nextMoveMode = snMM_BWD);
+
+
+  ok17 = pre(spec_nextMoveMode = snMM_TURN_LEFT_1) => (LeftMotor = LM_FWD and RightMotor = RM_TURN_FWD);
+  ok18 = pre(spec_nextMoveMode = snMM_TURN_LEFT_2) => (LeftMotor = LM_BWD and RightMotor = RM_TURN_BWD);
+  ok19 = (pre(spec_nextMoveMode = snMM_TURN_LEFT_1) => spec_nextMoveMode = snMM_TURN_LEFT_2) and (spec_nextMoveMode = snMM_TURN_LEFT_2 => pre(spec_nextMoveMode = snMM_TURN_LEFT_1));
+
+
+  ok20 = (not pre(spec_nextMoveMode = snMM_TURN_LEFT_1 or spec_nextMoveMode = snMM_TURN_LEFT_2)) => (not (LeftMotor = LM_TURN_BWD or RightMotor = RM_TURN_BWD or LeftMotor = LM_TURN_FWD or RightMotor = RM_TURN_FWD));
+
+  ok21 = ((pre(spec_nextMoveMode = snMM_FWD) and spec_nextMoveMode = snMM_TURN_LEFT_1) => (LeftMotor = LM_CALIB_TURN and RightMotor = RM_CALIB_TURN)) and ((LeftMotor = LM_CALIB_TURN and RightMotor = RM_CALIB_TURN) => (pre(spec_nextMoveMode = snMM_FWD) and spec_nextMoveMode = snMM_TURN_LEFT_1));
+
+  ok22 = ((spec_nextMoveMode = snMM_FWD and pre(spec_nextMoveMode = snMM_TURN_LEFT_2)) => (LeftMotor = LM_CALIB_FWD and RightMotor = RM_CALIB_FWD)) and ((LeftMotor = LM_CALIB_FWD and RightMotor = RM_CALIB_FWD) => (spec_nextMoveMode = snMM_FWD and pre(spec_nextMoveMode = snMM_TURN_LEFT_2)));
+
+  ok23 = (pre(spec_nextMoveMode = snMM_BWD)) => (spec_nextMoveMode <> snMM_TURN_LEFT_1);
+
+  assert respondsTo((search = M1), (Heading = next_head));
+  assert pre((spec_nextMoveMode = snMM_FWD or spec_nextMoveMode = snMM_BWD) and Heading <> next_head) => Heading <> pre(next_head);
+  assert respondsTo((spec_nextMoveMode <> snMM_FWD), (Obstacle = CLEAR));
+  assert pre(spec_nextMoveMode = snMM_BWD and Obstacle = CLEAR) => Obstacle <> BLOCKED;
+  counter_gf3 = 0.0 -> if (pre(spec_nextMoveMode = snMM_TURN_LEFT_2) and Obstacle = CLEAR) then 0.0 else pre(counter_gf3) + 1.0;
+  assert counter_gf3 < K;
+
+  ok = ok1 and ok2 and ok3 and ok4 and ok5 and ok6 and ok7 and ok8 and ok9 and ok10 and ok11 and ok12 and ok13 and ok14 and ok15 and ok16 and ok17 and ok18 and ok19 and ok20 and ok21 and ok22 and ok23;
+
+  --%PROPERTY ok;
+  --%REALIZABLE Obstacle, Noise, Heading, Button;
+tel;

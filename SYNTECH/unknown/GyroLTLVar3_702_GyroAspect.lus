@@ -1,0 +1,65 @@
+const K = 2.0;
+type env_frontDistSense = enum {CLEAR, BLOCKED};
+type sys_balancer = enum {bSTP, bFWD, bBWD, bTURN_LEFT, bTURN_RIGHT};
+
+node Initially(i: bool) returns (o: bool);
+let
+  o = i -> true;
+tel;
+
+node respondsTo(trigger, response : bool) returns (ok : bool);
+var
+  responded : bool;
+  counter_gf : real;
+let
+  counter_gf = 0.0 -> if responded then 0.0 else pre(counter_gf) + 1.0;
+  responded = true -> if pre(response or responded and (not trigger)) then true else false;
+  ok = true -> ((responded => pre(response or responded and (not trigger))) and (pre(response or responded and (not trigger)) => responded) and counter_gf < K);
+tel;
+
+node GyroAspect(frontDistSense : env_frontDistSense; backDistSense : env_frontDistSense; isReady : bool; balancer : sys_balancer) returns (ok : bool);
+var
+  counter_gf1, counter_gf2, counter_gf3 : real;
+  ok1, ok2, ok3, ok4, ok5, ok6, ok7 : bool;
+  turningOp, moveAwayFromFrontObstacle, moveAwayFromBackObstacle : bool;
+  spec_blockedState : sys_spec_blockedState;
+let
+
+  ok1 = Initially(balancer = STP);
+
+  ok2 = (not isReady) => balancer = STP;
+  ok3 = (balancer = FWD) => (frontDistSense = CLEAR);
+  ok4 = (balancer = BWD) => (backDistSense = CLEAR);
+
+  counter_gf1 = 0.0 -> if (balancer = FWD) then 0.0 else pre(counter_gf1) + 1.0;
+  ok5 = counter_gf1 < K;
+
+  counter_gf2 = 0.0 -> if (balancer = TURN_RIGHT or balancer = TURN_LEFT) then 0.0 else pre(counter_gf2) + 1.0;
+  ok6 = counter_gf2 < K;
+
+  ok7 = (isReady and frontDistSense = CLEAR) => balancer = FWD;
+
+  assert Initially(not isReady);
+  assert Initially(frontDistSense = CLEAR and backDistSense = CLEAR);
+
+  counter_gf3 = 0.0 -> if isReady then 0.0 else pre(counter_gf3) + 1.0;
+  assert counter_gf3 < K;
+  assert (pre(isReady) => isReady);
+
+
+  moveAwayFromFrontObstacle = not (balancer = FWD or balancer = STP);
+
+  assert respondsTo(moveAwayFromFrontObstacle, ((not moveAwayFromFrontObstacle) or frontDistSense = CLEAR));
+
+  moveAwayFromBackObstacle = not (balancer = BWD or balancer = STP);
+
+  assert respondsTo(moveAwayFromBackObstacle, ((not moveAwayFromBackObstacle) or backDistSense = CLEAR));
+
+  assert respondsTo((balancer = FWD), (balancer <> FWD or frontDistSense = BLOCKED));
+  assert respondsTo((balancer = BWD), (balancer <> BWD or backDistSense = BLOCKED));
+
+  ok = ok1 and ok2 and ok3 and ok4 and ok5 and ok6 and ok7;
+
+  --%PROPERTY ok;
+  --%REALIZABLE frontDistSense, backDistSense, isReady;
+tel;

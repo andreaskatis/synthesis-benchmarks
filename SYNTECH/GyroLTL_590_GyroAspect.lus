@@ -1,0 +1,63 @@
+const K = 2.0;
+type env_distSense = enum {CLEAR, BLOCKED};
+type env_bluetoothCmd = enum {AUTO, NOP, bC_FWD, bC_BWD, bC_TURN_LEFT, bC_TURN_RIGHT};
+type env_balancerStatus = enum {bS_OK, bS_FELL};
+type sys_balancer = enum {STP, FWD, BWD, TURN_LEFT, TURN_RIGHT};
+type sys_bluetoothStatus = enum {OK, FELL};
+
+node Initially(i: bool) returns (o: bool);
+let
+  o = i -> true;
+tel;
+
+node respondsTo(trigger, response : bool) returns (ok : bool);
+var
+  responded : bool;
+  counter_gf : real;
+let
+  counter_gf = 0.0 -> if responded then 0.0 else pre(counter_gf) + 1.0;
+  responded = true -> if pre(response or responded and (not trigger)) then true else false;
+  ok = true -> ((responded => pre(response or responded and (not trigger))) and (pre(response or responded and (not trigger)) => responded) and counter_gf < K);
+tel;
+
+node GyroAspect(distSense : env_distSense; isReady : bool; bluetoothCmd : env_bluetoothCmd; balancerStatus : env_balancerStatus; balancer : sys_balancer; bluetoothStatus : sys_bluetoothStatus) returns (ok : bool);
+var
+  counter_gf1, counter_gf2, counter_gf3 : real;
+  ok1, ok2, ok3, ok4, ok5, ok6 : bool;
+  moveAwayFromObstacle : bool;
+let
+
+  ok1 = Initially(balancer = STP);
+
+  ok2 = (not isReady) => balancer = STP;
+  ok3 = (balancer = FWD) => (distSense = CLEAR);
+
+  counter_gf1 = 0.0 -> if (bluetoothCmd = AUTO => (balancer = FWD)) then 0.0 else pre(counter_gf1) + 1.0;
+  ok4 = counter_gf1 < K;
+
+  counter_gf2 = 0.0 -> if (bluetoothCmd = AUTO => (balancer = TURN_RIGHT or balancer = TURN_LEFT)) then 0.0 else pre(counter_gf2) + 1.0;
+  ok5 = counter_gf2 < K;
+
+  ok6 = (bluetoothCmd = AUTO) => ((distSense = CLEAR and isReady) => (balancer = FWD));
+
+  moveAwayFromObstacle = not(balancer = FWD or balancer = STP);
+
+  assert respondsTo(moveAwayFromObstacle, ((not moveAwayFromObstacle) or distSense = CLEAR));
+
+  counter_gf3 = 0.0 -> if isReady then 0.0 else pre(counter_gf2) + 1.0;
+  assert counter_gf3 < K;
+  assert true -> (pre(isReady) => isReady);
+  assert Initially(not isReady);
+  assert Initially(bluetoothCmd = AUTO);
+
+  assert true -> (pre(distSense = CLEAR and (balancer = STP or balancer = BWD)) => (distSense = CLEAR));
+
+  assert true -> (pre(distSense = BLOCKED and (balancer = STP or balancer = FWD)) => (distSense = BLOCKED));
+
+  assert respondsTo((balancer = FWD), (balancer <> FWD or distSense = BLOCKED));
+
+  ok = ok1 and ok2 and ok3 and ok4 and ok5 and ok6;
+
+  --%PROPERTY ok;
+  --%REALIZABLE distSense, isReady, bluetoothCmd, balancerStatus;
+tel;

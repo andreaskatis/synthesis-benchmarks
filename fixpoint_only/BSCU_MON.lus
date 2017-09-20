@@ -1,3 +1,6 @@
+--Contains algebraic loop
+
+
 type BSCU__SyncMsg__SyncMsgImpl = struct {Active : bool; Error : bool};
 type BSCU__ChannelStatus__ChannelStatusImpl = struct {Active : bool; Cmd : int; Error : bool};
 type BSCU__PanelMsg__PanelMsgImpl = struct {LO : bool; MAX : bool; MED : bool};
@@ -37,7 +40,7 @@ let
 
   Primary_Side = false;
 
-  Mode = Agree_Nodes__Brake_Mode(Mode, Panel.LO, Panel.MED, Panel.MAX);
+  Mode = Agree_Nodes__Brake_Mode(pre(Mode), Panel.LO, Panel.MED, Panel.MAX);
 
   Error = Agree_Nodes__Latch((Agree_Nodes__Duration((not (Status.Cmd = CMD_From_COM))) > 15));
 
@@ -122,4 +125,3 @@ let
   --%PROPERTY __nodeLemma0;
 
 tel;
-

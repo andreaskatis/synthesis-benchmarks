@@ -13,7 +13,7 @@ ANOTHER_PUSH_PATH = 'fixpoint'
 def run_realizability_fixpoint_only(file_path):
     #delete "xml"
     args = ['java', '-jar', jkind_jar, '-jrealizability',
-            '-timeout', '1000', '-n', '1000000', file_path]
+            '-scratch', '-timeout', '100', '-n', '1000000', file_path]
     with open(EXTRA_EXPERIMENTS_DIR+"/debug_jkind.txt", "a") as debug:
         debug.write("Running jkind with arguments: {}\n".format(args))
         proc = subprocess.Popen(args, stdout=debug)
@@ -22,7 +22,7 @@ def run_realizability_fixpoint_only(file_path):
 
 def run_synthesis_fixpoint_only(file_path):
     args = ['java', '-jar', jkind_jar, '-jrealizability',
-            '-synthesis', '-timeout', '1000', '-n', '1000000', file_path]
+            '-scratch','-synthesis', '-timeout', '100', '-n', '1000000', file_path]
     with open(EXTRA_EXPERIMENTS_DIR+"/debug_jkind.txt", "a") as debug:
         debug.write("Running jkind with arguments: {}\n".format(args))
         proc = subprocess.Popen(args, stdout=debug)
@@ -31,7 +31,7 @@ def run_synthesis_fixpoint_only(file_path):
 
 def run_fixpoint_fixpoint_only(file_path):
     args = ['java', '-jar', jkind_jar, '-jrealizability',
-            '-fixpoint', '-timeout', '1000', '-n', '1000000', file_path]
+            '-scratch','-fixpoint', '-timeout', '1000', '-n', '1000000', file_path]
     with open(EXTRA_EXPERIMENTS_DIR+"/debug_jkind.txt", "a") as debug:
         debug.write("Running jkind with arguments: {}\n".format(args))
         proc = subprocess.Popen(args, stdout=debug)
@@ -39,7 +39,7 @@ def run_fixpoint_fixpoint_only(file_path):
         debug.write("\n")
 
 
-def run_realizability_synthesis_fixpoint_only(lus_file, experiments_dir): 
+def run_realizability_synthesis_fixpoint_only(lus_file, experiments_dir):
 
     lus_path = os.path.join(experiments_dir, lus_file)
     run_realizability_fixpoint_only(lus_path)
@@ -51,13 +51,13 @@ def run_realizability_synthesis_fixpoint_only(lus_file, experiments_dir):
     sys.stdout.write(".")
     sys.stdout.flush()
 
-def run_last_fixpoint_fixpoint_only(lus_file, experiments_dir):  
+def run_last_fixpoint_fixpoint_only(lus_file, experiments_dir):
     lus_path = os.path.join(experiments_dir, lus_file)
     run_fixpoint_fixpoint_only(lus_path)
     sys.stdout.write(".")
     sys.stdout.flush()
 
-def move_impl(outpath, experiments_dir): 
+def move_impl(outpath, experiments_dir):
     impl_files = glob.glob("*_skolem.smt2")
     if len(impl_files) == 0:
         print("No implement files found in '" + experiments_dir + "' directory")
@@ -69,10 +69,11 @@ def move_impl(outpath, experiments_dir):
         shutil.move(old_implPath, new_implPath)
 
     #remove dummy smt2files
-    smt_files = glob.glob("*.smt2")
-    if (len(smt_files)!=0):
-        for i, smt_file in enumerate(smt_files):
-            os.remove(smt_file)
+    #debugging files should be moved to a debug folder instead of deleting
+    # smt_files = glob.glob("*.smt2")
+    # if (len(smt_files)!=0):
+    #     for i, smt_file in enumerate(smt_files):
+    #         os.remove(smt_file)
 
 
 
@@ -82,7 +83,7 @@ def move_impl(outpath, experiments_dir):
 
 # '-timeout', str(TIMEOUT)
 
-def run_smtlib2c(impl_file, implement_dir): 
+def run_smtlib2c(impl_file, implement_dir):
     file_path = os.path.join(implement_dir, impl_file)
     args = ['java', '-jar', smtlib2c_jar,
             '-iter', '1000000',
@@ -136,7 +137,7 @@ def execute_fixpoint_only():
             os.chdir(EXTRA_EXPERIMENTS_DIR)
             move_impl(PUSH_PATH, EXTRA_EXPERIMENTS_DIR)
             os.chdir("..")
-    
+
             run_last_fixpoint_fixpoint_only(lus_file, EXTRA_EXPERIMENTS_DIR)
             os.chdir(EXTRA_EXPERIMENTS_DIR)
             move_impl(ANOTHER_PUSH_PATH, EXTRA_EXPERIMENTS_DIR)
@@ -161,7 +162,7 @@ def execute_fixpoint_only():
     # os.chdir("..")
     # os.chdir("..")
 
-    
+
 
 
     # for i, impl_file in enumerate(impl_files):
@@ -187,7 +188,7 @@ def execute_fixpoint_only():
     os.chdir("..")
     os.chdir("..")
 
-    
+
 
 
     for i, impl_file in enumerate(impl_files):
@@ -285,7 +286,7 @@ def execute_fixpoint_only():
 
     os.chdir("..")
     os.chdir("..")
-    
+
 
 
 

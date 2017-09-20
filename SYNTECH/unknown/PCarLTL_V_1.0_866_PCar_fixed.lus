@@ -1,0 +1,102 @@
+--appended prefix "IS_" to values CLEAR and BLOCKED in sideSense since JKind complains of value being used in multiple types
+
+const K = 2.0;
+type env_obstacle = enum {CLEAR, BLOCKED};
+type env_sideSense = enum {CLOSE, CENTERED, FAR, CLOSE_PARKING, PARALLEL_PARKING, PERPENDICULAR};
+type env_parkResult = enum {NA, PARALLEL};
+
+
+type sys_throttle = enum {FWD, BWD, STOP, BLOCKING_BWD, BLOCKING_FWD};
+type sys_steer = enum {RIGHT, LEFT, CENTER, EASY_RIGHT, EASY_LEFT};
+type sys_parkCommand = enum {START, park_STOP, CHECK};
+type sys_policy = enum {SEEKING, MEASURING, PARKING_0, PARKING_1, PARKING_2, PARKED};
+
+
+node respondsTo(trigger, response : bool) returns (ok : bool);
+var
+  responded : bool;
+  counter_gf : real;
+let
+  counter_gf = 0.0 -> (if responded then 0.0 else pre(counter_gf) + 1.0);
+  responded = true -> (if pre(response or responded and (not trigger)) then true else false);
+  ok = ((responded => pre(response or responded and (not trigger))) and (pre(response or responded and (not trigger)) => responded) and counter_gf < K);
+tel;
+
+
+node Initially(i: bool) returns (o: bool);
+let
+  o = i -> true;
+tel;
+
+node PCar(obstacle : env_obstacle; sideSense : env_sideSense; parkResult : env_parkResult; throttle : sys_throttle; steer : sys_steer; parkCommand : sys_parkCommand; policy : sys_policy) returns (ok : bool);
+var
+  counter_gf1, counter_gf2 : real;
+  ok1, ok2, ok3, ok4, ok5, ok6, ok7, ok8, ok9, ok10, ok11, ok12, ok13, ok14, ok15, ok16, ok17, ok18, ok19, ok20, ok21, ok22, ok23, ok24, ok25, ok26, ok27, ok28, ok29, ok30, ok31 : bool;
+  in_initial_state : bool;
+let
+
+  ok1 = Initially(policy = SEEKING);
+
+  counter_gf1 = 0.0 -> if (policy = PARKED)  then 0.0 else pre(counter_gf1) + 1.0;
+  ok2 = counter_gf1 < K;
+
+  ok3 = pre(policy = SEEKING) => (policy = SEEKING or policy = MEASURING or policy = PARKING_0);
+  ok4 = policy = SEEKING => (throttle = FWD or throttle = STOP or throttle = BWD);
+
+  ok5 = pre(policy = MEASURING) => (policy = SEEKING or policy = MEASURING or policy = PARKING_0);
+  ok6 = (policy = MEASURING) => ((throttle <> BLOCKING_BWD) and (parkCommand <> START) and (steer = CENTER or steer = EASY_LEFT or steer = EASY_RIGHT));
+
+  ok7 = pre(policy = PARKING_0) => policy = PARKING_1;
+  ok8 = pre(policy = PARKING_1) => policy = PARKING_2;
+  ok9 = pre(policy = PARKING_2) => policy = PARKED;
+  ok10 = pre(policy = PARKED) => (policy = PARKED);
+
+  --safety specs
+  ok11 = (obstacle = CLEAR and policy = SEEKING and parkResult = NA) => (throttle = FWD);
+  ok12 = pre(obstacle = BLOCKED and (policy = SEEKING or policy = MEASURING)) => (policy = SEEKING and pre(not (throttle = FWD or throttle = BLOCKING_FWD or throttle = BLOCKING_BWD) and (not (steer = EASY_RIGHT or steer = EASY_LEFT))));
+  ok13 = obstacle = BLOCKED => parkCommand = park_STOP;
+  ok14 = (policy = SEEKING and parkResult = NA) => (throttle <> STOP);
+
+  --seeking allignment
+  ok15 = (policy = SEEKING and obstacle = CLEAR and sideSense = CLOSE) => (steer = EASY_LEFT);
+  ok16 = (policy = SEEKING and obstacle = CLEAR and sideSense = FAR) => (steer = EASY_RIGHT);
+  ok17 = (policy = SEEKING and obstacle = CLEAR and sideSense = CENTERED and (not pre(sideSense <> CLOSE)) and (not pre(sideSense <> FAR))) => (steer = CENTER);
+  ok18 = (policy = SEEKING and obstacle = CLEAR and pre(sideSense = FAR) and sideSense = CENTERED) => (pre(steer = EASY_LEFT) and steer = CENTER);
+  ok19 = (policy = SEEKING and obstacle = CLEAR and pre(sideSense = CLOSE) and sideSense = CENTERED) => (pre(steer = EASY_RIGHT) and steer = CENTER);
+
+  in_initial_state = true -> pre(true -> false);
+  assert true -> in_initial_state or ((pre(pre(sideSense = FAR)) and pre(sideSense = CENTERED)) => (sideSense = CENTERED));
+  assert true -> in_initial_state or ((pre(pre(sideSense = CLOSE)) and pre(sideSense = CENTERED)) => (sideSense = CENTERED));
+
+
+  --measuring allignment
+  ok20 = (policy = MEASURING and obstacle = CLEAR and sideSense = CLOSE_PARKING) => steer = EASY_LEFT;
+  ok21 = (policy = MEASURING and obstacle = CLEAR and sideSense = PERPENDICULAR) => steer = EASY_RIGHT;
+  ok22 = (policy = MEASURING and obstacle = CLEAR and sideSense = PARALLEL_PARKING) => steer = CENTER;
+
+  --state transitions
+  ok23 = pre(policy = SEEKING and (sideSense = CLOSE or sideSense = CENTERED or sideSense = FAR)) => (policy = pre(policy) and pre(parkCommand = park_STOP));
+  ok24 = pre(policy = SEEKING and (not (sideSense = CLOSE or sideSense = CENTERED or sideSense = FAR)) and obstacle = CLEAR) => (policy = MEASURING and pre(throttle = FWD and parkCommand = START and steer = CENTER));
+  ok25 = pre(policy = MEASURING and (sideSense = CLOSE or sideSense = CENTERED or sideSense = FAR) and parkResult = NA) => (policy = SEEKING and pre(parkCommand = park_STOP));
+  ok26 = pre(policy = MEASURING and (not (sideSense = CLOSE or sideSense = CENTERED or sideSense = FAR)) and obstacle = CLEAR and parkResult = NA) => (policy = pre(policy) and pre(throttle = FWD and parkCommand = CHECK));
+  ok27 = pre(((policy = MEASURING and sideSense = PARALLEL_PARKING) or (policy = SEEKING and (true -> (pre(sideSense = PARALLEL_PARKING and policy = MEASURING))))) and obstacle = CLEAR and parkResult = PARALLEL) => (policy = PARKING_0 and pre(throttle = BLOCKING_FWD and parkCommand = park_STOP));
+  ok28 = pre(policy = PARKING_0) => (policy = PARKING_1 and pre(throttle = STOP and steer = CENTER and parkCommand = park_STOP));
+  ok29 = pre(policy = PARKING_1) => (policy = PARKING_2 and pre(throttle = BLOCKING_BWD and steer = RIGHT and parkCommand = park_STOP));
+  ok30 = pre(policy = PARKING_2) => (policy = PARKED and pre(throttle = BLOCKING_BWD and steer = LEFT and parkCommand = park_STOP));
+  ok31 = pre(policy = PARKED) => ((policy = pre(policy)) and pre(throttle = STOP and steer = CENTER and parkCommand = park_STOP));
+
+  --env assumptions
+  assert true -> (pre(policy = SEEKING) => parkResult = NA);
+  counter_gf2 = 0.0 -> if (policy = MEASURING and parkResult = PARALLEL and obstacle = CLEAR) then 0.0 else pre(counter_gf2) + 1.0;
+  assert counter_gf2 < K;
+  assert Initially(sideSense = CENTERED and parkResult = NA);
+
+  assert respondsTo((throttle = BWD), (obstacle = CLEAR));
+  assert true -> (pre(throttle = STOP) => ((obstacle = pre(obstacle)) and (sideSense = pre(sideSense))));
+
+
+  ok = ok1 and ok2 and ok3 and ok4 and ok5 and ok6 and ok7 and ok8 and ok9 and ok10 and ok11 and ok12 and ok13 and ok14 and ok15 and ok16 and ok17 and ok18 and ok19 and ok20 and ok21 and ok22 and ok23 and ok24 and ok25 and ok26 and ok27 and ok28 and ok29 and ok30 and ok31;
+
+  --%PROPERTY ok;
+  --%REALIZABLE obstacle, sideSense, parkResult;
+tel;

@@ -1,11 +1,11 @@
 --CONTAINS ASSERTIONS OVER LOCALS
---IFXPOINT leads to false antecedent.
-type BSCU__ChannelStatus__ChannelStatusImpl = struct {Active : bool; Cmd : int; Error : bool};
+
+type BSCU__ChannelStatus__ChannelStatusImpl = struct {Active : bool; Cmd : real; Error : bool};
 type BSCU__PanelMsg__PanelMsgImpl = struct {LO : bool; MAX : bool; MED : bool};
 
 node main(
   Panel : BSCU__PanelMsg__PanelMsgImpl;
-  Pedal : int;
+  Pedal : real;
   FailCOM1 : bool;
   FailMON1 : bool;
   FailCOM2 : bool;
@@ -37,11 +37,11 @@ let
 
   __GUARANTEE2 = (No_Failed_Component => ((not Initializing) => (CH1.Active or CH2.Active)));
 
-  __GUARANTEE3 = (At_Most_One_Failed_Component => (Agree_Nodes__Duration(((not Initializing) and (not (CH1.Active or CH2.Active)))) < 7));
+  __GUARANTEE3 = (At_Most_One_Failed_Component => (Agree_Nodes__Duration(((not Initializing) and (not (CH1.Active or CH2.Active)))) < 7.0));
 
-  __GUARANTEE4 = (No_Failed_Component => (Agree_Nodes__Duration((((not Initializing) and CH1.Active) and CH2.Active)) < 7));
+  __GUARANTEE4 = (No_Failed_Component => (Agree_Nodes__Duration((((not Initializing) and CH1.Active) and CH2.Active)) < 7.0));
 
-  __GUARANTEE5 = (At_Most_One_Failed_Component => (Agree_Nodes__Duration((((not Initializing) and CH1.Active) and CH2.Active)) < 7));
+  __GUARANTEE5 = (At_Most_One_Failed_Component => (Agree_Nodes__Duration((((not Initializing) and CH1.Active) and CH2.Active)) < 7.0));
 
   COM1Failed = Agree_Nodes__Latch(FailCOM1);
 
@@ -57,15 +57,15 @@ let
 
   assert At_Most_One_Failed_Component;
 
-  assert (Pedal = 100);
+  assert (Pedal = 100.0);
 
   assert (((Panel.LO => (not (Panel.MED or Panel.MAX))) and (Panel.MED => (not (Panel.LO or Panel.MAX)))) and (Panel.MAX => (not (Panel.LO or Panel.MED))));
 
-  assert ((Agree_Nodes__True_At_Least(Panel.LO, 13) and Agree_Nodes__True_At_Least(Panel.MED, 13)) and Agree_Nodes__True_At_Least(Panel.MAX, 13));
+  assert ((Agree_Nodes__True_At_Least(Panel.LO, 13.0) and Agree_Nodes__True_At_Least(Panel.MED, 13.0)) and Agree_Nodes__True_At_Least(Panel.MAX, 13.0));
 
-  assert ((Agree_Nodes__True_At_Most(Panel.LO, 20) and Agree_Nodes__True_At_Most(Panel.MED, 20)) and Agree_Nodes__True_At_Most(Panel.MAX, 20));
+  assert ((Agree_Nodes__True_At_Most(Panel.LO, 20.0) and Agree_Nodes__True_At_Most(Panel.MED, 20.0)) and Agree_Nodes__True_At_Most(Panel.MAX, 20.0));
 
-  assert ((Agree_Nodes__True_At_Least((not Panel.LO), 13) and Agree_Nodes__True_At_Least((not Panel.MED), 13)) and Agree_Nodes__True_At_Least((not Panel.MAX), 13));
+  assert ((Agree_Nodes__True_At_Least((not Panel.LO), 13.0) and Agree_Nodes__True_At_Least((not Panel.MED), 13.0)) and Agree_Nodes__True_At_Least((not Panel.MAX), 13.0));
 
   --%PROPERTY __GUARANTEE0;
   --%PROPERTY __GUARANTEE1;
@@ -81,28 +81,28 @@ tel;
 node Agree_Nodes__b2i(
   b : bool
 ) returns (
-  i : int
+  i : real
 );
 let
-  i = (if b then 1 else 0);
+  i = (if b then 1.0 else 0.0);
 
 tel;
 
 node Agree_Nodes__True_At_Least(
   p : bool;
-  n : int
+  n : real
 ) returns (
   r : bool
 );
 var
-  c : int;
+  c : real;
   __nodeLemma0 : bool;
 let
-  c = (Agree_Nodes__b2i(p) -> (if p then ((pre c) + 1) else 0));
+  c = (Agree_Nodes__b2i(p) -> (if p then ((pre c) + 1.0) else 0.0));
 
-  r = (true -> ((((pre c) > 0) and ((pre c) < n)) => p));
+  r = (true -> ((((pre c) > 0.0) and ((pre c) < n)) => p));
 
-  __nodeLemma0 = (c >= 0);
+  __nodeLemma0 = (c >= 0.0);
 
   --%PROPERTY __nodeLemma0;
 
@@ -110,19 +110,19 @@ tel;
 
 node Agree_Nodes__True_At_Most(
   p : bool;
-  n : int
+  n : real
 ) returns (
   r : bool
 );
 var
-  c : int;
+  c : real;
   __nodeLemma0 : bool;
 let
-  c = (Agree_Nodes__b2i(p) -> (if p then ((pre c) + 1) else 0));
+  c = (Agree_Nodes__b2i(p) -> (if p then ((pre c) + 1.0) else 0.0));
 
   r = (true -> (((pre c) = n) => (not p)));
 
-  __nodeLemma0 = (c >= 0);
+  __nodeLemma0 = (c >= 0.0);
 
   --%PROPERTY __nodeLemma0;
 
@@ -131,14 +131,14 @@ tel;
 node Agree_Nodes__Duration(
   p : bool
 ) returns (
-  c : int
+  c : real
 );
 var
   __nodeLemma0 : bool;
 let
-  c = (Agree_Nodes__b2i(p) -> (if p then ((pre c) + 1) else 0));
+  c = (Agree_Nodes__b2i(p) -> (if p then ((pre c) + 1.0) else 0.0));
 
-  __nodeLemma0 = (c >= 0);
+  __nodeLemma0 = (c >= 0.0);
 
   --%PROPERTY __nodeLemma0;
 

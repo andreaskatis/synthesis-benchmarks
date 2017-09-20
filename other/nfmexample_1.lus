@@ -4,8 +4,9 @@ var
   guarantee2 : bool;
 let
   assert x <> y;
-  guarantee1 = true -> (pre(x >= y) => z = true);
-  guarantee2 = true -> (pre(x <= y) => z = false);
+  guarantee1 = true -> (pre(x >= y) => z);
+  guarantee2 = true -> (pre(x <= y) => (not z));
+
   --%PROPERTY guarantee1;
   --%PROPERTY guarantee2;
   --%REALIZABLE x,y;
