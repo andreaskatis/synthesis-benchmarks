@@ -672,7 +672,7 @@ smtlib2c_jar = None
 path = os.environ.get("PATH") or os.environ.get("path")
 
 for dir in path.split(':'):
-    jar = os.path.join(dir, "SMTLib2C.jar")c
+    jar = os.path.join(dir, "SMTLib2C.jar")
     if os.path.exists(jar):
         smtlib2c_jar = jar
         break

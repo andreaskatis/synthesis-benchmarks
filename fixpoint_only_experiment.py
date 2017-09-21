@@ -10,6 +10,87 @@ EXTRA_ANOTHER_IMPLEMENT_DIR = 'fixpoint_only/fixpoint'
 PUSH_PATH = 'kind'
 ANOTHER_PUSH_PATH = 'fixpoint'
 
+
+def deleteFile_in_subfolder(folder, lus_files):
+    os.chdir(folder)
+
+    cfileList = glob.glob("*.c")
+    hfileList = glob.glob("*.h")
+    ofileList = glob.glob("*.o")
+    sfileList = glob.glob("*.smt2")
+    txtfileList = glob.glob("*.txt")
+
+    if (len(cfileList)!=0):
+        for f in cfileList:
+            os.remove(f)
+
+    if (len(hfileList)!=0):
+        for h in hfileList:
+            os.remove(h)
+
+    if (len(ofileList)!=0):
+        for o in ofileList:
+            os.remove(o)
+
+    if (len(sfileList)!=0):
+        for s in sfileList:
+            os.remove(s)
+            
+    if (len(txtfileList)!=0):
+        for txt in txtfileList:
+            os.remove(txt)
+
+    if (len(lus_files)!=0):
+        for lus in lus_files:
+            if (os.path.isfile(os.path.splitext(lus)[0])):
+                os.remove(os.path.splitext(lus)[0])
+
+
+    os.chdir("..")
+
+
+def deleteFile_in_folder():
+    cfileList = glob.glob("*.c")
+    hfileList = glob.glob("*.h")
+    ofileList = glob.glob("*.o")
+    sfileList = glob.glob("*.smt2")
+    txtfileList = glob.glob("*.txt")
+
+    if (len(cfileList)!=0):
+        for f in cfileList:
+            os.remove(f)
+
+    if (len(hfileList)!=0):
+        for h in hfileList:
+            os.remove(h)
+
+    if (len(ofileList)!=0):
+        for o in ofileList:
+            os.remove(o)
+
+    if (len(sfileList)!=0):
+        for s in sfileList:
+            os.remove(s)
+            
+    if (len(txtfileList)!=0):
+        for txt in txtfileList:
+            os.remove(txt)
+
+
+    lus_files = glob.glob("*.lus")
+    deleteFile_in_subfolder("kind", lus_files)
+    deleteFile_in_subfolder("fixpoint", lus_files)
+
+
+
+
+def deleteAll():
+
+    os.chdir("fixpoint_only")
+    deleteFile_in_folder()
+    os.chdir("..")
+
+    
 def run_realizability_fixpoint_only(file_path):
     #delete "xml"
     args = ['java', '-jar', jkind_jar, '-jrealizability',
@@ -321,7 +402,9 @@ if smtlib2c_jar is None:
 print("Using SMTLib2C: " + smtlib2c_jar)
 
 
-
+#################################################################################
+print("deleting the remained files")
+deleteAll()
 
 
 execute_fixpoint_only()
