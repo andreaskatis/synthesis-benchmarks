@@ -20,9 +20,9 @@ THIRD_EXPERIMENTS_DIR = 'other'
 THIRD_IMPLEMENT_DIR = 'other/kind'
 THIRD_ANOTHER_IMPLEMENT_DIR = 'other/fixpoint'
 
-FORHT_EXPERIMENTS_DIR = 'SYNTECH'
-FORHT_IMPLEMENT_DIR = 'SYNTECH/kind'
-FORTH_ANOTHER_IMPLEMENT_DIR = 'SYNTECH/fixpoint'
+#FORHT_EXPERIMENTS_DIR = 'SYNTECH'
+#FORHT_IMPLEMENT_DIR = 'SYNTECH/kind'
+#FORTH_ANOTHER_IMPLEMENT_DIR = 'SYNTECH/fixpoint'
 
 NestList_overhead = []
 NestList_size = [] 
@@ -30,7 +30,7 @@ NestList_size_name = []
 NestList_size_name_verification = []
 NestList_size_name_smaccm = []
 NestList_size_name_other = []
-NestList_size_name_SYNTECH = []
+#NestList_size_name_SYNTECH = []
 NestList_performance = []
 #TIMEOUT = 3600
 
@@ -117,9 +117,9 @@ def deleteAll():
     deleteFile_in_folder()
     os.chdir("..")
 
-    os.chdir("SYNTECH")
-    deleteFile_in_folder()
-    os.chdir("..")
+   # os.chdir("SYNTECH")
+   # deleteFile_in_folder()
+   # os.chdir("..")
 
 
 
@@ -699,7 +699,7 @@ else:
 execute(EXPERIMENTS_DIR, PUSH_PATH, ANOTHER_PUSH_PATH, IMPLEMENT_DIR, ANOTHER_IMPLEMENT_DIR, NestList_size_name_verification)
 execute(SECOND_EXPERIMENTS_DIR, PUSH_PATH, ANOTHER_PUSH_PATH, SECOND_IMPLEMENT_DIR,SECOND_ANOTHER_IMPLEMENT_DIR, NestList_size_name_smaccm)
 execute(THIRD_EXPERIMENTS_DIR, PUSH_PATH, ANOTHER_PUSH_PATH, THIRD_IMPLEMENT_DIR,THIRD_ANOTHER_IMPLEMENT_DIR, NestList_size_name_other)
-execute(FORHT_EXPERIMENTS_DIR, PUSH_PATH, ANOTHER_PUSH_PATH, FORHT_IMPLEMENT_DIR,FORTH_ANOTHER_IMPLEMENT_DIR, NestList_size_name_SYNTECH)
+#execute(FORHT_EXPERIMENTS_DIR, PUSH_PATH, ANOTHER_PUSH_PATH, FORHT_IMPLEMENT_DIR,FORTH_ANOTHER_IMPLEMENT_DIR, NestList_size_name_SYNTECH)
 
 
 #fill the NestList_overhead
@@ -721,14 +721,14 @@ measureSizeOfC(SECOND_ANOTHER_IMPLEMENT_DIR, NestList_size_name_smaccm)
 measureSizeOfC(THIRD_IMPLEMENT_DIR, NestList_size_name_other)
 measureSizeOfC(THIRD_ANOTHER_IMPLEMENT_DIR, NestList_size_name_other)
 #create both syntech (kind and fixpoint) loc.txt
-measureSizeOfC(FORHT_IMPLEMENT_DIR, NestList_size_name_SYNTECH)
-measureSizeOfC(FORTH_ANOTHER_IMPLEMENT_DIR, NestList_size_name_SYNTECH)
+#measureSizeOfC(FORHT_IMPLEMENT_DIR, NestList_size_name_SYNTECH)
+#measureSizeOfC(FORTH_ANOTHER_IMPLEMENT_DIR, NestList_size_name_SYNTECH)
 
 #append to NestList_size
 combineSizeTxt(IMPLEMENT_DIR+"/loc.txt", ANOTHER_IMPLEMENT_DIR+"/loc.txt")
 combineSizeTxt(SECOND_IMPLEMENT_DIR+"/loc.txt", SECOND_ANOTHER_IMPLEMENT_DIR+"/loc.txt")
 combineSizeTxt(THIRD_IMPLEMENT_DIR+"/loc.txt", THIRD_ANOTHER_IMPLEMENT_DIR+"/loc.txt")
-combineSizeTxt(FORHT_IMPLEMENT_DIR+"/loc.txt", FORTH_ANOTHER_IMPLEMENT_DIR+"/loc.txt")
+#combineSizeTxt(FORHT_IMPLEMENT_DIR+"/loc.txt", FORTH_ANOTHER_IMPLEMENT_DIR+"/loc.txt")
 
 
 print("NestList_size")
@@ -741,7 +741,7 @@ print("")
 combineResultTxt(IMPLEMENT_DIR+"/results.txt",ANOTHER_IMPLEMENT_DIR+"/results.txt")
 combineResultTxt(SECOND_IMPLEMENT_DIR+"/results.txt",SECOND_ANOTHER_IMPLEMENT_DIR+"/results.txt")
 combineResultTxt(THIRD_IMPLEMENT_DIR+"/results.txt",THIRD_ANOTHER_IMPLEMENT_DIR+"/results.txt")
-combineResultTxt(FORHT_IMPLEMENT_DIR+"/results.txt",FORTH_ANOTHER_IMPLEMENT_DIR+"/results.txt")
+#combineResultTxt(FORHT_IMPLEMENT_DIR+"/results.txt",FORTH_ANOTHER_IMPLEMENT_DIR+"/results.txt")
 
 
 print("NestList_performance")
