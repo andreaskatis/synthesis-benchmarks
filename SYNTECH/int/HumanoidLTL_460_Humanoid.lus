@@ -1,0 +1,49 @@
+const K = 10;
+type env_Obstacle = enum {CLEAR, BLOCKED};
+type env_InputMoveMode = enum {FWD, BWD, TURN_LEFT_1, TURN_LEFT_2};
+type sys_LeftMotor = enum {LM_FWD, LM_BWD, LM_STOP, LM_TURN_FWD, LM_TURN_BWD, LM_CALIB_TURN, LM_CALIB_FWD};
+type sys_RightMotor = enum {RM_FWD, RM_BWD, RM_STOP, RM_TURN_FWD, RM_TURN_BWD, RM_CALIB_TURN, RM_CALIB_FWD};
+type sys_HeadMotor = enum {HM_FWD, HM_BWD, HM_STOP};
+type sys_OutputMoveMode = enum {OMM_FWD, OMM_BWD, OMM_TURN_LEFT_1, OMM_TURN_LEFT_2};
+
+node Initially(i: bool) returns (o: bool);
+let
+  o = i -> true;
+tel;
+
+node respondsTo(trigger, response : bool) returns (ok : bool);
+var
+  responded : bool;
+  counter_gf : int;
+let
+  counter_gf = 0 -> if responded then 0 else pre(counter_gf) + 1;
+  responded = true -> if pre(response or responded and (not trigger)) then true else false;
+  ok = true -> ((responded => pre(response or responded and (not trigger))) and (pre(response or responded and (not trigger)) => responded) and counter_gf < K);
+tel;
+
+node Humanoid(Obstacle : env_Obstacle; InputMoveMode : env_InputMoveMode; LeftMotor : sys_LeftMotor; RightMotor : sys_RightMotor; HeadMotor : sys_HeadMotor; OutputMoveMode : sys_OutputMoveMode) returns (ok : bool);
+var
+  ok1, ok2, ok3, ok4, ok5, ok6, ok7, ok8, ok9, ok10, ok11 : bool;
+let
+
+  ok1 = (InputMoveMode = FWD and Obstacle = BLOCKED) => (OutputMoveMode = OMM_TURN_LEFT_1 and LeftMotor = LM_CALIB_TURN and RightMotor = RM_CALIB_TURN);
+  ok2 = (InputMoveMode = BWD and Obstacle = CLEAR) => (OutputMoveMode = OMM_FWD and LeftMotor = LM_FWD and RightMotor = RM_BWD);
+
+  ok3 = (InputMoveMode = FWD and pre(InputMoveMode = TURN_LEFT_2)) => (LeftMotor = LM_CALIB_FWD and RightMotor = RM_CALIB_FWD);
+  ok4 = (InputMoveMode = FWD and Obstacle = CLEAR and pre(InputMoveMode <> TURN_LEFT_2)) => (LeftMotor = LM_FWD and RightMotor = RM_FWD);
+  ok5 = (Obstacle = BLOCKED) => (not (OutputMoveMode = OMM_FWD));
+
+  ok6 = ((InputMoveMode = TURN_LEFT_1) => (OutputMoveMode = OMM_TURN_LEFT_2)) and ((OutputMoveMode = OMM_TURN_LEFT_2) => (InputMoveMode = TURN_LEFT_1));
+  ok7 = (InputMoveMode = TURN_LEFT_1) => (LeftMotor = LM_FWD and RightMotor = RM_TURN_FWD);
+  ok8 = (InputMoveMode = TURN_LEFT_2) => (LeftMotor = LM_BWD and RightMotor = RM_TURN_BWD);
+  ok9 = (not (InputMoveMode = TURN_LEFT_1 or InputMoveMode = TURN_LEFT_2) => (not (LeftMotor = LM_TURN_BWD or RightMotor = RM_TURN_BWD or (LeftMotor = LM_TURN_FWD and RightMotor = RM_TURN_FWD))));
+  ok10 = (InputMoveMode = TURN_LEFT_1 or InputMoveMode = TURN_LEFT_2) => (HeadMotor = HM_STOP);
+  ok11 = (InputMoveMode = TURN_LEFT_2 and Obstacle = CLEAR) => (OutputMoveMode = OMM_FWD);
+
+  assert (InputMoveMode = FWD and pre(InputMoveMode = TURN_LEFT_2)) => (Obstacle = CLEAR);
+
+  ok = ok1 and ok2 and ok3 and ok4 and ok5 and ok6 and ok7 and ok8 and ok9 and ok10 and ok11;
+
+  --%PROPERTY ok;
+  --%REALIZABLE Obstacle, InputMoveMode;
+tel;

@@ -24,7 +24,7 @@ let
   o = i -> true;
 tel;
 
-node ColorSort(color : env_color; detect : env_color; ack_ver, ack_hor, ack_bot : env_ack_ver; speedButton : env_speedButton; verMot, horMot : env_ack_ver; botMot : sys_botMot; motSpeed : sys_motSpeed; spec_currentColor : env_color; spec_state_1, spec_state_2 : sys_spec_state; spec_speedButtonValidPressed : bool) returns (ok : bool);
+node ColorSort(color : env_color; detect : env_color; ack_ver, ack_hor, ack_bot : env_ack_ver; speedButton : env_speedButton; verMot, horMot : env_ack_ver; botMot : sys_botMot; motSpeed : sys_motSpeed; spec_currentColor : env_color; spec_state_1, spec_state_2 : sys_spec_state; spec_speedButtonValidPressed : bool) returns ();
 var
   counter_gf1, counter_gf2 : real;
   ok1, ok2, ok3, ok4, ok5, ok6, ok7, ok8, ok9, ok10, ok11, ok12, ok13, ok14, ok15 : bool;
@@ -74,8 +74,23 @@ let
 
   assert counter_gf2 < K;
 
-  ok = ok1 and ok2 and ok3 and ok4 and ok5 and ok6 and ok7 and ok8 and ok9 and ok10 and ok11 and ok12 and ok13 and ok14 and ok15;
+  --ok = ok1 and ok2 and ok3 and ok4 and ok5 and ok6 and ok7 and ok8 and ok9 and ok10 and ok11 and ok12 and ok13 and ok14 and ok15;
 
-  --%PROPERTY ok;
+  --%PROPERTY ok1;
+  --%PROPERTY ok2;
+  --%PROPERTY ok3;
+  --%PROPERTY ok4;
+  --%PROPERTY ok5;
+  --%PROPERTY ok6;
+  --%PROPERTY ok7;
+  --%PROPERTY ok8;
+  --%PROPERTY ok9;
+  --%PROPERTY ok10;
+  --%PROPERTY ok11;
+  --%PROPERTY ok12;
+  --%PROPERTY ok13;
+  --%PROPERTY ok14;
+  --%PROPERTY ok15;
+  
   --%REALIZABLE color, detect, ack_ver, ack_hor, ack_bot, speedButton;
 tel;

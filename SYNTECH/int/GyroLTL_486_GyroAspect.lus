@@ -1,0 +1,55 @@
+const K = 2;
+type env_distSense = enum {CLEAR, BLOCKED};
+type env_bluetoothCmd = enum {AUTO, NOP, bC_FWD, bC_BWD, bC_TURN_LEFT, bC_TURN_RIGHT};
+type sys_balancer = enum {STP, FWD, BWD, TURN_LEFT, TURN_RIGHT};
+
+node Initially(i: bool) returns (o: bool);
+let
+  o = i -> true;
+tel;
+
+node respondsTo(trigger, response : bool) returns (ok : bool);
+var
+  responded : bool;
+  counter_gf : int;
+let
+  counter_gf = 0 -> if responded then 0 else pre(counter_gf) + 1;
+  responded = true -> if pre(response or responded and (not trigger)) then true else false;
+  ok = true -> ((responded => pre(response or responded and (not trigger))) and (pre(response or responded and (not trigger)) => responded) and counter_gf < K);
+tel;
+
+node GyroAspect(distSense : env_distSense; isReady : bool; bluetoothCmd : env_bluetoothCmd; balancer : sys_balancer) returns (ok : bool);
+var
+  counter_gf1, counter_gf2 : int;
+  ok1, ok2, ok3, ok4, ok5, ok6, ok7, ok8, ok9, ok10, ok11, ok12 : bool;
+let
+
+  ok1 = Initially(balancer = STP);
+
+  ok2 = (not isReady) => balancer = STP;
+  ok3 = (balancer = FWD) => (distSense = CLEAR);
+
+  counter_gf1 = 0 -> if (bluetoothCmd = AUTO => (balancer = FWD)) then 0 else pre(counter_gf1) + 1;
+  ok4 = counter_gf1 < K;
+  ok5 = pre(bluetoothCmd = AUTO) => (pre(balancer = FWD) => ((bluetoothCmd = AUTO) => not (balancer = TURN_RIGHT or balancer = TURN_LEFT)));
+  ok6 = (bluetoothCmd = AUTO) => ((distSense = CLEAR and isReady) => (balancer = FWD));
+  ok7 = pre(bluetoothCmd = AUTO) => (pre(distSense = BLOCKED and balancer = STP and isReady) => not (balancer = STP));
+  ok8 = (bluetoothCmd = bC_FWD) => ((distSense = CLEAR and isReady) => balancer = FWD);
+  ok9 = (bluetoothCmd = bC_BWD) => (isReady => balancer = BWD);
+  ok10 = (bluetoothCmd = bC_TURN_RIGHT) => (isReady => balancer = TURN_RIGHT);
+  ok11 = (bluetoothCmd = bC_TURN_LEFT) => (isReady => balancer = TURN_LEFT);
+  ok12 = (bluetoothCmd = NOP) => (isReady => balancer = STP);
+
+  assert respondsTo((not (balancer = FWD or balancer = STP)), (distSense = CLEAR));
+  counter_gf2 = 0 -> if isReady then 0 else pre(counter_gf2) + 1;
+  assert counter_gf2 < K;
+  assert true -> (pre(isReady) => isReady);
+  assert Initially(not isReady);
+  assert Initially(bluetoothCmd = AUTO);
+
+
+  ok = ok1 and ok2 and ok3 and ok4 and ok5 and ok6 and ok7 and ok8 and ok9 and ok10 and ok11 and ok12;
+
+  --%PROPERTY ok;
+  --%REALIZABLE distSense, isReady, bluetoothCmd;
+tel;

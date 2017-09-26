@@ -1,0 +1,86 @@
+-- aeval seg fault
+const K = 2;
+
+type env_color = enum {RED, GREEN, BLUE, BLACK, YELLOW, WHITE};
+type env_ack_ver = enum {MOVE, SLEEP};
+
+type env_speedButton = enum {PRESS, RELEASE};
+
+type sys_botMot = enum {SEEK, STOP, RETURN};
+type sys_motSpeed = enum {LEVEL1, LEVEL2, LEVEL3};
+type sys_spec_state__return = enum {S0, S1, S2};
+
+node respondsTo(trigger, response : bool) returns (ok : bool);
+var
+  responded : bool;
+  counter_gf : int;
+let
+  counter_gf = 0 -> if responded then 0 else pre(counter_gf) + 1;
+  responded = true -> if pre(response or responded and (not trigger)) then true else false;
+  ok = true -> ((responded => pre(response or responded and (not trigger))) and (pre(response or responded and (not trigger)) => responded) and counter_gf < K);
+tel;
+
+node Initially(i: bool) returns (o: bool);
+let
+  o = i -> true;
+tel;
+
+node ColorSort(color : env_color; detect : env_color; ack_ver, ack_hor, ack_bot : env_ack_ver; speedButton : env_speedButton; verMot, horMot : env_ack_ver; botMot : sys_botMot; motSpeed : sys_motSpeed; spec_state__return : sys_spec_state__return; spec_currentColor : env_color; spec_dropping : bool; spec_speedButtonValidPressed : bool) returns (ok : bool);
+var
+  counter_gf1 : int;
+  ok1, ok2, ok3, ok4, ok5, ok6, ok7, ok8, ok9, ok10, ok11, ok12, ok13, ok14, ok15, ok16, ok17, ok18 : bool;
+  allsleep, nonemove, onlybotmoves : bool;
+let
+  allsleep = (verMot = SLEEP and horMot = SLEEP and botMot = STOP);
+  nonemove = (ack_ver = SLEEP and ack_hor = SLEEP and ack_bot = SLEEP);
+  onlybotmoves = ack_ver = SLEEP and ack_hor = SLEEP and ack_bot = MOVE;
+
+
+  ok1 = verMot = MOVE => (botMot = STOP and horMot = SLEEP);
+  ok2 = horMot = MOVE => (botMot = STOP and verMot = SLEEP);
+  ok3 = botMot <> STOP => (verMot = SLEEP and horMot = SLEEP);
+  ok4 = pre(verMot = SLEEP) => (spec_currentColor = pre(spec_currentColor));
+
+
+  ok5 = ((spec_dropping = pre(spec_dropping)) => (pre(verMot = SLEEP))) and ((pre(verMot = SLEEP)) => (spec_dropping = pre(spec_dropping)));
+
+  ok6 = (ack_ver = MOVE or ack_hor = MOVE) => allsleep;
+
+  assert (not spec_dropping) => nonemove;
+
+  --running the robot
+
+  ok7 = (color = BLACK and (not spec_dropping)) => allsleep;
+
+  ok8 = pre(color <> BLACK and (not spec_dropping)) => (pre(verMot = MOVE) and (spec_currentColor = pre(color)) and spec_dropping);
+
+  ok9 = ((nonemove and spec_dropping) or (pre(botMot = SEEK) and onlybotmoves and detect <> spec_currentColor)) => botMot = SEEK;
+
+  ok10 = (spec_dropping and onlybotmoves and detect = spec_currentColor and pre(botMot = SEEK)) => horMot = MOVE;
+
+  --speed button
+
+  ok11 = Initially(motSpeed = LEVEL1 and (not spec_dropping));
+
+  ok12 = ((speedButton = PRESS and pre(speedButton = RELEASE)) => spec_speedButtonValidPressed) and (spec_speedButtonValidPressed => (speedButton = PRESS and pre(speedButton = RELEASE)));
+
+  ok13 = (spec_speedButtonValidPressed and pre(motSpeed = LEVEL1)) => motSpeed = LEVEL2;
+
+  ok14 = (spec_speedButtonValidPressed and pre(motSpeed = LEVEL2)) => motSpeed = LEVEL3;
+
+  ok15 = (spec_speedButtonValidPressed and pre(motSpeed = LEVEL3)) => motSpeed = LEVEL1;
+
+  ok16 = ((not spec_speedButtonValidPressed) and pre(motSpeed = LEVEL1)) => motSpeed = LEVEL1;
+
+  ok17 = ((not spec_speedButtonValidPressed and pre(motSpeed = LEVEL2))) => motSpeed = LEVEL2;
+
+  ok18 = ((not spec_speedButtonValidPressed and pre(motSpeed = LEVEL3))) => motSpeed = LEVEL3;
+
+  counter_gf1 = 0 -> if (color <> BLACK) then 0 else pre(counter_gf1) + 1;
+  assert counter_gf1 < K;
+
+  ok = ok1 and ok2 and ok3 and ok4 and ok5 and ok6 and ok7 and ok8 and ok9 and ok10 and ok11 and ok12 and ok13 and ok14 and ok15 and ok16 and ok17 and ok18;
+
+  --%PROPERTY ok;
+  --%REALIZABLE color, detect, ack_ver, ack_hor, ack_bot, speedButton;
+tel;

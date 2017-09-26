@@ -28,7 +28,7 @@ let
   o = i -> true;
 tel;
 
-node PCar(obstacle : env_obstacle; sideSense : env_sideSense; parkResult : env_parkResult; throttle : sys_throttle; steer : sys_steer; parkCommand : sys_parkCommand; policy : sys_policy) returns (ok : bool);
+node PCar(obstacle : env_obstacle; sideSense : env_sideSense; parkResult : env_parkResult; throttle : sys_throttle; steer : sys_steer; parkCommand : sys_parkCommand; policy : sys_policy) returns ();
 var
   counter_gf1, counter_gf2 : real;
   ok1, ok2, ok3, ok4, ok5, ok6, ok7, ok8, ok9, ok10, ok11, ok12, ok13, ok14, ok15, ok16, ok17, ok18, ok19, ok20, ok21, ok22, ok23, ok24, ok25, ok26, ok27, ok28, ok29, ok30, ok31 : bool;
@@ -95,8 +95,39 @@ let
   assert true -> (pre(throttle = STOP) => ((obstacle = pre(obstacle)) and (sideSense = pre(sideSense))));
 
 
-  ok = ok1 and ok2 and ok3 and ok4 and ok5 and ok6 and ok7 and ok8 and ok9 and ok10 and ok11 and ok12 and ok13 and ok14 and ok15 and ok16 and ok17 and ok18 and ok19 and ok20 and ok21 and ok22 and ok23 and ok24 and ok25 and ok26 and ok27 and ok28 and ok29 and ok30 and ok31;
+  --ok = ok1 and ok2 and ok3 and ok4 and ok5 and ok6 and ok7 and ok8 and ok9 and ok10 and ok11 and ok12 and ok13 and ok14 and ok15 and ok16 and ok17 and ok18 and ok19 and ok20 and ok21 and ok22 and ok23 and ok24 and ok25 and ok26 and ok27 and ok28 and ok29 and ok30 and ok31;
 
-  --%PROPERTY ok;
+  --%PROPERTY ok1;
+  --%PROPERTY ok2;
+  --%PROPERTY ok3;
+  --%PROPERTY ok4;
+  --%PROPERTY ok5;
+  --%PROPERTY ok6;
+  --%PROPERTY ok7;
+  --%PROPERTY ok8;
+  --%PROPERTY ok9;
+  --%PROPERTY ok10;
+  --%PROPERTY ok11;
+  --%PROPERTY ok12;
+  --%PROPERTY ok13;
+  --%PROPERTY ok14;
+  --%PROPERTY ok15;
+  --%PROPERTY ok16;
+  --%PROPERTY ok17;
+  --%PROPERTY ok18;
+  --%PROPERTY ok19;
+  --%PROPERTY ok20;
+  --%PROPERTY ok21;
+  --%PROPERTY ok22;
+  --%PROPERTY ok23;
+  --%PROPERTY ok24;
+  --%PROPERTY ok25;
+  --%PROPERTY ok26;
+  --%PROPERTY ok27;
+  --%PROPERTY ok28;
+  --%PROPERTY ok29;
+  --%PROPERTY ok30;
+  --%PROPERTY ok31;
+
   --%REALIZABLE obstacle, sideSense, parkResult;
 tel;
