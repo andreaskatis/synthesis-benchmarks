@@ -28,7 +28,7 @@ let
 tel;
 
 
-node AspectLTLAspect(obstacle : env_obstacle; sideSensor : env_sideSensor; rearSideSensor : env_rearSideSensor; steeringMot : sys_steeringMot; sensorMot : sys_sensorMot; engineMot : sys_engineMot; carStatus : sys_carStatus; spec_counter : real; spec_obstacleCounter : real) returns (ok : bool);
+node AspectLTLAspect(obstacle : env_obstacle; sideSensor : env_sideSensor; rearSideSensor : env_rearSideSensor; steeringMot : sys_steeringMot; sensorMot : sys_sensorMot; engineMot : sys_engineMot; carStatus : sys_carStatus; spec_counter : real; spec_obstacleCounter : real) returns ();
 var
   --counter_gf1 : real;
   counterLimit, phaseNone, firstPhase, secondPhase, thirdPhase, suitableParallelPS, suitablePerpendicularPS, preparingParallelSteps : real;
@@ -223,7 +223,63 @@ let
 
   assert respondsTo((carStatus = BYPASSING and engineMot = eng_FWD), (carStatus = SEEKING_FOR_PS));
 
-  ok = ok1 and ok2 and ok3 and ok4 and ok5 and ok6 and ok7 and ok8 and ok9 and ok10 and ok11 and ok12 and ok13 and ok14 and ok15 and ok16 and ok17 and ok18 and ok19 and ok20 and ok21 and ok22 and ok23 and ok24 and ok25 and ok26 and ok27 and ok28 and ok29 and ok30 and ok31 and ok32 and ok33 and ok34 and ok35 and ok36 and ok37 and ok38 and ok39 and ok40 and ok41 and ok42 and ok43 and ok44 and ok45 and ok46 and ok47 and ok48 and ok49 and ok50 and ok51 and ok52 and ok53 and ok54 and ok55 and ok56;
-  --%PROPERTY ok;
+  --ok = ok1 and ok2 and ok3 and ok4 and ok5 and ok6 and ok7 and ok8 and ok9 and ok10 and ok11 and ok12 and ok13 and ok14 and ok15 and ok16 and ok17 and ok18 and ok19 and ok20 and ok21 and ok22 and ok23 and ok24 and ok25 and ok26 and ok27 and ok28 and ok29 and ok30 and ok31 and ok32 and ok33 and ok34 and ok35 and ok36 and ok37 and ok38 and ok39 and ok40 and ok41 and ok42 and ok43 and ok44 and ok45 and ok46 and ok47 and ok48 and ok49 and ok50 and ok51 and ok52 and ok53 and ok54 and ok55 and ok56;
+  --%PROPERTY ok1;
+  --%PROPERTY ok2;
+  --%PROPERTY ok3;
+  --%PROPERTY ok4;
+  --%PROPERTY ok5;
+  --%PROPERTY ok6;
+  --%PROPERTY ok7;
+  --%PROPERTY ok8;
+  --%PROPERTY ok9;
+  --%PROPERTY ok10;
+  --%PROPERTY ok11;
+  --%PROPERTY ok12;
+  --%PROPERTY ok13;
+  --%PROPERTY ok14;
+  --%PROPERTY ok15;
+  --%PROPERTY ok16;
+  --%PROPERTY ok17;
+  --%PROPERTY ok18;
+  --%PROPERTY ok19;
+  --%PROPERTY ok20;
+  --%PROPERTY ok21;
+  --%PROPERTY ok22;
+  --%PROPERTY ok23;
+  --%PROPERTY ok24;
+  --%PROPERTY ok25;
+  --%PROPERTY ok26;
+  --%PROPERTY ok27;
+  --%PROPERTY ok28;
+  --%PROPERTY ok29;
+  --%PROPERTY ok30;
+  --%PROPERTY ok31;
+  --%PROPERTY ok32;
+  --%PROPERTY ok33;
+  --%PROPERTY ok34;
+  --%PROPERTY ok35;
+  --%PROPERTY ok36;
+  --%PROPERTY ok37;
+  --%PROPERTY ok38;
+  --%PROPERTY ok39;
+  --%PROPERTY ok40;
+  --%PROPERTY ok41;
+  --%PROPERTY ok42;
+  --%PROPERTY ok43;
+  --%PROPERTY ok44;
+  --%PROPERTY ok45;
+  --%PROPERTY ok46;
+  --%PROPERTY ok47;
+  --%PROPERTY ok48;
+  --%PROPERTY ok49;
+  --%PROPERTY ok50;
+  --%PROPERTY ok51;
+  --%PROPERTY ok52;
+  --%PROPERTY ok53;
+  --%PROPERTY ok54;
+  --%PROPERTY ok55;
+  --%PROPERTY ok56;
+
   --%REALIZABLE obstacle, sideSensor, rearSideSensor;
 tel;
