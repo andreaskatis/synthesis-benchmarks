@@ -1,0 +1,70 @@
+--appended prefix "IS_" to values CLEAR and BLOCKED in sideSense since JKind complains of value being used in multiple types
+
+const K = 2.0;
+type env_obstacle = enum {CLEAR, BLOCKED, OBJECT};
+type env_sideSense = enum {IS_CLEAR, P_O, IS_BLOCKED};
+type sys_throttle = enum {FWD, BWD, STOP};
+type sys_steer = enum {RIGHT, LEFT, CENTER};
+type sys_spec_b2f = enum {S0, S1, S2};
+-- enums cant share same values
+--type sys_spec_f2b = enum {f2b_S0, f2b_S1, f2b_S2};
+
+
+node respondsTo(trigger, response : bool) returns (ok : bool);
+var
+  responded : bool;
+  counter_gf : real;
+let
+  counter_gf = 0.0 -> if responded then 0.0 else pre(counter_gf) + 1.0;
+  responded = true -> if pre(response or responded and (not trigger)) then true else false;
+  ok = true -> ((responded => pre(response or responded and (not trigger))) and (pre(response or responded and (not trigger)) => responded) and counter_gf < K);
+tel;
+
+
+node Initially(i: bool) returns (o: bool);
+let
+  o = i -> true;
+tel;
+
+node PCar(obstacle : env_obstacle; sideSense : env_sideSense; throttle : sys_throttle; steer : sys_steer; spec_b2f : sys_spec_b2f; spec_f2b : sys_spec_b2f) returns (ok : bool);
+var
+  counter_gf1, counter_gf2, counter_gf3 : real;
+  ok1, ok2, ok3, ok4, ok5, ok6, ok7 : bool;
+let
+
+  assert respondsTo(((throttle = FWD) and (steer = CENTER) and (sideSense = IS_BLOCKED)),(sideSense=IS_CLEAR));
+  assert true -> (pre(throttle) = BWD => obstacle = CLEAR);
+
+  counter_gf1 = 0.0 -> if (throttle = FWD and steer = CENTER) then 0.0 else pre(counter_gf1) + 1.0;
+
+  ok1 = (obstacle = BLOCKED) => not (throttle = FWD);
+  ok2 = ((obstacle = CLEAR) and (sideSense = IS_CLEAR)) => steer = CENTER;
+  ok3 = counter_gf1 < K;
+
+  assert respondsTo((throttle = BWD), (obstacle = CLEAR));
+  ok4 = Initially((spec_b2f = S0));
+  ok5 = ((pre(spec_b2f = S0 and (((not (throttle = BWD)) and (not (throttle = STOP))) or (throttle = BWD and throttle = FWD) or ((not (throttle = FWD)) and throttle = STOP) or ((not (throttle = BWD)) and throttle = FWD and throttle = STOP))) and (spec_b2f = S0)) or
+  (pre(spec_b2f = S0 and (throttle = BWD and (not (throttle = FWD)) and (not (throttle = STOP)))) and spec_b2f = S1) or
+  (pre(spec_b2f = S1 and ((not (throttle = FWD)) and throttle = STOP)) and spec_b2f = S0) or
+  (pre(spec_b2f = S1 and ((not (throttle = FWD)) and (not (throttle = STOP)))) and spec_b2f = S1) or
+  (pre(spec_b2f = S1 and throttle = FWD) and spec_b2f = S2) or
+  (pre(spec_b2f = S2) and spec_b2f = S2));
+
+  counter_gf2 = 0.0 -> if (spec_b2f = S0 or spec_b2f = S1) then 0.0 else pre(counter_gf2) + 1.0;
+  assert counter_gf2 < K;
+
+  ok6 = Initially(spec_f2b = S0);
+  ok7 = ((pre(spec_f2b = S0 and (((not (throttle = FWD)) and (not (throttle = STOP))) or (throttle = FWD and throttle = BWD) or ((not (throttle = BWD)) and throttle = STOP) or ((not (throttle = FWD)) and throttle = BWD and throttle = STOP))) and (spec_f2b = S0)) or
+  (pre(spec_f2b = S0 and (throttle = FWD and (not (throttle = BWD)) and (not (throttle = STOP)))) and spec_f2b = S1) or
+  (pre(spec_f2b = S1 and ((not (throttle = BWD)) and throttle = STOP)) and spec_f2b = S0) or
+  (pre(spec_f2b = S1 and ((not (throttle = BWD)) and (not (throttle = STOP)))) and spec_f2b = S1) or
+  (pre(spec_f2b = S1 and throttle = BWD) and spec_f2b = S2) or
+  (pre(spec_f2b = S2) and spec_f2b = S2));
+
+  counter_gf3 = 0.0 -> if (spec_f2b = S0 or spec_f2b = S1) then 0.0 else pre(counter_gf3) + 1.0;
+  assert counter_gf3 < K;
+  ok = ok1 and ok2 and ok3 and ok4 and ok5 and ok6 and ok7;
+
+  --%PROPERTY ok;
+  --%REALIZABLE obstacle, sideSense;
+tel;
