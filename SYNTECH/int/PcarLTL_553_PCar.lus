@@ -1,0 +1,74 @@
+--appended prefix "IS_" to values CLEAR and BLOCKED in sideSense since JKind complains of value being used in multiple types
+
+const K = 2;
+type env_obstacle = enum {CLEAR, BLOCKED};
+type env_sideSense = enum {IS_CLEAR, P_O, IS_BLOCKED};
+type env_parkResult = enum {NA, PARALLEL};
+
+type sys_throttle = enum {FWD, BWD, STOP};
+type sys_steer = enum {RIGHT, LEFT, CENTER};
+type sys_parkCommand = enum {pSTART, pSTOP, pCHECK};
+type sys_spec_policy = enum {SEEKING, MEASURING, PARKING, PARKED};
+
+
+node respondsTo(trigger, response : bool) returns (ok : bool);
+var
+  responded : bool;
+  counter_gf : int;
+let
+  counter_gf = 0 -> if responded then 0 else pre(counter_gf) + 1;
+  responded = true -> if pre(response or responded and (not trigger)) then true else false;
+  ok = true -> ((responded => pre(response or responded and (not trigger))) and (pre(response or responded and (not trigger)) => responded) and counter_gf < K);
+tel;
+
+
+node Initially(i: bool) returns (o: bool);
+let
+  o = i -> true;
+tel;
+
+node PCar(obstacle : env_obstacle; sideSense : env_sideSense; parkResult : env_parkResult; throttle : sys_throttle; steer : sys_steer; parkCommand : sys_parkCommand; spec_park : bool; spec_policy : sys_spec_policy) returns (ok : bool);
+var
+  counter_gf1 : int;
+  ok1, ok2, ok3, ok4, ok5, ok6, ok7, ok8, ok9, ok10, ok11, ok12, ok13, ok14, ok15, ok16, ok17, ok18, ok19 : bool;
+let
+
+  ok1 = Initially(spec_policy = SEEKING and (not spec_park));
+
+  counter_gf1 = 0 -> if spec_park then 0 else pre(counter_gf1) + 1;
+  ok2 = counter_gf1 < K;
+
+  ok3 = (not spec_park) => (not (spec_policy = PARKED));
+  ok4 = spec_park => spec_policy = PARKED;
+  ok5 = respondsTo((not (spec_policy = PARKED)), (not (throttle = STOP)));
+  ok6 = ((spec_policy = SEEKING or spec_policy = MEASURING) and obstacle = BLOCKED) => throttle = BWD;
+  ok7 = ((spec_policy = PARKING or spec_policy = PARKED) and obstacle = BLOCKED) => throttle = FWD;
+  ok8 = sideSense = IS_BLOCKED => (not (steer = RIGHT));
+
+  --**spec_policy state tarnsition restrictions**--
+  ok9 = pre(spec_policy = SEEKING and sideSense = IS_BLOCKED and obstacle = CLEAR) => (spec_policy = SEEKING and pre(throttle = FWD and parkCommand = pSTOP and steer = CENTER));
+  ok10 = pre(spec_policy = SEEKING and sideSense = IS_BLOCKED) => (spec_policy = SEEKING and pre(parkCommand = pSTOP and steer = CENTER));
+  ok11 = pre(spec_policy = SEEKING and (sideSense = IS_CLEAR or sideSense = P_O) and obstacle = CLEAR and parkResult = NA) => (spec_policy = MEASURING and pre(throttle = FWD and parkCommand = pSTART and steer = CENTER));
+  ok12 = pre(spec_policy = MEASURING and (sideSense = IS_CLEAR or sideSense = P_O) and obstacle = CLEAR and parkResult = NA) => (spec_policy = MEASURING and pre(throttle = FWD and parkCommand = pCHECK and steer = CENTER));
+  ok13 = pre(spec_policy = MEASURING and (sideSense = IS_CLEAR or sideSense = P_O) and obstacle = CLEAR and parkResult = PARALLEL) => (spec_policy = PARKING and pre(throttle = STOP and parkCommand = pSTOP and steer = CENTER));
+  ok14 = pre(spec_policy = MEASURING and sideSense = IS_BLOCKED and obstacle = CLEAR and parkResult = PARALLEL) => (spec_policy = PARKING and pre(throttle = STOP and parkCommand = pSTOP));
+  ok15 = pre(spec_policy = MEASURING and sideSense = IS_BLOCKED and obstacle = CLEAR and parkResult = NA) => (spec_policy = SEEKING and pre(throttle = FWD and parkCommand = pSTOP));
+  ok16 = pre(spec_policy = PARKING) => spec_policy = PARKED;
+  ok17 = pre(spec_policy = PARKED) => (spec_policy = PARKED and pre(throttle = STOP and steer = LEFT and parkCommand = pSTOP));
+  ok18 = pre(obstacle = BLOCKED and (not (spec_policy = PARKING or spec_policy = PARKED))) => spec_policy = SEEKING;
+  ok19 = obstacle = BLOCKED => parkCommand = pSTOP;
+
+  assert respondsTo((throttle = BWD), (obstacle = CLEAR));
+  assert pre(throttle = STOP) => ((obstacle = pre(obstacle)) and (sideSense = pre(sideSense)));
+  assert respondsTo((spec_policy = SEEKING), (spec_policy = PARKING));
+  assert spec_policy = SEEKING => parkResult = NA;
+  assert Initially(parkResult = NA);
+
+  ok = ok1 and ok2 and ok3 and ok4 and ok5 and ok6 and ok7 and ok8 and ok9 and ok10 and ok11 and ok12 and ok13 and ok14 and ok15 and ok16 and ok17 and ok18 and ok19;
+  --ok = ok1 and ok2 and ok3 and ok4 and ok5;
+  --ok = ok6 and ok7 and ok8 and ok9 and ok10;
+  --ok = ok11 and ok12 and ok13 and ok14 and ok15 and ok16 and ok17 and ok18 and ok19;
+
+  --%PROPERTY ok;
+  --%REALIZABLE obstacle, sideSense, parkResult;
+tel;

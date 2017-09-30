@@ -1,0 +1,111 @@
+const K = 2;
+
+type env_color = enum {RED, GREEN, BLUE, BLACK, YELLOW, WHITE};
+type env_ack_ver = enum {MOVE, SLEEP};
+
+type env_speedButton = enum {PRESS, RELEASE};
+
+type sys_botMot = enum {SEEK, STOP, RETURN};
+type sys_motSpeed = enum {LEVEL1, LEVEL2, LEVEL3};
+type sys_spec_state__seek = enum {S0, S1, S2};
+
+node respondsTo(trigger, response : bool) returns (ok : bool);
+var
+  responded : bool;
+  counter_gf : int;
+let
+  counter_gf = 0 -> if responded then 0 else pre(counter_gf) + 1;
+  responded = true -> if pre(response or responded and (not trigger)) then true else false;
+  ok = true -> ((responded => pre(response or responded and (not trigger))) and (pre(response or responded and (not trigger)) => responded) and counter_gf < K);
+tel;
+
+node Initially(i: bool) returns (o: bool);
+let
+  o = i -> true;
+tel;
+
+node ColorSort(color : env_color; detect : env_color; ack_ver, ack_hor, ack_bot : env_ack_ver; speedButton : env_speedButton; verMot, horMot : env_ack_ver; botMot : sys_botMot; motSpeed : sys_motSpeed; spec_state__seek : sys_spec_state__seek; spec_currentColor : env_color; spec_dropping : bool; spec_speedButtonValidPressed : bool) returns (ok : bool);
+var
+  counter_gf1 : int;
+  ok1, ok2, ok3, ok4, ok5, ok6, ok7, ok8, ok9, ok10, ok11, ok12, ok13, ok14, ok15, ok16, ok17, ok18, ok19, ok20, ok21, ok22 : bool;
+  spec_allsleep, spec_nonemove : bool;
+let
+  spec_allsleep = (verMot = SLEEP and horMot = SLEEP and botMot = STOP);
+  spec_nonemove = (ack_ver = SLEEP and ack_hor = SLEEP and ack_bot = SLEEP);
+
+  ok1 = verMot = MOVE => (botMot = STOP and horMot = SLEEP);
+  ok2 = horMot = MOVE => (botMot = STOP and verMot = SLEEP);
+  ok3 = botMot <> STOP => (verMot = SLEEP and horMot = SLEEP);
+  ok4 = pre(verMot = SLEEP) => (spec_currentColor = pre(spec_currentColor));
+
+  --running the robot
+
+  ok5 = ((spec_dropping = pre(spec_dropping)) => (pre(verMot = SLEEP and (not (true -> pre(botMot = RETURN))) and ack_bot = SLEEP))) and ((pre(verMot = SLEEP and (not (true -> pre(botMot = RETURN))) and ack_bot = SLEEP)) => (spec_dropping = pre(spec_dropping)));
+
+  ok6 = (ack_ver = MOVE or ack_hor = MOVE) => spec_allsleep;
+
+  assert (not spec_dropping) => spec_nonemove;
+
+  assert ((ack_hor = MOVE) => (detect = spec_currentColor and pre((horMot = MOVE) or (ack_hor = MOVE)))) and ((detect = spec_currentColor and pre((horMot = MOVE) or (ack_hor = MOVE))) => (ack_hor = MOVE));
+
+  assert (horMot = MOVE) => pre(ack_ver = SLEEP);
+
+  ok7 = spec_dropping => verMot = SLEEP;
+
+  ok8 = (not spec_dropping) => (botMot = STOP and horMot = SLEEP);
+
+  ok9 = (color = BLACK and (not spec_dropping)) => spec_allsleep;
+
+  ok10 = pre(color <> BLACK and (not spec_dropping)) => (pre(verMot = MOVE) and (spec_currentColor = pre(color)) and spec_dropping);
+
+  ok11 = (ack_ver = SLEEP and pre(ack_ver = MOVE) and spec_dropping) => botMot = SEEK;
+
+  ok12 = Initially (spec_state__seek = S0);
+
+  -- i believe the following is wrong in the spectra file. It should be like 645
+
+  -- ok13 = (pre(spec_state__seek = S0 and (((not (verMot = MOVE)) and (not (detect = spec_currentColor))) or (detect = spec_currentColor))) and spec_state__seek = S0) or
+  --(pre(spec_state__seek = S0 and (verMot = MOVE and (not (botMot = SEEK)) and (not (detect = spec_currentColor)))) and spec_state__seek = S1) or
+  --(pre(spec_state__seek = S0 and (verMot = MOVE and botMot = SEEK and (not (detect = spec_currentColor)))) and spec_state__seek = S2) or
+  --(pre(spec_state__seek = S1) and spec_state__seek = S1) or
+  --(pre(spec_state__seek = S2 and (detect = spec_currentColor)) and spec_state__seek = S0) or
+  --(pre(spec_state__seek = S2 and ((not (botMot = SEEK)) and (not (detect = spec_currentColor)))) and spec_state__seek = S1) or
+  --(pre(spec_state__seek = S2 and (botMot = SEEK and (not (detect = spec_currentColor)))) and spec_state__seek = S2);
+
+  ok13 = (pre(spec_state__seek = S0 and (((not (botMot = SEEK)) and (not (detect = spec_currentColor))) or (detect = spec_currentColor))) and spec_state__seek = S0) or
+  (pre(spec_state__seek = S0 and (botMot = SEEK and (not (botMot = SEEK)) and (not (detect = spec_currentColor)))) and spec_state__seek = S1) or
+  (pre(spec_state__seek = S0 and (botMot = SEEK and botMot = SEEK and (not (detect = spec_currentColor)))) and spec_state__seek = S2) or
+  (pre(spec_state__seek = S1) and spec_state__seek = S1) or
+  (pre(spec_state__seek = S2 and (detect = spec_currentColor)) and spec_state__seek = S0) or
+  (pre(spec_state__seek = S2 and ((not (botMot = SEEK)) and (not (detect = spec_currentColor)))) and spec_state__seek = S1) or
+  (pre(spec_state__seek = S2 and (botMot = SEEK and (not (detect = spec_currentColor)))) and spec_state__seek = S2);
+
+
+  counter_gf1 = 0 -> if (spec_state__seek = S0 or spec_state__seek = S2) then 0 else pre(counter_gf1) + 1;
+  assert counter_gf1 < K;
+
+  ok14 = ((spec_dropping and (detect = spec_currentColor) and pre(botMot <> STOP)) => horMot = MOVE) and (horMot = MOVE => (spec_dropping and (detect = spec_currentColor) and pre(botMot <> STOP)));
+
+  ok15 = Initially(motSpeed = LEVEL1 and (not spec_dropping));
+
+  ok16 = ((speedButton = PRESS and pre(speedButton = RELEASE)) => spec_speedButtonValidPressed) and (spec_speedButtonValidPressed => (speedButton = PRESS and pre(speedButton = RELEASE)));
+
+  ok17 = (spec_speedButtonValidPressed and pre(motSpeed = LEVEL1)) => motSpeed = LEVEL2;
+
+  ok18 = (spec_speedButtonValidPressed and pre(motSpeed = LEVEL2)) => motSpeed = LEVEL3;
+
+  ok19 = (spec_speedButtonValidPressed and pre(motSpeed = LEVEL3)) => motSpeed = LEVEL1;
+
+  ok20 = ((not spec_speedButtonValidPressed) and pre(motSpeed = LEVEL1)) => motSpeed = LEVEL1;
+
+  ok21 = ((not spec_speedButtonValidPressed and pre(motSpeed = LEVEL2))) => motSpeed = LEVEL2;
+
+  ok22 = ((not spec_speedButtonValidPressed and pre(motSpeed = LEVEL3))) => motSpeed = LEVEL3;
+
+  assert Initially(color <> BLACK);
+
+  ok = ok1 and ok2 and ok3 and ok4 and ok5 and ok6 and ok7 and ok8 and ok9 and ok10 and ok11 and ok12 and ok13 and ok14 and ok15 and ok16 and ok17 and ok18 and ok19 and ok20 and ok21 and ok22;
+
+  --%PROPERTY ok;
+  --%REALIZABLE color, detect, ack_ver, ack_hor, ack_bot, speedButton;
+tel;
