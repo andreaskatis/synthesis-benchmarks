@@ -11,7 +11,6 @@ ANOTHER_PUSH_PATH = 'fixpoint'
 IMPLEMENT_DIR = 'verification/kind'
 ANOTHER_IMPLEMENT_DIR = "verification/fixpoint"
 
-
 SECOND_EXPERIMENTS_DIR = 'smaccm'
 SECOND_IMPLEMENT_DIR = 'smaccm/kind'
 SECOND_ANOTHER_IMPLEMENT_DIR = 'smaccm/fixpoint'
@@ -20,26 +19,15 @@ THIRD_EXPERIMENTS_DIR = 'other'
 THIRD_IMPLEMENT_DIR = 'other/kind'
 THIRD_ANOTHER_IMPLEMENT_DIR = 'other/fixpoint'
 
-#FORHT_EXPERIMENTS_DIR = 'SYNTECH'
-#FORHT_IMPLEMENT_DIR = 'SYNTECH/kind'
-#FORTH_ANOTHER_IMPLEMENT_DIR = 'SYNTECH/fixpoint'
-
 NestList_overhead = []
 NestList_size = [] 
 NestList_size_name = []
 NestList_size_name_verification = []
 NestList_size_name_smaccm = []
 NestList_size_name_other = []
-#NestList_size_name_SYNTECH = []
 NestList_performance = []
-#TIMEOUT = 3600
 
-
-#
-# Run JKind
-#
-# '-timeout', str(TIMEOUT)
-#file_path = verification/car_1.lus
+#delete all previous files except lus files in subfolder
 def deleteFile_in_subfolder(folder, lus_files):
     os.chdir(folder)
 
@@ -74,24 +62,19 @@ def deleteFile_in_subfolder(folder, lus_files):
             if (os.path.isfile(os.path.splitext(lus)[0])):
                 os.remove(os.path.splitext(lus)[0])
 
-
     os.chdir("..")
 
-
+#delete files in each folder except lus
 def deleteFile_in_folder():
     lus_files = glob.glob("*.lus")
     deleteFile_in_subfolder("kind", lus_files)
     deleteFile_in_subfolder("fixpoint", lus_files)
 
-
-
-
-
+#delete files in synthesis-benchmark folder except lus
 def deleteAll():
     txtfileList = glob.glob("*.txt")
     pdffileList = glob.glob("*.pdf")
     csvfileList = glob.glob("*.csv")
-
 
     if (len(txtfileList)!=0):
         for txt in txtfileList:
@@ -117,16 +100,8 @@ def deleteAll():
     deleteFile_in_folder()
     os.chdir("..")
 
-   # os.chdir("SYNTECH")
-   # deleteFile_in_folder()
-   # os.chdir("..")
-
-
-
-
 
 def run_realizability(file_path):
-    #delete "xml"
     args = ['java', '-jar', jkind_jar, '-jrealizability',
             '-timeout', '1000', '-n', '1000000', file_path]
     with open("debug_jkind.txt", "a") as debug:
@@ -155,7 +130,6 @@ def run_fixpoint(file_path):
 
 
 def run_realizability_synthesis(lus_file, experiments_dir): 
-
     lus_path = os.path.join(experiments_dir, lus_file)
     run_realizability(lus_path)
     sys.stdout.write(".")
@@ -172,14 +146,12 @@ def run_last_fixpoint(lus_file, experiments_dir):
     sys.stdout.write(".")
     sys.stdout.flush()
 
-
-
 def move_impl(outpath, experiments_dir): 
     impl_files = glob.glob("*_skolem.smt2")
     if len(impl_files) == 0:
         print("No implement files found in '" + experiments_dir + "' directory")
         sys.exit(-1)
-    #print("moving impl files")
+
     for i, impl_file in enumerate(impl_files):
         old_implPath = impl_file
         new_implPath = os.path.join(outpath, impl_file)
@@ -275,19 +247,15 @@ def drawOverhead():
     pl3 = np.array([float(j[3]) for j in sorted(NestList_overhead,key=lambda  x: float(x[3]))])
 
     fig = plt.figure()
-
     plt.yscale('log')
-    plt.ylim(pow(10,-1), pow(10,2.3))
+    plt.ylim(pow(10,-1), pow(10,2.8))
 
     synthesis = plt.plot(pl2,'-r^', label = 'JSYN', markersize = 3)
     fixpoint = plt.plot(pl3,'-bo', label = 'JSYN-VG',  markersize = 3)
 
     plt.xlabel("Model")
     plt.ylabel("Performance(seconds)")
-
-    #plt.legend(bbox_to_anchor=(0.6, 1))
     plt.legend(loc = 'upper left')
-
     fig.savefig("overhead.pdf")
 
 
@@ -306,7 +274,6 @@ def drawSize():
 
     pl1 = np.array([j[1] for j in sorted(NestList_size, key=lambda x: float(x[2]))])
     pl2 = np.array([j[2] for j in sorted(NestList_size, key=lambda x: float(x[2]))])
-
    
 # Plot the results
     fig = plt.figure()
@@ -319,7 +286,6 @@ def drawSize():
     plt.ylabel("Lines of Code")
     plt.legend(loc = 'upper left')
     fig.savefig("loc.pdf")
-
 
 
 def combineSizeTxt(file1, file2):
@@ -377,11 +343,9 @@ def drawPerformance():
     pl2 = np.array([float(j[2]) for j in NestList_performance])
 
     fig = plt.figure()
-   
     plt.scatter(pl1,pl2,c="r", s = 8,edgecolor= "")
 
     plt.axis([0,(float(getMax(NestList_performance))+20),0,(float(getMax(NestList_performance))+20)])
-
     plt.plot([0,(float(getMax(NestList_performance))+20)],[0,(float(getMax(NestList_performance))+20)])
 
     plt.xlabel("JSYN")
@@ -566,8 +530,6 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir, anothe
     os.chdir("..")
     os.chdir("..")
 
-
-
     print("")
     print("====Running Makefile under " + another_implement_dir + "===")
     print("")
@@ -597,8 +559,6 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir, anothe
 
 
 #run executable in kind .........................
-
-
     print("")
     print("====Running Executable under " + implement_dir + "===")
     print("")
@@ -626,7 +586,6 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir, anothe
 
 
 #run executable in fixpoint .........................
-
     print("")
     print("====Running Executable under " + another_implement_dir + "===")
     print("")
@@ -692,15 +651,10 @@ if ((len(sys.argv)>1) and (sys.argv[1] == "-skipjkind")):
 else:
     deleteAll()
 
-
-
-
 ##############################################################
 execute(EXPERIMENTS_DIR, PUSH_PATH, ANOTHER_PUSH_PATH, IMPLEMENT_DIR, ANOTHER_IMPLEMENT_DIR, NestList_size_name_verification)
 execute(SECOND_EXPERIMENTS_DIR, PUSH_PATH, ANOTHER_PUSH_PATH, SECOND_IMPLEMENT_DIR,SECOND_ANOTHER_IMPLEMENT_DIR, NestList_size_name_smaccm)
 execute(THIRD_EXPERIMENTS_DIR, PUSH_PATH, ANOTHER_PUSH_PATH, THIRD_IMPLEMENT_DIR,THIRD_ANOTHER_IMPLEMENT_DIR, NestList_size_name_other)
-#execute(FORHT_EXPERIMENTS_DIR, PUSH_PATH, ANOTHER_PUSH_PATH, FORHT_IMPLEMENT_DIR,FORTH_ANOTHER_IMPLEMENT_DIR, NestList_size_name_SYNTECH)
-
 
 #fill the NestList_overhead
 parse("debug_jkind.txt", "overhead.txt")
@@ -720,16 +674,12 @@ measureSizeOfC(SECOND_ANOTHER_IMPLEMENT_DIR, NestList_size_name_smaccm)
 #create both other (kind and fixpoint) loc.txt
 measureSizeOfC(THIRD_IMPLEMENT_DIR, NestList_size_name_other)
 measureSizeOfC(THIRD_ANOTHER_IMPLEMENT_DIR, NestList_size_name_other)
-#create both syntech (kind and fixpoint) loc.txt
-#measureSizeOfC(FORHT_IMPLEMENT_DIR, NestList_size_name_SYNTECH)
-#measureSizeOfC(FORTH_ANOTHER_IMPLEMENT_DIR, NestList_size_name_SYNTECH)
+
 
 #append to NestList_size
 combineSizeTxt(IMPLEMENT_DIR+"/loc.txt", ANOTHER_IMPLEMENT_DIR+"/loc.txt")
 combineSizeTxt(SECOND_IMPLEMENT_DIR+"/loc.txt", SECOND_ANOTHER_IMPLEMENT_DIR+"/loc.txt")
 combineSizeTxt(THIRD_IMPLEMENT_DIR+"/loc.txt", THIRD_ANOTHER_IMPLEMENT_DIR+"/loc.txt")
-#combineSizeTxt(FORHT_IMPLEMENT_DIR+"/loc.txt", FORTH_ANOTHER_IMPLEMENT_DIR+"/loc.txt")
-
 
 print("NestList_size")
 print(NestList_size)
@@ -741,7 +691,6 @@ print("")
 combineResultTxt(IMPLEMENT_DIR+"/results.txt",ANOTHER_IMPLEMENT_DIR+"/results.txt")
 combineResultTxt(SECOND_IMPLEMENT_DIR+"/results.txt",SECOND_ANOTHER_IMPLEMENT_DIR+"/results.txt")
 combineResultTxt(THIRD_IMPLEMENT_DIR+"/results.txt",THIRD_ANOTHER_IMPLEMENT_DIR+"/results.txt")
-#combineResultTxt(FORHT_IMPLEMENT_DIR+"/results.txt",FORTH_ANOTHER_IMPLEMENT_DIR+"/results.txt")
 
 
 print("NestList_performance")
@@ -749,9 +698,7 @@ print(NestList_performance)
 
 drawPerformance()
 
-
 writeCSV()
-
 
 
 avg_overhead_s = sum([float(a[2]) for a in NestList_overhead])/len(NestList_overhead)
