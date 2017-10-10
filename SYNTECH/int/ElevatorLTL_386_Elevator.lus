@@ -1,0 +1,33 @@
+--floor is a keyword in Lustre. Changed to fl.
+
+const K = 5;
+type env_floor = enum {LOWER, MIDDLE, UPPER, NONE};
+type sys_elevMot = enum {FWD, BWD, STOP};
+
+node Initially(i: bool) returns (o: bool);
+let
+  o = i -> true;
+tel;
+
+node Elevator(fl : env_floor; elevMot : sys_elevMot) returns (ok : bool);
+var
+  counter_gf1, counter_gf2, counter_gf3 : int;
+  ok1, ok2, ok3, ok4 : bool;
+let
+
+  assert (elevMot = STOP) => (fl <> NONE);
+
+  counter_gf1 = 0 -> if (elevMot = FWD) then 0 else pre(counter_gf1) + 1;
+  counter_gf2 = 0 -> if ((fl = LOWER) => (elevMot = FWD)) then 0 else pre(counter_gf2) + 1;
+  counter_gf3 = 0 -> if ((fl = UPPER) => (elevMot = BWD)) then 0 else pre(counter_gf3) + 1;
+
+  ok1 = Initially(elevMot = STOP);
+  ok2 = counter_gf1 < K;
+  ok3 = counter_gf2 < K;
+  ok4 = counter_gf3 < K;
+
+  ok = ok1 and ok2 and ok3 and ok4;
+
+  --%PROPERTY ok;
+  --%REALIZABLE fl;
+tel;
