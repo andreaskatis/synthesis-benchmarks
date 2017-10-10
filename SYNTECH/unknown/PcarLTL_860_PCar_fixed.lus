@@ -32,7 +32,8 @@ tel;
 
 node PCar(obstacle : env_obstacle; sideSense : env_sideSense; parkResult : env_parkResult; colorSense : env_colorSense; command : env_command; reset : env_reset; throttle : sys_throttle; steer : sys_steer; parkCommand : sys_parkCommand; spec_park : bool; spec_policy : sys_spec_policy) returns ();
 var
-  counter_gf1, counter_gf2, counter_gf3 : real;
+  responded1 : bool;
+  counter_r1, counter_gf1, counter_gf2, counter_gf3 : real;
   ok1, ok2, ok3, ok4, ok5, ok6, ok7, ok8, ok9, ok10, ok11, ok12, ok13, ok14, ok15, ok16, ok17, ok18, ok19, ok20, ok21, ok22, ok23, ok24, ok25, ok26, ok27, ok28, ok29, ok30, ok31, ok32, ok33, ok34, ok35, ok36, ok37, ok38, ok39, ok40, ok41, ok42, ok43, ok44, ok45, ok46, ok47, ok48, ok49, ok50 : bool;
 let
 
@@ -111,7 +112,14 @@ let
   counter_gf2 = 0.0 -> if (spec_policy = MEASURING and parkResult = PARALLEL and obstacle = CLEAR) then 0.0 else pre(counter_gf2) + 1.0;
   assert counter_gf2 < K;
   assert Initially(parkResult = NA and command = cAUTO and reset = FREE);
-  assert respondsTo((throttle = BWD), (obstacle = CLEAR));
+  --assert respondsTo((throttle = BWD), (obstacle = CLEAR));
+
+  responded1 = true -> (pre((obstacle = CLEAR) or responded1 and (not (throttle = BWD))));
+
+  counter_r1 = 0.0 -> if (responded1) then 0.0 else pre(counter_r1) + 1.0;
+
+  assert counter_r1 < K;
+
   assert pre(throttle = STOP) => ((obstacle = pre(obstacle)) and (sideSense = pre(sideSense)));
   assert pre(spec_policy <> PARKED) => colorSense = BLACK;
   counter_gf3 = 0.0 -> if (spec_policy = PARKED and colorSense = GREEN and reset = FREE) then 0.0 else pre(counter_gf3) + 1.0;

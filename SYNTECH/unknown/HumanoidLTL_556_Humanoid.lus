@@ -27,8 +27,9 @@ tel;
 
 node Humanoid(Obstacle : env_Obstacle; Noise : env_Noise; Heading : env_Heading; LeftMotor : sys_LeftMotor; RightMotor : sys_RightMotor; HeadMotor : sys_HeadMotor; spec_nextMoveMode : sys_spec_nextMoveMode; spec_state : sys_spec_state; spec_search : sys_spec_search) returns ();
 var
-  counter_gf1, counter_gf2 : real;
-  ok1, ok2, ok3, ok4, ok5, ok6, ok7, ok8, ok9, ok10, ok11, ok12, ok13, ok14, ok15, ok16, ok17, ok18, ok19, ok20, ok21, ok22, ok23, ok24, ok25, ok26 : bool;
+  responded1, responded2 : bool;
+  counter_r1, counter_r2, counter_gf1, counter_gf2 : real;
+  ok1, ok2, ok3, ok4, ok5, ok6, ok7, ok8, ok9, ok10, ok11, ok12, ok13, ok14, ok15, ok16, ok17, ok18, ok19, ok20, ok21, ok22, ok23, ok24, ok25, ok26, ok27, ok28, ok29, ok30, ok31 : bool;
 let
   ok1 = Initially(spec_search = M0);
   ok2 = (pre(spec_state = Q0 and spec_nextMoveMode = snMM_FWD) and spec_nextMoveMode = snMM_BWD) => spec_state = Q1;
@@ -46,27 +47,48 @@ let
 
   ok13 = pre(spec_search = M2 and Heading = ONTRACK) => spec_search = M0;
   ok14 = (Obstacle = BLOCKED and (not pre(true -> pre(spec_nextMoveMode = snMM_TURN_LEFT_2)))) => (not (spec_nextMoveMode = snMM_FWD));
-  ok15 = ((pre(spec_nextMoveMode = snMM_BWD) and spec_nextMoveMode = snMM_FWD) => (LeftMotor = LM_FWD and RightMotor = RM_BWD)) and ((LeftMotor = LM_FWD and RightMotor = RM_BWD) => (pre(spec_nextMoveMode = snMM_BWD) and spec_nextMoveMode = snMM_FWD));
-  ok16 = ((pre(spec_nextMoveMode = snMM_FWD) and spec_nextMoveMode = snMM_BWD) => (LeftMotor = LM_BWD and RightMotor = RM_FWD)) and ((LeftMotor = LM_BWD and RightMotor = RM_FWD) => (pre(spec_nextMoveMode = snMM_FWD) and spec_nextMoveMode = snMM_BWD));
+  ok15 = ((pre(spec_nextMoveMode = snMM_BWD) and spec_nextMoveMode = snMM_FWD) => (LeftMotor = LM_FWD and RightMotor = RM_BWD));
+  ok16 = ((LeftMotor = LM_FWD and RightMotor = RM_BWD) => (pre(spec_nextMoveMode = snMM_BWD) and spec_nextMoveMode = snMM_FWD));
+  ok17 = ((pre(spec_nextMoveMode = snMM_FWD) and spec_nextMoveMode = snMM_BWD) => (LeftMotor = LM_BWD and RightMotor = RM_FWD));
+  ok18 = ((LeftMotor = LM_BWD and RightMotor = RM_FWD) => (pre(spec_nextMoveMode = snMM_FWD) and spec_nextMoveMode = snMM_BWD));
 
   counter_gf1 = 0.0 -> if spec_nextMoveMode = snMM_FWD then 0.0 else pre(counter_gf1) + 1.0;
-  ok17 = counter_gf1 < K;
+  ok19 = counter_gf1 < K;
 
-  ok18 = (spec_nextMoveMode = snMM_BWD) => (pre(spec_nextMoveMode = snMM_FWD or spec_nextMoveMode = snMM_BWD));
-  ok19 = (pre(spec_nextMoveMode = snMM_TURN_LEFT_2)) => (not (spec_nextMoveMode = snMM_BWD));
-  ok20 = ((pre(spec_nextMoveMode = snMM_FWD) and spec_nextMoveMode = snMM_TURN_LEFT_1) => (LeftMotor = LM_CALIB_TURN and RightMotor = RM_CALIB_TURN)) and ((LeftMotor = LM_CALIB_TURN and RightMotor = RM_CALIB_TURN) => (pre(spec_nextMoveMode = snMM_FWD) and spec_nextMoveMode = snMM_TURN_LEFT_1));
-  ok21 = (pre(spec_nextMoveMode = snMM_BWD)) => (spec_nextMoveMode <> snMM_TURN_LEFT_1);
+  ok20 = (spec_nextMoveMode = snMM_BWD) => (pre(spec_nextMoveMode = snMM_FWD or spec_nextMoveMode = snMM_BWD));
 
-  ok22 = ((pre(spec_nextMoveMode = snMM_FWD and (true -> pre(spec_nextMoveMode = snMM_TURN_LEFT_2)))) => (LeftMotor = LM_CALIB_FWD and RightMotor = RM_CALIB_FWD)) and ((LeftMotor = LM_CALIB_FWD and RightMotor = RM_CALIB_FWD) => (pre(spec_nextMoveMode = snMM_FWD and (true -> pre(spec_nextMoveMode = snMM_TURN_LEFT_2)))));
+  ok21 = (pre(spec_nextMoveMode = snMM_TURN_LEFT_2)) => (not (spec_nextMoveMode = snMM_BWD));
+  ok22 = ((pre(spec_nextMoveMode = snMM_FWD) and spec_nextMoveMode = snMM_TURN_LEFT_1) => (LeftMotor = LM_CALIB_TURN and RightMotor = RM_CALIB_TURN));
+  ok23 = ((LeftMotor = LM_CALIB_TURN and RightMotor = RM_CALIB_TURN) => (pre(spec_nextMoveMode = snMM_FWD) and spec_nextMoveMode = snMM_TURN_LEFT_1));
 
-  ok23 = ((pre(spec_nextMoveMode = snMM_TURN_LEFT_1)) => spec_nextMoveMode = snMM_TURN_LEFT_2) and (spec_nextMoveMode = snMM_TURN_LEFT_2 => (pre(spec_nextMoveMode = snMM_TURN_LEFT_1)));
+  ok24 = (pre(spec_nextMoveMode = snMM_BWD)) => (spec_nextMoveMode <> snMM_TURN_LEFT_1);
 
-  ok24 = ((pre(spec_nextMoveMode = snMM_TURN_LEFT_1)) => (LeftMotor = LM_FWD and RightMotor = RM_TURN_FWD));
-  ok25 = pre(spec_nextMoveMode = snMM_TURN_LEFT_2) => (LeftMotor = LM_BWD and RightMotor = RM_TURN_BWD);
-  ok26 = (not (pre(spec_nextMoveMode = snMM_TURN_LEFT_1 or spec_nextMoveMode = snMM_TURN_LEFT_2))) => (not (LeftMotor = LM_TURN_BWD or RightMotor = RM_TURN_BWD or LeftMotor = LM_TURN_FWD or RightMotor = RM_TURN_FWD));
+  ok25 = ((pre(spec_nextMoveMode = snMM_FWD and (true -> pre(spec_nextMoveMode = snMM_TURN_LEFT_2)))) => (LeftMotor = LM_CALIB_FWD and RightMotor = RM_CALIB_FWD));
+  ok26 = ((LeftMotor = LM_CALIB_FWD and RightMotor = RM_CALIB_FWD) => (pre(spec_nextMoveMode = snMM_FWD and (true -> pre(spec_nextMoveMode = snMM_TURN_LEFT_2)))));
 
-  assert respondsTo((spec_search = M2), (Heading = ONTRACK));
-  assert respondsTo((spec_nextMoveMode <> snMM_FWD), (Obstacle = CLEAR));
+  ok27 = ((pre(spec_nextMoveMode = snMM_TURN_LEFT_1)) => spec_nextMoveMode = snMM_TURN_LEFT_2);
+  ok28 = (spec_nextMoveMode = snMM_TURN_LEFT_2 => (pre(spec_nextMoveMode = snMM_TURN_LEFT_1)));
+
+  ok29 = ((pre(spec_nextMoveMode = snMM_TURN_LEFT_1)) => (LeftMotor = LM_FWD and RightMotor = RM_TURN_FWD));
+  ok30 = pre(spec_nextMoveMode = snMM_TURN_LEFT_2) => (LeftMotor = LM_BWD and RightMotor = RM_TURN_BWD);
+  ok31 = (not (pre(spec_nextMoveMode = snMM_TURN_LEFT_1 or spec_nextMoveMode = snMM_TURN_LEFT_2))) => (not (LeftMotor = LM_TURN_BWD or RightMotor = RM_TURN_BWD or LeftMotor = LM_TURN_FWD or RightMotor = RM_TURN_FWD));
+
+  --assert respondsTo((spec_search = M2), (Heading = ONTRACK));
+
+  responded1 = true -> (pre((Heading = ONTRACK) or responded1 and (not (spec_search = M2))));
+
+  counter_r1 = 0.0 -> if (responded1) then 0.0 else pre(counter_r1) + 1.0;
+
+  assert counter_r1 < K;
+
+  --assert respondsTo((spec_nextMoveMode <> snMM_FWD), (Obstacle = CLEAR));
+
+  responded2 = true -> (pre((Obstacle = CLEAR) or responded2 and (not (spec_nextMoveMode <> snMM_FWD))));
+
+  counter_r2 = 0.0 -> if (responded2) then 0.0 else pre(counter_r2) + 1.0;
+
+  assert counter_r2 < K;
+
   assert pre(spec_nextMoveMode = snMM_BWD and Obstacle = CLEAR) => (Obstacle <> BLOCKED);
   counter_gf2 = 0.0 -> if (pre(spec_nextMoveMode = snMM_TURN_LEFT_2) and Obstacle = CLEAR) then 0.0 else pre(counter_gf2) + 1.0;
   assert counter_gf2 < K;
@@ -99,6 +121,11 @@ let
   --%PROPERTY ok24;
   --%PROPERTY ok25;
   --%PROPERTY ok26;
-  
+  --%PROPERTY ok27;
+  --%PROPERTY ok28;
+  --%PROPERTY ok29;
+  --%PROPERTY ok30;
+  --%PROPERTY ok31;
+
   --%REALIZABLE Obstacle, Noise, Heading;
 tel;

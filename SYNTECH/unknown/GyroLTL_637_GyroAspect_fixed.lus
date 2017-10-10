@@ -23,7 +23,8 @@ tel;
 
 node GyroAspect(frontDistSense : env_frontDistSense; backDistSense: env_backDistSense; isReady : bool; bluetoothCmd : env_bluetoothCmd; balancer : sys_balancer; spec_blockedState : sys_spec_blockedState) returns ();
 var
-  counter_gf1, counter_gf2, counter_gf3 : real;
+  responded1, responded2, responded3, responded4 : bool;
+  counter_r1, counter_r2, counter_r3, counter_r4, counter_gf1, counter_gf2, counter_gf3 : real;
   ok1, ok2, ok3, ok4, ok5, ok6, ok7, ok8, ok9, ok10, ok11, ok12, ok13 : bool;
   moveAwayFromFrontObstacle, moveAwayFromBackObstacle, turningOp : bool;
 let
@@ -64,19 +65,43 @@ let
   assert Initially(frontDistSense = CLEAR and backDistSense = bDS_CLEAR);
   counter_gf3 = 0.0 -> if isReady then 0.0 else pre(counter_gf3) + 1.0;
   assert counter_gf3 < K;
-  assert true -> (pre(isReady) => isReady);
+  assert (pre(isReady) => isReady);
 
   moveAwayFromFrontObstacle = not(balancer = FWD or balancer = STP);
 
-  assert respondsTo(moveAwayFromFrontObstacle, ((not moveAwayFromFrontObstacle) or (frontDistSense = CLEAR)));
+  --assert respondsTo(moveAwayFromFrontObstacle, ((not moveAwayFromFrontObstacle) or (frontDistSense = CLEAR)));
+
+  responded1 = true -> (pre(((not moveAwayFromFrontObstacle) or (frontDistSense = CLEAR)) or responded1 and (not moveAwayFromFrontObstacle)));
+
+  counter_r1 = 0.0 -> if (responded1) then 0.0 else pre(counter_r1) + 1.0;
+
+  assert counter_r1 < K;
 
   moveAwayFromBackObstacle = not (balancer = BWD or balancer = STP);
 
-  assert respondsTo(moveAwayFromBackObstacle, ((not moveAwayFromBackObstacle) or backDistSense = bDS_CLEAR));
+  --assert respondsTo(moveAwayFromBackObstacle, ((not moveAwayFromBackObstacle) or backDistSense = bDS_CLEAR));
 
-  assert respondsTo((balancer = FWD), ((not (balancer = FWD)) or (frontDistSense = BLOCKED)));
+  responded2 = true -> (pre(((not moveAwayFromBackObstacle) or (backDistSense = bDS_CLEAR)) or responded2 and (not moveAwayFromBackObstacle)));
 
-  assert respondsTo((balancer = BWD), ((not (balancer = BWD)) or (backDistSense = bDS_BLOCKED)));
+  counter_r2 = 0.0 -> if (responded2) then 0.0 else pre(counter_r2) + 1.0;
+
+  assert counter_r2 < K;
+
+  --assert respondsTo((balancer = FWD), ((not (balancer = FWD)) or (frontDistSense = BLOCKED)));
+
+  responded3 = true -> (pre(((not (balancer = FWD)) or (frontDistSense = BLOCKED)) or responded3 and (not (balancer = FWD))));
+
+  counter_r3 = 0.0 -> if (responded3) then 0.0 else pre(counter_r3) + 1.0;
+
+  assert counter_r3 < K;
+
+  --assert respondsTo((balancer = BWD), ((not (balancer = BWD)) or (backDistSense = bDS_BLOCKED)));
+
+  responded4 = true -> (pre(((not (balancer = BWD)) or (backDistSense = bDS_BLOCKED)) or responded4 and (not (balancer = BWD))));
+
+  counter_r4 = 0.0 -> if (responded4) then 0.0 else pre(counter_r4) + 1.0;
+
+  assert counter_r4 < K;
 
   --ok = ok1 and ok2 and ok3 and ok4 and ok5 and ok6 and ok7 and ok8 and ok9 and ok10 and ok11 and ok12 and ok13;
 
@@ -93,6 +118,6 @@ let
   --%PROPERTY ok11;
   --%PROPERTY ok12;
   --%PROPERTY ok13;
-  
+
   --%REALIZABLE frontDistSense, backDistSense, isReady, bluetoothCmd;
 tel;

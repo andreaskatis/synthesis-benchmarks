@@ -32,7 +32,8 @@ tel;
 
 node ColorSort(color : env_color; detect : env_color; ack_ver_hor : env_ack_ver_hor; ack_bot : env_ack_ver_hor; atEdge : env_atEdge; color_seen : bool; haltButton : env_haltButton; speedButton : env_haltButton; verMot : env_ack_ver_hor; horMot : env_ack_ver_hor; botMot : sys_botMot; botMotColor : env_color; store_place : bool; spec_allsleep : bool; motSpeed : sys_motSpeed; spec_state : sys_spec_state; spec_stage : sys_spec_stage; spec_speedButtonValidPressed, spec_haltButtonValidPressed : bool; spec_pausing : sys_spec_pausing) returns ();
 var
-  counter_gf1, counter_gf2 : real;
+  responded1, responded2 : bool;
+  counter_r1, counter_r2, counter_gf1, counter_gf2 : real;
   ok1, ok2, ok3, ok4, ok5, ok6, ok7, ok8, ok9, ok10, ok11, ok12, ok13, ok14, ok15, ok16, ok17, ok18, ok19, ok20, ok21, ok22, ok23, ok24, ok25, ok26, ok27, ok28, ok29, ok30, ok31, ok32, ok33 : bool;
 let
 
@@ -110,8 +111,18 @@ let
 
   ok33 = ((not spec_speedButtonValidPressed) and pre(motSpeed = LEVEL3)) => motSpeed = LEVEL3;
 
-  assert respondsTo((ack_ver_hor = MOVE), (ack_ver_hor = SLEEP));
-  assert respondsTo((ack_bot = MOVE), (ack_bot = SLEEP));
+  --assert respondsTo((ack_ver_hor = MOVE), (ack_ver_hor = SLEEP));
+  --assert respondsTo((ack_bot = MOVE), (ack_bot = SLEEP));
+
+  responded1 = true -> (pre((ack_ver_hor = SLEEP) or responded1 and (not (ack_ver_hor = MOVE))));
+  responded2 = true -> (pre((ack_bot = SLEEP) or responded2 and (not (ack_bot = MOVE))));
+
+  counter_r1 = 0.0 -> if (responded1) then 0.0 else pre(counter_r1) + 1.0;
+  counter_r2 = 0.0 -> if (responded2) then 0.0 else pre(counter_r2) + 1.0;
+
+  assert counter_r1 < K;
+  assert counter_r2 < K;
+
   assert (spec_stage <> KICK and spec_stage <> DROP) => ack_ver_hor = SLEEP;
   counter_gf2 = 0.0 -> if (color <> BLACK) then 0.0 else pre(counter_gf2) + 1.0;
   assert counter_gf2 < K;
@@ -151,6 +162,6 @@ let
   --%PROPERTY ok31;
   --%PROPERTY ok32;
   --%PROPERTY ok33;
-  
+
   --%REALIZABLE color, detect, ack_ver_hor, ack_bot, atEdge, color_seen, haltButton, speedButton;
 tel;

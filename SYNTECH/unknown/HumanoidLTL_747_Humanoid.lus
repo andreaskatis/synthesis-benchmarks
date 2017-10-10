@@ -34,7 +34,8 @@ tel;
 
 node Humanoid(Obstacle : env_Obstacle; Noise : env_Noise; Heading : env_Heading; Button : env_Button; LeftMotor : sys_LeftMotor; RightMotor : sys_LeftMotor; HeadMotor : sys_HeadMotor; spec_nextMoveMode : sys_spec_nextMoveMode; spec_specState : sys_spec_specState; spec_turnState : sys_spec_turnState; spec_nextHead : env_Heading) returns ();
 var
-  counter_gf1 : real;
+  responded1, responded2 : bool;
+  counter_r1, counter_r2, counter_gf1 : real;
   ok1, ok2, ok3, ok4, ok5, ok6, ok7, ok8, ok9, ok10, ok11, ok12, ok13, ok14, ok15, ok16, ok17, ok18, ok19, ok20, ok21, ok22, ok23, ok24, ok25, ok26, ok27, ok28, ok29, ok30, ok31 : bool;
 let
 
@@ -96,9 +97,22 @@ let
   --environment - assumptions
   assert ((true -> pre(spec_nextMoveMode = snMM_FWD)) and pre(Obstacle = BLOCKED)) => Obstacle = BLOCKED;
   assert ((true -> pre(spec_nextMoveMode = snMM_BWD)) and pre(Obstacle = CLEAR)) => Obstacle <> BLOCKED;
-  assert respondsTo((spec_turnState = T1), (pre(Obstacle = CLEAR) and (Obstacle = CLEAR)));
+  --assert respondsTo((spec_turnState = T1), (pre(Obstacle = CLEAR) and (Obstacle = CLEAR)));
+
+  responded1 = true -> (pre((true -> (pre(Obstacle = CLEAR) and (Obstacle = CLEAR))) or responded1 and (not (spec_turnState = T1))));
+
+  counter_r1 = 0.0 -> if (responded1) then 0.0 else pre(counter_r1) + 1.0;
+
+  assert counter_r1 < K;
+
   assert (pre(spec_nextMoveMode = snMM_FWD or spec_nextMoveMode = snMM_BWD)) => Heading = pre(Heading);
-  assert respondsTo((spec_nextMoveMode = snMM_TURN_LEFT), (Heading = spec_nextHead or spec_nextMoveMode <> snMM_TURN_LEFT));
+  --assert respondsTo((spec_nextMoveMode = snMM_TURN_LEFT), (Heading = spec_nextHead or spec_nextMoveMode <> snMM_TURN_LEFT));
+
+  responded2 = true -> (pre((Heading = spec_nextHead or spec_nextMoveMode <> snMM_TURN_LEFT) or responded2 and (not (spec_nextMoveMode = snMM_TURN_LEFT))));
+
+  counter_r2 = 0.0 -> if (responded2) then 0.0 else pre(counter_r2) + 1.0;
+
+  assert counter_r2 < K;
 
   --ok = ok1 and ok2 and ok3 and ok4 and ok5 and ok6 and ok7 and ok8 and ok9 and ok10 and ok11 and ok12 and ok13 and ok14 and ok15 and ok16 and ok17 and ok18 and ok19 and ok20 and ok21 and ok22 and ok23 and ok24 and ok25 and ok26 and ok27 and ok28 and ok29 and ok30 and ok31;
 
@@ -133,6 +147,6 @@ let
   --%PROPERTY ok29;
   --%PROPERTY ok30;
   --%PROPERTY ok31;
-  
+
   --%REALIZABLE Obstacle, Noise, Heading, Button;
 tel;

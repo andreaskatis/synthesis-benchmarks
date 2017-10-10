@@ -1,4 +1,4 @@
-const K = 2.0;
+const K = 10.0;
 type env_color = enum {RED, GREEN, BLUE, BLACK, YELLOW, WHITE};
 type env_ack_ver_hor = enum {MOVE, SLEEP};
 type env_atEdge = enum {NOEDGE, EDGE};
@@ -32,7 +32,8 @@ tel;
 
 node ColorSort(color : env_color; detect : env_color; ack_ver_hor : env_ack_ver_hor; ack_bot : env_ack_ver_hor; atEdge : env_atEdge; num_of_cubes : env_num_of_cubes; haltButton : env_haltButton; speedButton : env_haltButton; verMot : env_ack_ver_hor; horMot : env_ack_ver_hor; botMot : sys_botMot; spec_allsleep : bool; motSpeed : sys_motSpeed; reduce_num_of_cubes : sys_reduce_num_of_cubes; spec_state : sys_spec_state; spec_currentColor : env_color; spec_stage : sys_spec_stage; spec_finished_cycle, spec_speedButtonValidPressed, spec_haltButtonValidPressed : bool; spec_pausing : sys_spec_pausing) returns ();
 var
-  counter_gf1 : real;
+  responded1, responded2, responded3 : bool;
+  counter_r1, counter_r2, counter_r3, counter_gf1 : real;
   ok1, ok2, ok3, ok4, ok5, ok6, ok7, ok8, ok9, ok10, ok11, ok12, ok13, ok14, ok15, ok16, ok17, ok18, ok19, ok20, ok21, ok22, ok23, ok24, ok25, ok26, ok27 : bool;
 let
 
@@ -72,10 +73,24 @@ let
   ok26 = ((not spec_speedButtonValidPressed) and pre(motSpeed = LEVEL2)) => motSpeed = LEVEL2;
   ok27 = ((not spec_speedButtonValidPressed) and pre(motSpeed = LEVEL3)) => motSpeed = LEVEL3;
 
-  assert respondsTo((ack_ver_hor = MOVE), (ack_ver_hor = SLEEP));
-  assert respondsTo((ack_bot = MOVE), (ack_bot = SLEEP));
+  --assert respondsTo((ack_ver_hor = MOVE), (ack_ver_hor = SLEEP));
+  --assert respondsTo((ack_bot = MOVE), (ack_bot = SLEEP));
   assert (spec_stage <> KICK and spec_stage <> DROP) => ack_ver_hor = SLEEP;
-  assert respondsTo((num_of_cubes <> ZERO), (num_of_cubes = ZERO));
+  --assert respondsTo((num_of_cubes <> ZERO), (num_of_cubes = ZERO));
+
+  responded1 = true -> (pre((ack_ver_hor = SLEEP) or responded1 and (not (ack_ver_hor = MOVE))));
+  responded2 = true -> (pre((ack_bot = SLEEP) or responded2 and (not (ack_bot = MOVE))));
+  responded3 = true -> (pre((num_of_cubes = ZERO) or responded3 and (not (num_of_cubes <> ZERO))));
+
+  counter_r1 = 0.0 -> if (responded1) then 0.0 else pre(counter_r1) + 1.0;
+  counter_r2 = 0.0 -> if (responded2) then 0.0 else pre(counter_r2) + 1.0;
+  counter_r3 = 0.0 -> if (responded3) then 0.0 else pre(counter_r3) + 1.0;
+
+  assert counter_r1 < K;
+  assert counter_r2 < K;
+  assert counter_r3 < K;
+
+
   counter_gf1 = 0.0 -> if (color <> BLACK) then 0.0 else pre(counter_gf1) + 1.0;
   assert counter_gf1 < K;
 
@@ -108,6 +123,6 @@ let
   --%PROPERTY ok25;
   --%PROPERTY ok26;
   --%PROPERTY ok27;
-  
+
   --%REALIZABLE color, detect, ack_ver_hor, ack_bot, atEdge, num_of_cubes, haltButton, speedButton;
 tel;

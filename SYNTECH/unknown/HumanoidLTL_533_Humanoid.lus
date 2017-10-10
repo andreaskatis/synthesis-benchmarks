@@ -25,7 +25,8 @@ tel;
 
 node Humanoid(Obstacle : env_Obstacle; LeftMotor : sys_LeftMotor; RightMotor : sys_RightMotor; HeadMotor : sys_HeadMotor; nextMoveMode : sys_nextMoveMode; state : sys_state) returns ();
 var
-  counter_gf1, counter_gf2 : real;
+  responded1 : bool;
+  counter_r1, counter_gf1, counter_gf2 : real;
   ok1, ok2, ok3, ok4, ok5, ok6, ok7, ok8, ok9, ok10, ok11, ok12, ok13, ok14, ok15, ok16, ok17, ok18, ok19, ok20 : bool;
 let
 
@@ -59,7 +60,14 @@ let
   ok19 = (pre(nextMoveMode = nMM_TURN_LEFT_2)) => (LeftMotor = LM_BWD and RightMotor = RM_TURN_BWD);
   ok20 = (not (pre(nextMoveMode = nMM_TURN_LEFT_1 or nextMoveMode = nMM_TURN_LEFT_2))) => (not (LeftMotor = LM_TURN_BWD or RightMotor = RM_TURN_BWD or LeftMotor = LM_TURN_FWD or RightMotor = RM_TURN_FWD));
 
-  assert respondsTo((nextMoveMode <> nMM_FWD), (Obstacle = CLEAR));
+  --assert respondsTo((nextMoveMode <> nMM_FWD), (Obstacle = CLEAR));
+
+  responded1 = true -> (pre((Obstacle = CLEAR) or responded1 and (not (nextMoveMode <> nMM_FWD))));
+
+  counter_r1 = 0.0 -> if (responded1) then 0.0 else pre(counter_r1) + 1.0;
+
+  assert counter_r1 < K;
+
   assert pre(nextMoveMode = nMM_BWD and Obstacle = CLEAR) => (Obstacle <> BLOCKED);
   counter_gf2 = 0.0 -> if (pre(nextMoveMode = nMM_TURN_LEFT_2) and Obstacle = CLEAR) then 0.0 else pre(counter_gf2) + 1.0;
   assert counter_gf2 < K;
@@ -87,6 +95,6 @@ let
   --%PROPERTY ok18;
   --%PROPERTY ok19;
   --%PROPERTY ok20;
-  
+
   --%REALIZABLE Obstacle;
 tel;

@@ -29,7 +29,8 @@ tel;
 
 node PCar(obstacle : env_obstacle; sideSense : env_sideSense; parkResult : env_parkResult; throttle : sys_throttle; steer : sys_steer; parkCommand : sys_parkCommand; spec_park : bool; spec_policy : sys_spec_policy) returns ();
 var
-  counter_gf1 : real;
+  responded1, responded2 : bool;
+  counter_r1, counter_r2, counter_gf1 : real;
   ok1, ok2, ok3, ok4, ok5, ok6, ok7, ok8, ok9, ok10, ok11, ok12, ok13, ok14, ok15, ok16, ok17, ok18, ok19 : bool;
 let
 
@@ -42,7 +43,7 @@ let
   ok4 = spec_park => spec_policy = PARKED;
   ok5 = respondsTo((not (spec_policy = PARKED)), (not (throttle = STOP)));
   ok6 = ((spec_policy = SEEKING or spec_policy = MEASURING) and obstacle = BLOCKED) => throttle = BWD;
-  ok7 = ((spec_policy = PARKING or spec_policy = PARKED) and obstacle = BLOCKED) => throttle = FWD;
+  ok7 = ((spec_policy = PARKING or spec_policy = PARKED) and obstacle = BLOCKED) => not (throttle = FWD);
   ok8 = sideSense = IS_BLOCKED => (not (steer = RIGHT));
 
   --**spec_policy state tarnsition restrictions**--
@@ -58,9 +59,23 @@ let
   ok18 = pre(obstacle = BLOCKED and (not (spec_policy = PARKING or spec_policy = PARKED))) => spec_policy = SEEKING;
   ok19 = obstacle = BLOCKED => parkCommand = pSTOP;
 
-  assert respondsTo((throttle = BWD), (obstacle = CLEAR));
+  --assert respondsTo((throttle = BWD), (obstacle = CLEAR));
+
+  responded1 = true -> (pre((obstacle = CLEAR) or responded1 and (not (throttle = BWD))));
+
+  counter_r1 = 0.0 -> if (responded1) then 0.0 else pre(counter_r1) + 1.0;
+
+  assert counter_r1 < K;
+
   assert pre(throttle = STOP) => ((obstacle = pre(obstacle)) and (sideSense = pre(sideSense)));
-  assert respondsTo((spec_policy = SEEKING), (spec_policy = PARKING));
+  --assert respondsTo((spec_policy = SEEKING), (spec_policy = PARKING));
+
+  responded2 = true -> (pre((spec_policy = PARKING) or responded2 and (not (spec_policy = SEEKING))));
+
+  counter_r2 = 0.0 -> if (responded2) then 0.0 else pre(counter_r2) + 1.0;
+
+  assert counter_r2 < K;
+
   assert spec_policy = SEEKING => parkResult = NA;
   assert Initially(parkResult = NA);
 
@@ -88,6 +103,6 @@ let
   --%PROPERTY ok17;
   --%PROPERTY ok18;
   --%PROPERTY ok19;
-  
+
   --%REALIZABLE obstacle, sideSense, parkResult;
 tel;

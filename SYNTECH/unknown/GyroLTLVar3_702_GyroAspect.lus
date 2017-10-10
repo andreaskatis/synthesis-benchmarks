@@ -25,7 +25,8 @@ tel;
 
 node GyroAspect(frontDistSense : env_frontDistSense; backDistSense : env_frontDistSense; isReady : bool; balancer : sys_balancer) returns ();
 var
-  counter_gf1, counter_gf2, counter_gf3 : real;
+  responded1, responded2, responded3, responded4 : bool;
+  counter_r1, counter_r2, counter_r3, counter_r4, counter_gf1, counter_gf2, counter_gf3 : real;
   ok1, ok2, ok3, ok4, ok5, ok6, ok7 : bool;
   moveAwayFromFrontObstacle, moveAwayFromBackObstacle : bool;
 let
@@ -54,14 +55,39 @@ let
 
   moveAwayFromFrontObstacle = not (balancer = FWD or balancer = STP);
 
-  assert respondsTo(moveAwayFromFrontObstacle, ((not moveAwayFromFrontObstacle) or frontDistSense = CLEAR));
+  --assert respondsTo(moveAwayFromFrontObstacle, ((not moveAwayFromFrontObstacle) or frontDistSense = CLEAR));
+
+  responded1 = true -> (pre(((not moveAwayFromFrontObstacle) or (frontDistSense = CLEAR)) or responded1 and (not moveAwayFromFrontObstacle)));
+
+  counter_r1 = 0.0 -> if (responded1) then 0.0 else pre(counter_r1) + 1.0;
+
+  assert counter_r1 < K;
 
   moveAwayFromBackObstacle = not (balancer = BWD or balancer = STP);
 
-  assert respondsTo(moveAwayFromBackObstacle, ((not moveAwayFromBackObstacle) or backDistSense = CLEAR));
+  --assert respondsTo(moveAwayFromBackObstacle, ((not moveAwayFromBackObstacle) or backDistSense = CLEAR));
 
-  assert respondsTo((balancer = FWD), (balancer <> FWD or frontDistSense = BLOCKED));
-  assert respondsTo((balancer = BWD), (balancer <> BWD or backDistSense = BLOCKED));
+  responded2 = true -> (pre(((not moveAwayFromBackObstacle) or (backDistSense = CLEAR)) or responded2 and (not moveAwayFromBackObstacle)));
+
+  counter_r2 = 0.0 -> if (responded2) then 0.0 else pre(counter_r2) + 1.0;
+
+  assert counter_r2 < K;
+
+  --assert respondsTo((balancer = FWD), (balancer <> FWD or frontDistSense = BLOCKED));
+
+  responded3 = true -> (pre(((not (balancer = FWD)) or (frontDistSense = BLOCKED)) or responded3 and (not (balancer = FWD))));
+
+  counter_r3 = 0.0 -> if (responded3) then 0.0 else pre(counter_r3) + 1.0;
+
+  assert counter_r3 < K;
+
+  --assert respondsTo((balancer = BWD), (balancer <> BWD or backDistSense = BLOCKED));
+
+  responded4 = true -> (pre(((not (balancer = BWD)) or (backDistSense = BLOCKED)) or responded4 and (not (balancer = BWD))));
+
+  counter_r4 = 0.0 -> if (responded4) then 0.0 else pre(counter_r4) + 1.0;
+
+  assert counter_r4 < K;
 
   --%PROPERTY ok1;
   --%PROPERTY ok2;

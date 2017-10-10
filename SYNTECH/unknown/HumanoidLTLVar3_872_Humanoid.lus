@@ -23,13 +23,14 @@ var
 let
   counter_gf = 0.0 -> if responded then 0.0 else pre(counter_gf) + 1.0;
   responded = true -> if pre(response or responded and (not trigger)) then true else false;
-  ok = true -> ((responded => pre(response or responded and (not trigger))) and (pre(response or responded and (not trigger)) => responded) and counter_gf < K);
+  ok = ((responded => pre(response or responded and (not trigger))) and (pre(response or responded and (not trigger)) => responded) and counter_gf < K);
 tel;
 
 node Humanoid(Obstacle : env_Obstacle; BtInput : env_BtInput; LeftMotor : sys_LeftMotor; RightMotor : sys_LeftMotor; HeadMotor : sys_HeadMotor; nextMoveMode : sys_nextMoveMode; specState : sys_specState; turnState : sys_turnState) returns ();
 var
-  counter_gf1 : real;
-  ok1, ok2, ok3, ok4, ok5, ok6, ok7, ok8, ok9, ok10, ok11, ok12, ok13, ok14, ok15, ok16, ok17, ok18, ok19, ok20, ok21, ok22, ok23, ok24, ok25, ok26, ok27, ok28, ok29, ok30 : bool;
+  responded1 : bool;
+  counter_r1, counter_gf1 : real;
+  ok1, ok2, ok3, ok4, ok5, ok6, ok7, ok8, ok9, ok10, ok11, ok12, ok13, ok14, ok15, ok16, ok17, ok18, ok19, ok20, ok21, ok22, ok23, ok24, ok25, ok26, ok27, ok28, ok29, ok30, ok31, ok32, ok33, ok34, ok35, ok36 : bool;
 let
 
   --inital state
@@ -77,27 +78,40 @@ let
 
 
   --movement - turning
-  ok25 = ((pre(turnState = T0) and turnState = T1 and pre(nextMoveMode = nMM_TURN_RIGHT)) => (LeftMotor = CALIB_TURN_RIGHT and RightMotor = CALIB_TURN_RIGHT)) and ((LeftMotor = CALIB_TURN_RIGHT and RightMotor = CALIB_TURN_RIGHT) => (pre(turnState = T0) and turnState = T1 and pre(nextMoveMode = nMM_TURN_RIGHT)));
+  ok25 = ((pre(turnState = T0) and turnState = T1 and pre(nextMoveMode = nMM_TURN_RIGHT)) => pre(LeftMotor = CALIB_TURN_RIGHT and RightMotor = CALIB_TURN_RIGHT));
+  ok26 = (pre(LeftMotor = CALIB_TURN_RIGHT and RightMotor = CALIB_TURN_RIGHT) => (pre(turnState = T0) and turnState = T1 and pre(nextMoveMode = nMM_TURN_RIGHT)));
 
-  ok26 = ((pre(turnState = T0) and turnState = T1 and pre(nextMoveMode = nMM_TURN_LEFT)) => (LeftMotor = CALIB_TURN_LEFT and RightMotor = CALIB_TURN_LEFT)) and ((LeftMotor = CALIB_TURN_LEFT and RightMotor = CALIB_TURN_LEFT) => (pre(turnState = T0) and turnState = T1 and pre(nextMoveMode = nMM_TURN_LEFT)));
+  ok27 = ((pre(turnState = T0) and turnState = T1 and pre(nextMoveMode = nMM_TURN_LEFT)) => pre(LeftMotor = CALIB_TURN_LEFT and RightMotor = CALIB_TURN_LEFT));
+  ok28 = (pre(LeftMotor = CALIB_TURN_LEFT and RightMotor = CALIB_TURN_LEFT) => (pre(turnState = T0) and turnState = T1 and pre(nextMoveMode = nMM_TURN_LEFT)));
 
-  ok27 = ((turnState = T2) => pre(LeftMotor = FWD and RightMotor = TURN_FWD)) and (pre(LeftMotor = FWD and RightMotor = TURN_FWD) => (turnState = T2));
+  ok29 = ((turnState = T2) => pre(LeftMotor = FWD and RightMotor = TURN_FWD));
+  ok30 = (pre(LeftMotor = FWD and RightMotor = TURN_FWD) => (turnState = T2));
 
-  ok28 = ((turnState = T2) => (LeftMotor = BWD and RightMotor = TURN_BWD)) and ((LeftMotor = BWD and RightMotor = TURN_BWD) => (turnState = T2));
+  ok31 = ((turnState = T2) => (LeftMotor = BWD and RightMotor = TURN_BWD));
+  ok32 = ((LeftMotor = BWD and RightMotor = TURN_BWD) => (turnState = T2));
 
-  ok29 = (((pre(turnState = T3) and turnState = T0 and pre(true -> pre(true -> pre(nextMoveMode = nMM_TURN_RIGHT)))) => pre(LeftMotor = CALIB_FWD_RIGHT and RightMotor = CALIB_FWD_RIGHT)) and (pre(LeftMotor = CALIB_FWD_RIGHT and RightMotor = CALIB_FWD_RIGHT) => (pre(turnState = T3) and turnState = T0 and pre(true -> pre(true -> pre(nextMoveMode = nMM_TURN_RIGHT))))));
+  ok33 = ((pre(turnState = T3) and turnState = T0 and pre(true -> pre(true -> pre(nextMoveMode = nMM_TURN_RIGHT)))) => pre(LeftMotor = CALIB_FWD_RIGHT and RightMotor = CALIB_FWD_RIGHT));
+  ok34 = (pre(LeftMotor = CALIB_FWD_RIGHT and RightMotor = CALIB_FWD_RIGHT) => (pre(turnState = T3) and turnState = T0 and pre(true -> pre(true -> pre(nextMoveMode = nMM_TURN_RIGHT)))));
 
-  ok30 = (((pre(turnState = T3) and turnState = T0 and pre(true -> pre(true -> pre(nextMoveMode = nMM_TURN_LEFT)))) => pre(LeftMotor = CALIB_FWD_LEFT and RightMotor = CALIB_FWD_LEFT)) and (pre(LeftMotor = CALIB_FWD_LEFT and RightMotor = CALIB_FWD_LEFT) => (pre(turnState = T3) and turnState = T0 and pre(true -> pre(true -> pre(nextMoveMode = nMM_TURN_LEFT))))));
+  ok35 = ((pre(turnState = T3) and turnState = T0 and pre(true -> pre(true -> pre(nextMoveMode = nMM_TURN_LEFT)))) => pre(LeftMotor = CALIB_FWD_LEFT and RightMotor = CALIB_FWD_LEFT));
+  ok36 = (pre(LeftMotor = CALIB_FWD_LEFT and RightMotor = CALIB_FWD_LEFT) => (pre(turnState = T3) and turnState = T0 and pre(true -> pre(true -> pre(nextMoveMode = nMM_TURN_LEFT)))));
 
 
   --environment - assumptions
-  assert ((true -> pre(nextMoveMode = nMM_FWD)) and pre(Obstacle = BLOCKED)) => Obstacle = BLOCKED;
-  assert ((true -> pre(nextMoveMode = nMM_BWD)) and pre(Obstacle = CLEAR)) => Obstacle <> BLOCKED;
-  assert respondsTo((turnState = T1), (pre(Obstacle = CLEAR) and (Obstacle = CLEAR)));
+  assert (pre(true -> pre(nextMoveMode = nMM_FWD)) and pre(Obstacle = BLOCKED)) => Obstacle = BLOCKED;
+  assert (pre(true -> pre(nextMoveMode = nMM_BWD)) and pre(Obstacle = CLEAR)) => Obstacle <> BLOCKED;
+  --assert respondsTo((turnState = T1), (pre(Obstacle = CLEAR) and (Obstacle = CLEAR)));
+
+  responded1 = true -> (pre((true -> (pre(Obstacle = CLEAR) and (Obstacle = CLEAR))) or responded1 and (not (turnState = T1))));
+
+  counter_r1 = 0.0 -> if (responded1) then 0.0 else pre(counter_r1) + 1.0;
+
+  assert counter_r1 < K;
+
   assert pre(turnState = T2 and Obstacle = CLEAR) => Obstacle = CLEAR;
 
 
-  ok = ok1 and ok2 and ok3 and ok4 and ok5 and ok6 and ok7 and ok8 and ok9 and ok10 and ok11 and ok12 and ok13 and ok14 and ok15 and ok16 and ok17 and ok18 and ok19 and ok20 and ok21 and ok22 and ok23 and ok24 and ok25 and ok26 and ok27 and ok28 and ok29 and ok30;
+  --ok = ok1 and ok2 and ok3 and ok4 and ok5 and ok6 and ok7 and ok8 and ok9 and ok10 and ok11 and ok12 and ok13 and ok14 and ok15 and ok16 and ok17 and ok18 and ok19 and ok20 and ok21 and ok22 and ok23 and ok24 and ok25 and ok26 and ok27 and ok28 and ok29 and ok30;
 
   --%PROPERTY ok1;
   --%PROPERTY ok2;
@@ -129,6 +143,11 @@ let
   --%PROPERTY ok28;
   --%PROPERTY ok29;
   --%PROPERTY ok30;
-  
+  --%PROPERTY ok31;
+  --%PROPERTY ok32;
+  --%PROPERTY ok33;
+  --%PROPERTY ok34;
+  --%PROPERTY ok35;
+  --%PROPERTY ok36;
   --%REALIZABLE Obstacle, BtInput;
 tel;

@@ -26,7 +26,8 @@ tel;
 
 node ColorSort(color : env_color; detect : env_color; ack_ver, ack_hor, ack_bot : env_ack_ver; speedButton : env_speedButton; verMot, horMot : env_ack_ver; botMot : sys_botMot; motSpeed : sys_motSpeed; spec_state_return : sys_spec_state_return; spec_currentColor : env_color; spec_dropping : bool; spec_speedButtonValidPressed, spec_prevBotMotReturn, spec_waiting_ack_ver_mot, spec_waiting_ack_hor_mot : bool) returns ();
 var
-  counter_gf1, counter_gf2 : real;
+  responded1, responded2 : bool;
+  counter_r1, counter_r2, counter_gf1, counter_gf2 : real;
   ok1, ok2, ok3, ok4, ok5, ok6, ok7, ok8, ok9, ok10, ok11, ok12, ok13, ok14, ok15, ok16, ok17, ok18, ok19, ok20, ok21, ok22, ok23, ok24, ok25, ok26, ok27, ok28, ok29, ok30, ok31, ok32, ok33 : bool;
   allsleep, nonemove, onlybotmoves : bool;
 let
@@ -103,7 +104,14 @@ let
   ok28 = pre(spec_waiting_ack_ver_mot and ack_ver <> SLEEP) => spec_waiting_ack_ver_mot;
 
   assert (not spec_waiting_ack_ver_mot) => ack_ver = SLEEP;
-  assert respondsTo(spec_waiting_ack_ver_mot, (ack_ver = SLEEP));
+  --assert respondsTo(spec_waiting_ack_ver_mot, (ack_ver = SLEEP));
+
+  responded1 = true -> (pre((ack_ver = SLEEP) or responded1 and (not (spec_waiting_ack_ver_mot))));
+
+  counter_r1 = 0.0 -> if (responded1) then 0.0 else pre(counter_r1) + 1.0;
+
+  assert counter_r1 < K;
+
 
   ok29 = Initially((not spec_waiting_ack_hor_mot));
 
@@ -116,7 +124,14 @@ let
   ok33 = pre(spec_waiting_ack_hor_mot and ack_hor <> SLEEP) => spec_waiting_ack_hor_mot;
 
   assert (not spec_waiting_ack_hor_mot) => ack_hor = SLEEP;
-  assert respondsTo(spec_waiting_ack_hor_mot, (ack_hor = SLEEP));
+  --assert respondsTo(spec_waiting_ack_hor_mot, (ack_hor = SLEEP));
+
+  responded2 = true -> (pre((ack_bot = SLEEP) or responded2 and (not (spec_waiting_ack_hor_mot))));
+
+  counter_r2 = 0.0 -> if (responded2) then 0.0 else pre(counter_r2) + 1.0;
+
+  assert counter_r2 < K;
+
 
   counter_gf2 = 0.0 -> if (color <> BLACK) then 0.0 else pre(counter_gf2) + 1.0;
   assert counter_gf2 < K;
@@ -156,6 +171,6 @@ let
   --%PROPERTY ok31;
   --%PROPERTY ok32;
   --%PROPERTY ok33;
-  
+
   --%REALIZABLE color, detect, ack_ver, ack_hor, ack_bot, speedButton;
 tel;
