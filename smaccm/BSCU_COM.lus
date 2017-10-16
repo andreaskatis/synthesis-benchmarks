@@ -15,7 +15,7 @@ let
   --%MAIN;
   __GUARANTEE0 = ((not Fail) => (CMD = Agree_Nodes__Brake_Cmd(Mode, Pedal)));
 
-  Mode = Agree_Nodes__Brake_Mode(Mode, Panel.LO, Panel.MED, Panel.MAX);
+  Mode = Agree_Nodes__Brake_Mode(pre(Mode), Panel.LO, Panel.MED, Panel.MAX);
 
   --%PROPERTY __GUARANTEE0;
 
@@ -56,4 +56,3 @@ let
   r = (1 -> (if (((pre mode) = 2) and Agree_Nodes__Rise(lo)) then 1 else (if (((pre mode) = 3) and Agree_Nodes__Rise(med)) then 1 else (if (((pre mode) = 4) and Agree_Nodes__Rise(max)) then 1 else (if (((pre mode) <> 2) and Agree_Nodes__Rise(lo)) then 2 else (if (((pre mode) <> 3) and Agree_Nodes__Rise(med)) then 3 else (if (((pre mode) <> 4) and Agree_Nodes__Rise(max)) then 4 else (pre mode))))))));
 
 tel;
-
