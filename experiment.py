@@ -250,8 +250,8 @@ def drawOverhead():
     plt.yscale('log')
     plt.ylim(pow(10,-1), pow(10,2.8))
 
-    synthesis = plt.plot(pl2,'-r^', label = 'JSYN', markersize = 3)
-    fixpoint = plt.plot(pl3,'-bo', label = 'JSYN-VG',  markersize = 3)
+    synthesis = plt.plot(pl2,'-r^', label = 'JSYN', markersize = 10)
+    fixpoint = plt.plot(pl3,'-bo', label = 'JSYN-VG',  markersize = 10)
 
     plt.xlabel("Model")
     plt.ylabel("Performance(seconds)")
@@ -278,8 +278,8 @@ def drawSize():
     fig = plt.figure()
     plt.yscale('log')
     plt.ylim(pow(10,1), pow(10,3.5))
-    synthesized = plt.plot(pl1,'-r^', label = 'JSYN', markersize = 3)
-    fixpoint = plt.plot(pl2,'-bo', label = 'JSYN-VG', markersize = 3)
+    synthesized = plt.plot(pl1,'-r^', label = 'JSYN', markersize = 10)
+    fixpoint = plt.plot(pl2,'-bo', label = 'JSYN-VG', markersize = 7)
 
     plt.xlabel("Model")
     plt.ylabel("Lines of Code")
@@ -342,7 +342,7 @@ def drawPerformance():
     pl2 = np.array([float(j[2]) for j in NestList_performance])
 
     fig = plt.figure()
-    plt.scatter(pl1,pl2,c="r", s = 8,edgecolor= "")
+    plt.scatter(pl1,pl2,c="r", s = 100,edgecolor= "")
 
     plt.axis([0,(float(getMax(NestList_performance))+20),0,(float(getMax(NestList_performance))+20)])
     plt.plot([0,(float(getMax(NestList_performance))+20)],[0,(float(getMax(NestList_performance))+20)])
@@ -699,20 +699,68 @@ drawPerformance()
 
 writeCSV()
 
+min_performance_s = min(float(a[1]) for a in NestList_performance)
+max_performance_s = max(float(a[1]) for a in NestList_performance)
+avg_performance_s = sum([float(a[1]) for a in NestList_performance])/len(NestList_performance)
 
+min_performance_f = min(float(a[2]) for a in NestList_performance)
+max_performance_f = max(float(a[2]) for a in NestList_performance)
+avg_performance_f = sum([float(a[2]) for a in NestList_performance])/len(NestList_performance)
+
+min_overhead_s = min(float(a[2]) for a in NestList_overhead)
+max_overhead_s = max(float(a[2]) for a in NestList_overhead)
 avg_overhead_s = sum([float(a[2]) for a in NestList_overhead])/len(NestList_overhead)
+
+min_overhead_f = min(float(a[3]) for a in NestList_overhead)
+max_overhead_f = max(float(a[3]) for a in NestList_overhead)
 avg_overhead_f = sum([float(a[3]) for a in NestList_overhead])/len(NestList_overhead)
 
-avg_size_s = sum([float(b[1]) for b in NestList_size])/len(NestList_size)
-avg_size_f = sum([float(b[2]) for b in NestList_size])/len(NestList_size)
+min_size_s = min(float(a[1]) for a in NestList_size)
+max_size_s = max(float(a[1]) for a in NestList_size)
+avg_size_s = sum([float(a[1]) for a in NestList_size])/len(NestList_size)
 
+min_size_f = min(float(a[2]) for a in NestList_size)
+max_size_f = max(float(a[2]) for a in NestList_size)
+avg_size_f = sum([float(a[2]) for a in NestList_size])/len(NestList_size)
 
+print("min_performance_s")
+print(min_performance_s)
+print("max_performance_s")
+print(max_performance_s)
+print("avg_performance_s")
+print(avg_performance_s)
+
+print("min_performance_f")
+print(min_performance_f)
+print("max_performance_f")
+print(max_performance_f)
+print("avg_performance_f")
+print(avg_performance_f)
+
+print("min_overhead_s")
+print(min_overhead_s)
+print("max_overhead_s")
+print(max_overhead_s)
 print("avg_overhead_s")
 print(avg_overhead_s)
+
+print("min_overhead_f")
+print(min_overhead_f)
+print("max_overhead_f")
+print(max_overhead_f)
 print("avg_overhead_f")
 print(avg_overhead_f)
 
+print("min_size_s")
+print(min_size_s)
+print("max_size_s")
+print(max_size_s)
 print("avg_size_s")
 print(avg_size_s)
+
+print("min_size_f")
+print(min_size_f)
+print("max_size_f")
+print(max_size_f)
 print("avg_size_f")
 print(avg_size_f)

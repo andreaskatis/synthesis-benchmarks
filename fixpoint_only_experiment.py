@@ -35,7 +35,7 @@ def deleteFile_in_subfolder(folder, lus_files):
     if (len(sfileList)!=0):
         for s in sfileList:
             os.remove(s)
-            
+
     if (len(txtfileList)!=0):
         for txt in txtfileList:
             os.remove(txt)
@@ -71,7 +71,7 @@ def deleteFile_in_folder():
     if (len(sfileList)!=0):
         for s in sfileList:
             os.remove(s)
-            
+
     if (len(txtfileList)!=0):
         for txt in txtfileList:
             os.remove(txt)
@@ -90,11 +90,11 @@ def deleteAll():
     deleteFile_in_folder()
     os.chdir("..")
 
-    
+
 def run_realizability_fixpoint_only(file_path):
     #delete "xml"
     args = ['java', '-jar', jkind_jar, '-jrealizability',
-            '-scratch', '-timeout', '1000', '-n', '1000000', file_path]
+            '-scratch', '-timeout', '2000', '-n', '1000000', file_path]
     with open(EXTRA_EXPERIMENTS_DIR+"/debug_jkind.txt", "a") as debug:
         debug.write("Running jkind with arguments: {}\n".format(args))
         proc = subprocess.Popen(args, stdout=debug)
@@ -103,7 +103,7 @@ def run_realizability_fixpoint_only(file_path):
 
 def run_synthesis_fixpoint_only(file_path):
     args = ['java', '-jar', jkind_jar, '-jrealizability',
-            '-scratch','-synthesis', '-timeout', '1000', '-n', '1000000', file_path]
+            '-scratch','-synthesis', '-timeout', '2000', '-n', '1000000', file_path]
     with open(EXTRA_EXPERIMENTS_DIR+"/debug_jkind.txt", "a") as debug:
         debug.write("Running jkind with arguments: {}\n".format(args))
         proc = subprocess.Popen(args, stdout=debug)
@@ -112,7 +112,7 @@ def run_synthesis_fixpoint_only(file_path):
 
 def run_fixpoint_fixpoint_only(file_path):
     args = ['java', '-jar', jkind_jar, '-jrealizability',
-            '-scratch','-fixpoint', '-timeout', '1000', '-n', '1000000', file_path]
+            '-scratch','-fixpoint', '-timeout', '2000', '-n', '1000000', file_path]
     with open(EXTRA_EXPERIMENTS_DIR+"/debug_jkind.txt", "a") as debug:
         debug.write("Running jkind with arguments: {}\n".format(args))
         proc = subprocess.Popen(args, stdout=debug)
