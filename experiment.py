@@ -112,7 +112,7 @@ def run_realizability(file_path):
 
 def run_synthesis(file_path):
     args = ['java', '-jar', jkind_jar, '-jrealizability',
-            '-synthesis', '-timeout', '1000', '-n', '1000000', file_path]
+            '-scratch', '-fixpoint_T', '-timeout', '1000', '-n', '1000000', file_path]
     with open("debug_jkind.txt", "a") as debug:
         debug.write("Running jkind with arguments: {}\n".format(args))
         proc = subprocess.Popen(args, stdout=debug)

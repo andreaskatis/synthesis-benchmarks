@@ -1,5 +1,5 @@
 --CONTAINS ASSERTIONS OVER LOCALS
---IFXPOINT leads to false antecedent.
+--FIXPOINT leads to false antecedent.
 type BSCU__ChannelStatus__ChannelStatusImpl = struct {Active : bool; Cmd : int; Error : bool};
 type BSCU__PanelMsg__PanelMsgImpl = struct {LO : bool; MAX : bool; MED : bool};
 

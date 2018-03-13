@@ -1,4 +1,4 @@
-const C = 2.0;
+const C = 3.0;
 
 -- node bucket_val(fill_amt: real; empty: bool) returns (level: real);
 -- let
