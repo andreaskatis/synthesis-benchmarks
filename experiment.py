@@ -1,30 +1,46 @@
-import os, subprocess, sys, glob, shutil, csv
+#originally authored by Huajun Guo (many thanks!), edited by Andreas Katis
+
+import os, subprocess, sys, glob, shutil, csv, getopt
 import numpy as np
 import matplotlib.pyplot as plt
 #
 # Configuration
 #
+compaction = False
+jkind_jar = None
+smtlib2c_jar = None
 
 EXPERIMENTS_DIR = 'verification'
 PUSH_PATH = 'kind'
 ANOTHER_PUSH_PATH = 'fixpoint'
+YAPP = 'fixpointwithcompaction'
 IMPLEMENT_DIR = 'verification/kind'
-ANOTHER_IMPLEMENT_DIR = "verification/fixpoint"
+ANOTHER_IMPLEMENT_DIR = 'verification/fixpoint'
+YAID = 'verification/fixpointwithcompaction'
 
 SECOND_EXPERIMENTS_DIR = 'smaccm'
 SECOND_IMPLEMENT_DIR = 'smaccm/kind'
 SECOND_ANOTHER_IMPLEMENT_DIR = 'smaccm/fixpoint'
+YASID = 'smaccm/fixpointwithcompaction'
 
 THIRD_EXPERIMENTS_DIR = 'other'
 THIRD_IMPLEMENT_DIR = 'other/kind'
 THIRD_ANOTHER_IMPLEMENT_DIR = 'other/fixpoint'
+YATID = 'other/fixpointwithcompaction'
+
+FOURTH_EXPERIMENTS_DIR = 'fixpoint_only'
+FOURTH_IMPLEMENT_DIR = 'fixpoint_only/kind'
+FOURTH_ANOTHER_IMPLEMENT_DIR = 'fixpoint_only/fixpoint'
+YAFID = 'fixpoint_only/fixpointwithcompaction'
 
 NestList_overhead = []
 NestList_size = []
+NestList_size_compaction = []
 NestList_size_name = []
 NestList_size_name_verification = []
 NestList_size_name_smaccm = []
 NestList_size_name_other = []
+NestList_size_name_fixpoint_only = []
 NestList_performance = []
 
 #delete all previous files except lus files in subfolder
@@ -67,22 +83,23 @@ def deleteFile_in_subfolder(folder, lus_files):
 #delete files in each folder except lus
 def deleteFile_in_folder():
     lus_files = glob.glob("*.lus")
+    deleteFile_in_subfolder("fixpointwithcompaction", lus_files)
     deleteFile_in_subfolder("kind", lus_files)
     deleteFile_in_subfolder("fixpoint", lus_files)
 
 #delete files in synthesis-benchmark folder except lus
 def deleteAll():
     txtfileList = glob.glob("*.txt")
-    pdffileList = glob.glob("*.pdf")
+    # pdffileList = glob.glob("*.pdf")
     csvfileList = glob.glob("*.csv")
 
     if (len(txtfileList)!=0):
         for txt in txtfileList:
             os.remove(txt)
 
-    if (len(pdffileList)!=0):
-        for pdf in pdffileList:
-            os.remove(pdf)
+    # if (len(pdffileList)!=0):
+    #     for pdf in pdffileList:
+    #         os.remove(pdf)
 
     if (len(csvfileList)!=0):
         for csv in csvfileList:
@@ -100,10 +117,13 @@ def deleteAll():
     deleteFile_in_folder()
     os.chdir("..")
 
+    os.chdir("fixpoint_only")
+    deleteFile_in_folder()
+    os.chdir("..")
+
 
 def run_realizability(file_path):
-    args = ['java', '-jar', jkind_jar, '-jrealizability',
-            '-timeout', '1000', '-n', '1000000', file_path]
+    args = ['java', '-jar', jkind_jar, '-jrealizability','-timeout', '10000', '-n', '1000000', file_path]
     with open("debug_jkind.txt", "a") as debug:
         debug.write("Running jkind with arguments: {}\n".format(args))
         proc = subprocess.Popen(args, stdout=debug)
@@ -111,8 +131,8 @@ def run_realizability(file_path):
         debug.write("\n")
 
 def run_synthesis(file_path):
-    args = ['java', '-jar', jkind_jar, '-jrealizability',
-            '-scratch', '-fixpoint_T', '-timeout', '1000', '-n', '1000000', file_path]
+    args = ['java', '-jar', jkind_jar, '-jrealizability','-scratch', '-synthesis', '-timeout', '10000', '-n', '1000000', file_path]
+#            '-scratch', '-fixpoint_T', '-timeout', '1000', '-n', '1000000', file_path]
     with open("debug_jkind.txt", "a") as debug:
         debug.write("Running jkind with arguments: {}\n".format(args))
         proc = subprocess.Popen(args, stdout=debug)
@@ -121,7 +141,17 @@ def run_synthesis(file_path):
 
 def run_fixpoint(file_path):
     args = ['java', '-jar', jkind_jar, '-jrealizability',
-            '-fixpoint', '-timeout', '1000', '-n', '1000000', file_path]
+            '-fixpoint', '-timeout', '10000', '-n', '1000000', file_path]
+    with open("debug_jkind.txt", "a") as debug:
+        debug.write("Running jkind with arguments: {}\n".format(args))
+        proc = subprocess.Popen(args, stdout=debug)
+        proc.wait()
+        debug.write("\n")
+
+
+def run_fixpointwithcompaction(file_path):
+    args = ['java', '-jar', jkind_jar, '-jrealizability',
+            '-fixpoint', '-compact', '-timeout', '10000', '-n', '1000000', file_path]
     with open("debug_jkind.txt", "a") as debug:
         debug.write("Running jkind with arguments: {}\n".format(args))
         proc = subprocess.Popen(args, stdout=debug)
@@ -143,6 +173,12 @@ def run_realizability_synthesis(lus_file, experiments_dir):
 def run_last_fixpoint(lus_file, experiments_dir):
     lus_path = os.path.join(experiments_dir, lus_file)
     run_fixpoint(lus_path)
+    sys.stdout.write(".")
+    sys.stdout.flush()
+
+def run_last_fixpointwithcompaction(lus_file, experiments_dir):
+    lus_path = os.path.join(experiments_dir, lus_file)
+    run_fixpointwithcompaction(lus_path)
     sys.stdout.write(".")
     sys.stdout.flush()
 
@@ -247,16 +283,30 @@ def drawOverhead():
     pl3 = np.array([float(j[3]) for j in sorted(NestList_overhead,key=lambda  x: float(x[3]))])
 
     fig = plt.figure()
+
+    plt.scatter(pl2,pl3,c="r", s = 100,edgecolor= "")
+
     plt.yscale('log')
-    plt.ylim(pow(10,-1), pow(10,2.8))
+    plt.xscale('log')
+    plt.axis([0,(float(getMax(NestList_overhead))+20),0,(float(getMax(NestList_overhead))+20)])
+    plt.plot([0,(float(getMax(NestList_overhead))+20)],[0,(float(getMax(NestList_overhead))+20)])
 
-    synthesis = plt.plot(pl2,'-r^', label = 'JSYN', markersize = 10)
-    fixpoint = plt.plot(pl3,'-bo', label = 'JSYN-VG',  markersize = 10)
-
-    plt.xlabel("Model")
-    plt.ylabel("Performance(seconds)")
+    plt.xlabel("JSYN")
+    plt.ylabel("JSYN-VG")
+    plt.title("Performance(seconds)")
     plt.legend(loc = 'upper left')
     fig.savefig("overhead.pdf")
+
+    #plt.yscale('log')
+    #plt.ylim(pow(10,-1), pow(10,2.8))
+
+    #synthesis = plt.plot(pl2,'-r^', label = 'JSYN', markersize = 10)
+    #fixpoint = plt.plot(pl3,'-bo', label = 'JSYN-VG',  markersize = 10)
+
+    #plt.xlabel("Model")
+    #plt.ylabel("Performance(seconds)")
+    #plt.legend(loc = 'upper left')
+    #fig.savefig("overhead.pdf")
 
 
 
@@ -275,19 +325,76 @@ def drawSize():
     pl1 = np.array([j[1] for j in sorted(NestList_size, key=lambda x: float(x[2]))])
     pl2 = np.array([j[2] for j in sorted(NestList_size, key=lambda x: float(x[2]))])
 # Plot the results
-    fig = plt.figure()
-    plt.yscale('log')
-    plt.ylim(pow(10,1), pow(10,3.5))
-    synthesized = plt.plot(pl1,'-r^', label = 'JSYN', markersize = 10)
-    fixpoint = plt.plot(pl2,'-bo', label = 'JSYN-VG', markersize = 7)
 
-    plt.xlabel("Model")
-    plt.ylabel("Lines of Code")
+
+    fig = plt.figure()
+
+    
+    plt.scatter(pl1,pl2,c="r", s = 100,edgecolor= "")
+    plt.yscale('log')
+    plt.xscale('log')
+
+    plt.axis([0,(float(getMax(NestList_size))+200000),0,(float(getMax(NestList_size))+200000)])
+    plt.plot([0,(float(getMax(NestList_size))+200000)],[0,(float(getMax(NestList_size))+200000)])
+
+    plt.xlabel("JSYN")
+    plt.ylabel("JSYN-VG")
+    plt.title("Lines of Code")
     plt.legend(loc = 'upper left')
     fig.savefig("loc.pdf")
 
+    
+    #plt.yscale('log')
+    #plt.ylim(pow(10,1), pow(10,3.5))
+    #synthesized = plt.plot(pl1,'-r^', label = 'JSYN', markersize = 10)
+    #fixpoint = plt.plot(pl2,'-bo', label = 'JSYN-VG', markersize = 7)
+
+    #plt.xlabel("Model")
+    #plt.ylabel("Lines of Code")
+    #plt.legend(loc = 'upper left')
+    #fig.savefig("loc.pdf")
+
+def drawFixpointReducedSize():
+    font = {'family' : 'normal', 'weight' : 'bold', 'size' : 20}
+    plt.rc('font', **font)
+
+
+    pl1 = np.array([j[1] for j in sorted(NestList_size_compaction, key=lambda x: float(x[2]))])
+    pl2 = np.array([j[2] for j in sorted(NestList_size_compaction, key=lambda x: float(x[2]))])
+# Plot the results
+
+
+    fig = plt.figure()
+
+
+    plt.scatter(pl1,pl2,c="r", s = 100,edgecolor= "")
+
+    plt.yscale('log')
+    plt.xscale('log')
+    
+    plt.axis([0,(float(getMax(NestList_size_compaction))+20),0,(float(getMax(NestList_size_compaction))+20)])
+    plt.plot([0,(float(getMax(NestList_size_compaction))+20)],[0,(float(getMax(NestList_size_compaction))+20)])
+
+    plt.xlabel("JSYN-VG w/ compaction")
+    plt.ylabel("JSYN-VG")
+    plt.title("Lines of Code")
+    plt.legend(loc = 'upper left')
+    fig.savefig("loccompact.pdf")
+
+    #plt.yscale('log')
+    #plt.ylim(pow(10,1), pow(10,3.5))
+    #synthesized = plt.plot(pl1,'-r^', label = 'JSYN-VG w/ compaction', markersize = 10)
+    #fixpoint = plt.plot(pl2,'-bo', label = 'JSYN-VG', markersize = 7)
+
+    #plt.xlabel("Model")
+    #plt.ylabel("Lines of Code")
+    #plt.legend(loc = 'upper left')
+    #fig.savefig("loc.pdf")
+
+
 
 def combineSizeTxt(file1, file2):
+    global compaction
     with open(file1, "r") as f1:
         count= 0
         for line1 in f1:
@@ -303,8 +410,10 @@ def combineSizeTxt(file1, file2):
                     if (tempList2[1] == tempList1[0]):
                         tempList1.append(tempList2[0])
 
-            NestList_size.append(tempList1)
-
+            if compaction:
+                NestList_size_compaction.append(tempList1)
+            else:
+                NestList_size.append(tempList1)
 
     f1.close()
     f2.close()
@@ -342,8 +451,8 @@ def drawPerformance():
     pl2 = np.array([float(j[2]) for j in NestList_performance])
 
     fig = plt.figure()
-    plt.scatter(pl1,pl2,c="r", s = 100,edgecolor= "")
 
+    plt.scatter(pl1,pl2,c="r", s = 100,edgecolor= "")
     plt.axis([0,(float(getMax(NestList_performance))+20),0,(float(getMax(NestList_performance))+20)])
     plt.plot([0,(float(getMax(NestList_performance))+20)],[0,(float(getMax(NestList_performance))+20)])
 
@@ -356,22 +465,24 @@ def drawPerformance():
 
 
 def writeCSV():
-    with open("overheadList.csv", "wb") as f:
-        writer = csv.writer(f)
-        writer.writerows(NestList_overhead)
-    f.close()
-
-    with open("locList.csv", "wb") as k:
-        writer = csv.writer(k)
-        writer.writerows(NestList_size)
-    k.close()
-
-    with open("performanceList.csv", "wb") as p:
-        writer = csv.writer(p)
-        writer.writerows(NestList_performance)
-    p.close()
-
-
+    if compaction:
+        with open("locListCompaction.csv", "wb") as kc:
+            writer = csv.writer(kc)
+            writer.writerows(NestList_size_compaction)
+        kc.close()
+    else:
+        with open("overheadList.csv", "wb") as f:
+            writer = csv.writer(f)
+            writer.writerows(NestList_overhead)
+        f.close()
+        with open("locList.csv", "wb") as k:
+            writer = csv.writer(k)
+            writer.writerows(NestList_size)
+        k.close()
+        with open("performanceList.csv", "wb") as p:
+           writer = csv.writer(p)
+           writer.writerows(NestList_performance)
+        p.close()
 
 
 ################################################################################################
@@ -381,6 +492,7 @@ def writeCSV():
 # Gather Lustre files
 
 def execute(experiments_dir, push_path, another_push_path, implement_dir, another_implement_dir, NestList_size_name_var):
+    global compaction
     if not os.path.exists(experiments_dir):
         print("'" + experiments_dir + "' directory does not exist")
         sys.exit(-1)
@@ -398,7 +510,7 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir, anothe
     print("====Running Jkind under " + experiments_dir + "===")
     print("")
 
-#exeute...................................................
+#execute...................................................
     with open("lustreName.txt", "a") as file:
         if ((len(sys.argv)>1) and (sys.argv[1] == "-skipjkind")):
             print("skip the jkind")
@@ -419,7 +531,11 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir, anothe
                 sys.stdout.write("({} of {}) {} [".format(i+1, len(lus_files), lus_file))
                 sys.stdout.flush()
 
-                run_realizability_synthesis(lus_file, experiments_dir)
+                if compaction:
+                    run_last_fixpointwithcompaction(lus_file, experiments_dir)
+                else:
+                    run_realizability_synthesis(lus_file, experiments_dir)
+                
                 os.chdir(experiments_dir)
                 move_impl(push_path, experiments_dir)
                 os.chdir("..")
@@ -611,156 +727,209 @@ def execute(experiments_dir, push_path, another_push_path, implement_dir, anothe
 #################################################################################################
 #################################################################################################
 
+def main(argv):
+    global jkind_jar
+    global smtlib2c_jar
+    global compaction
+    try:
+      opts, args = getopt.getopt(argv,"c",[])
+    except getopt.GetoptError:
+      print 'experiment.py -c'
+      sys.exit(2)
+    for opt, arg in opts:
+        if opt == '-c':
+            compaction = True
+    path = os.environ.get("JKIND_HOME") or os.environ.get("PATH") or os.environ.get("path")
 
-jkind_jar = None
-path = os.environ.get("JKIND_HOME") or os.environ.get("PATH") or os.environ.get("path")
-
-for dir in path.split(':'):
-    jar = os.path.join(dir, "jkind.jar")
-    if os.path.exists(jar):
-        jkind_jar = jar
-        break
-if jkind_jar is None:
-    print("Unable to find jkind.jar in JKIND_HOME or PATH environment variables")
-    sys.exit(-1)
-print("Using JKind: " + jkind_jar)
-
-
-smtlib2c_jar = None
-path = os.environ.get("PATH") or os.environ.get("path")
-
-for dir in path.split(':'):
-    jar = os.path.join(dir, "SMTLib2C.jar")
-    if os.path.exists(jar):
-        smtlib2c_jar = jar
-        break
-if smtlib2c_jar is None:
-    print("Unable to find SMTLib2C.jar in PATH environment variables")
-    sys.exit(-1)
-
-print("Using SMTLib2C: " + smtlib2c_jar)
+    for dir in path.split(':'):
+        jar = os.path.join(dir, "jkind.jar")
+        if os.path.exists(jar):
+            jkind_jar = jar
+            break
+    if jkind_jar is None:
+        print("Unable to find jkind.jar in JKIND_HOME or PATH environment variables")
+        sys.exit(-1)
+    print("Using JKind: " + jkind_jar)
 
 
+    path = os.environ.get("PATH") or os.environ.get("path")
 
-#################################################################################
-print("deleting the remained files")
-if ((len(sys.argv)>1) and (sys.argv[1] == "-skipjkind")):
-    print("skip the jkind")
+    for dir in path.split(':'):
+        jar = os.path.join(dir, "SMTLib2C.jar")
+        if os.path.exists(jar):
+            smtlib2c_jar = jar
+            break
+    if smtlib2c_jar is None:
+        print("Unable to find SMTLib2C.jar in PATH environment variables")
+        sys.exit(-1)
 
-else:
-    deleteAll()
-
-##############################################################
-execute(EXPERIMENTS_DIR, PUSH_PATH, ANOTHER_PUSH_PATH, IMPLEMENT_DIR, ANOTHER_IMPLEMENT_DIR, NestList_size_name_verification)
-execute(SECOND_EXPERIMENTS_DIR, PUSH_PATH, ANOTHER_PUSH_PATH, SECOND_IMPLEMENT_DIR,SECOND_ANOTHER_IMPLEMENT_DIR, NestList_size_name_smaccm)
-execute(THIRD_EXPERIMENTS_DIR, PUSH_PATH, ANOTHER_PUSH_PATH, THIRD_IMPLEMENT_DIR,THIRD_ANOTHER_IMPLEMENT_DIR, NestList_size_name_other)
-
-#fill the NestList_overhead
-parse("debug_jkind.txt", "overhead.txt")
-writeOverhead(NestList_overhead, "overhead.txt")
-drawOverhead()
-print("NestList_overhead")
-print(NestList_overhead)
-print("")
+    print("Using SMTLib2C: " + smtlib2c_jar)
 
 
-#create both verification (kind and fixpoint) loc.txt
-measureSizeOfC(IMPLEMENT_DIR, NestList_size_name_verification)
-measureSizeOfC(ANOTHER_IMPLEMENT_DIR, NestList_size_name_verification)
-#create both smaccm (kind and fixpoint) loc.txt
-measureSizeOfC(SECOND_IMPLEMENT_DIR, NestList_size_name_smaccm)
-measureSizeOfC(SECOND_ANOTHER_IMPLEMENT_DIR, NestList_size_name_smaccm)
-#create both other (kind and fixpoint) loc.txt
-measureSizeOfC(THIRD_IMPLEMENT_DIR, NestList_size_name_other)
-measureSizeOfC(THIRD_ANOTHER_IMPLEMENT_DIR, NestList_size_name_other)
+
+    #################################################################################
+    print("deleting the remained files")
+    if ((len(sys.argv)>1) and (sys.argv[1] == "-skipjkind")):
+        print("skip the jkind")
+
+    else:
+        deleteAll()
+
+    ##############################################################
+    if compaction:
+        execute(EXPERIMENTS_DIR, YAPP, ANOTHER_PUSH_PATH, YAID, ANOTHER_IMPLEMENT_DIR, NestList_size_name_verification)
+        execute(SECOND_EXPERIMENTS_DIR, YAPP, ANOTHER_PUSH_PATH, YASID, SECOND_ANOTHER_IMPLEMENT_DIR, NestList_size_name_smaccm)
+        execute(THIRD_EXPERIMENTS_DIR, YAPP, ANOTHER_PUSH_PATH, YATID, THIRD_ANOTHER_IMPLEMENT_DIR, NestList_size_name_other)
+        execute(FOURTH_EXPERIMENTS_DIR, YAPP, ANOTHER_PUSH_PATH, YAFID, FOURTH_ANOTHER_IMPLEMENT_DIR, NestList_size_name_fixpoint_only)
+
+        #create both verification (kind and fixpoint) loc.txt
+        measureSizeOfC(ANOTHER_IMPLEMENT_DIR, NestList_size_name_verification)
+        measureSizeOfC(YAID, NestList_size_name_verification)
+        #create both smaccm (kind and fixpoint) loc.txt
+        measureSizeOfC(SECOND_ANOTHER_IMPLEMENT_DIR, NestList_size_name_smaccm)
+        measureSizeOfC(YASID, NestList_size_name_smaccm)
+        #create both other (kind and fixpoint) loc.txt
+        measureSizeOfC(THIRD_ANOTHER_IMPLEMENT_DIR, NestList_size_name_other)
+        measureSizeOfC(YATID, NestList_size_name_other)
+        #create both fixpoint_only (kind and fixpoint) loc.txt
+        measureSizeOfC(FOURTH_ANOTHER_IMPLEMENT_DIR, NestList_size_name_fixpoint_only)
+        measureSizeOfC(YAFID, NestList_size_name_fixpoint_only)
+
+        #append to NestList_size
+        combineSizeTxt(YAID+"/loc.txt", ANOTHER_IMPLEMENT_DIR+"/loc.txt")
+        combineSizeTxt(YASID+"/loc.txt", SECOND_ANOTHER_IMPLEMENT_DIR+"/loc.txt")
+        combineSizeTxt(YATID+"/loc.txt", THIRD_ANOTHER_IMPLEMENT_DIR+"/loc.txt")
+        combineSizeTxt(YAFID+"/loc.txt", FOURTH_ANOTHER_IMPLEMENT_DIR+"/loc.txt")
+
+        print("NestList_size_compaction")
+        print(NestList_size_compaction)
+
+        drawFixpointReducedSize()
+        print("")
+
+        min_size_f_compaction = min(float(a[2]) for a in NestList_size_compaction)
+        max_size_f_compaction = max(float(a[2]) for a in NestList_size_compaction)
+        avg_size_f_compaction = sum([float(a[2]) for a in NestList_size_compaction])/len(NestList_size_compaction)
+
+        print("min_size_f_compaction")
+        print(min_size_f_compaction)
+        print("max_size_f_compaction")
+        print(max_size_f_compaction)
+        print("avg_size_f_compaction")
+        print(avg_size_f_compaction)
+    
+    else:        
+        execute(EXPERIMENTS_DIR, PUSH_PATH, ANOTHER_PUSH_PATH, IMPLEMENT_DIR, ANOTHER_IMPLEMENT_DIR, NestList_size_name_verification)
+        execute(SECOND_EXPERIMENTS_DIR, PUSH_PATH, ANOTHER_PUSH_PATH, SECOND_IMPLEMENT_DIR,SECOND_ANOTHER_IMPLEMENT_DIR, NestList_size_name_smaccm)
+        execute(THIRD_EXPERIMENTS_DIR, PUSH_PATH, ANOTHER_PUSH_PATH, THIRD_IMPLEMENT_DIR,THIRD_ANOTHER_IMPLEMENT_DIR, NestList_size_name_other)
+        #fill the NestList_overhead
+        parse("debug_jkind.txt", "overhead.txt")
+        writeOverhead(NestList_overhead, "overhead.txt")
+        drawOverhead()
+        print("NestList_overhead")
+        print(NestList_overhead)
+        print("")
+
+        #create both verification (kind and fixpoint) loc.txt
+        measureSizeOfC(IMPLEMENT_DIR, NestList_size_name_verification)
+        measureSizeOfC(ANOTHER_IMPLEMENT_DIR, NestList_size_name_verification)
+        #create both smaccm (kind and fixpoint) loc.txt
+        measureSizeOfC(SECOND_IMPLEMENT_DIR, NestList_size_name_smaccm)
+        measureSizeOfC(SECOND_ANOTHER_IMPLEMENT_DIR, NestList_size_name_smaccm)
+        #create both other (kind and fixpoint) loc.txt
+        measureSizeOfC(THIRD_IMPLEMENT_DIR, NestList_size_name_other)
+        measureSizeOfC(THIRD_ANOTHER_IMPLEMENT_DIR, NestList_size_name_other)
+
+        #append to NestList_size
+        combineSizeTxt(IMPLEMENT_DIR+"/loc.txt", ANOTHER_IMPLEMENT_DIR+"/loc.txt")
+        combineSizeTxt(SECOND_IMPLEMENT_DIR+"/loc.txt", SECOND_ANOTHER_IMPLEMENT_DIR+"/loc.txt")
+        combineSizeTxt(THIRD_IMPLEMENT_DIR+"/loc.txt", THIRD_ANOTHER_IMPLEMENT_DIR+"/loc.txt")
+
+        print("NestList_size")
+        print(NestList_size)
+
+        drawSize()
+        print("")
+
+        #append to NestList_performance
+        combineResultTxt(IMPLEMENT_DIR+"/results.txt",ANOTHER_IMPLEMENT_DIR+"/results.txt")
+        combineResultTxt(SECOND_IMPLEMENT_DIR+"/results.txt",SECOND_ANOTHER_IMPLEMENT_DIR+"/results.txt")
+        combineResultTxt(THIRD_IMPLEMENT_DIR+"/results.txt",THIRD_ANOTHER_IMPLEMENT_DIR+"/results.txt")
 
 
-#append to NestList_size
-combineSizeTxt(IMPLEMENT_DIR+"/loc.txt", ANOTHER_IMPLEMENT_DIR+"/loc.txt")
-combineSizeTxt(SECOND_IMPLEMENT_DIR+"/loc.txt", SECOND_ANOTHER_IMPLEMENT_DIR+"/loc.txt")
-combineSizeTxt(THIRD_IMPLEMENT_DIR+"/loc.txt", THIRD_ANOTHER_IMPLEMENT_DIR+"/loc.txt")
+        print("NestList_performance")
+        print(NestList_performance)
 
-print("NestList_size")
-print(NestList_size)
+        drawPerformance()
 
-drawSize()
-print("")
+        writeCSV()
 
-#append to NestList_performance
-combineResultTxt(IMPLEMENT_DIR+"/results.txt",ANOTHER_IMPLEMENT_DIR+"/results.txt")
-combineResultTxt(SECOND_IMPLEMENT_DIR+"/results.txt",SECOND_ANOTHER_IMPLEMENT_DIR+"/results.txt")
-combineResultTxt(THIRD_IMPLEMENT_DIR+"/results.txt",THIRD_ANOTHER_IMPLEMENT_DIR+"/results.txt")
+        min_performance_s = min(float(a[1]) for a in NestList_performance)
+        max_performance_s = max(float(a[1]) for a in NestList_performance)
+        avg_performance_s = sum([float(a[1]) for a in NestList_performance])/len(NestList_performance)
+
+        min_performance_f = min(float(a[2]) for a in NestList_performance)
+        max_performance_f = max(float(a[2]) for a in NestList_performance)
+        avg_performance_f = sum([float(a[2]) for a in NestList_performance])/len(NestList_performance)
+
+        min_overhead_s = min(float(a[2]) for a in NestList_overhead)
+        max_overhead_s = max(float(a[2]) for a in NestList_overhead)
+        avg_overhead_s = sum([float(a[2]) for a in NestList_overhead])/len(NestList_overhead)
+
+        min_overhead_f = min(float(a[3]) for a in NestList_overhead)
+        max_overhead_f = max(float(a[3]) for a in NestList_overhead)
+        avg_overhead_f = sum([float(a[3]) for a in NestList_overhead])/len(NestList_overhead)
+
+        min_size_s = min(float(a[1]) for a in NestList_size)
+        max_size_s = max(float(a[1]) for a in NestList_size)
+        avg_size_s = sum([float(a[1]) for a in NestList_size])/len(NestList_size)
+
+        min_size_f = min(float(a[2]) for a in NestList_size)
+        max_size_f = max(float(a[2]) for a in NestList_size)
+        avg_size_f = sum([float(a[2]) for a in NestList_size])/len(NestList_size)
 
 
-print("NestList_performance")
-print(NestList_performance)
+        print("min_performance_s")
+        print(min_performance_s)
+        print("max_performance_s")
+        print(max_performance_s)
+        print("avg_performance_s")
+        print(avg_performance_s)
 
-drawPerformance()
+        print("min_performance_f")
+        print(min_performance_f)
+        print("max_performance_f")
+        print(max_performance_f)
+        print("avg_performance_f")
+        print(avg_performance_f)
 
-writeCSV()
+        print("min_overhead_s")
+        print(min_overhead_s)
+        print("max_overhead_s")
+        print(max_overhead_s)
+        print("avg_overhead_s")
+        print(avg_overhead_s)
 
-min_performance_s = min(float(a[1]) for a in NestList_performance)
-max_performance_s = max(float(a[1]) for a in NestList_performance)
-avg_performance_s = sum([float(a[1]) for a in NestList_performance])/len(NestList_performance)
+        print("min_overhead_f")
+        print(min_overhead_f)
+        print("max_overhead_f")
+        print(max_overhead_f)
+        print("avg_overhead_f")
+        print(avg_overhead_f)
 
-min_performance_f = min(float(a[2]) for a in NestList_performance)
-max_performance_f = max(float(a[2]) for a in NestList_performance)
-avg_performance_f = sum([float(a[2]) for a in NestList_performance])/len(NestList_performance)
+        print("min_size_s")
+        print(min_size_s)
+        print("max_size_s")
+        print(max_size_s)
+        print("avg_size_s")
+        print(avg_size_s)
 
-min_overhead_s = min(float(a[2]) for a in NestList_overhead)
-max_overhead_s = max(float(a[2]) for a in NestList_overhead)
-avg_overhead_s = sum([float(a[2]) for a in NestList_overhead])/len(NestList_overhead)
+        print("min_size_f")
+        print(min_size_f)
+        print("max_size_f")
+        print(max_size_f)
+        print("avg_size_f")
+        print(avg_size_f)
 
-min_overhead_f = min(float(a[3]) for a in NestList_overhead)
-max_overhead_f = max(float(a[3]) for a in NestList_overhead)
-avg_overhead_f = sum([float(a[3]) for a in NestList_overhead])/len(NestList_overhead)
-
-min_size_s = min(float(a[1]) for a in NestList_size)
-max_size_s = max(float(a[1]) for a in NestList_size)
-avg_size_s = sum([float(a[1]) for a in NestList_size])/len(NestList_size)
-
-min_size_f = min(float(a[2]) for a in NestList_size)
-max_size_f = max(float(a[2]) for a in NestList_size)
-avg_size_f = sum([float(a[2]) for a in NestList_size])/len(NestList_size)
-
-print("min_performance_s")
-print(min_performance_s)
-print("max_performance_s")
-print(max_performance_s)
-print("avg_performance_s")
-print(avg_performance_s)
-
-print("min_performance_f")
-print(min_performance_f)
-print("max_performance_f")
-print(max_performance_f)
-print("avg_performance_f")
-print(avg_performance_f)
-
-print("min_overhead_s")
-print(min_overhead_s)
-print("max_overhead_s")
-print(max_overhead_s)
-print("avg_overhead_s")
-print(avg_overhead_s)
-
-print("min_overhead_f")
-print(min_overhead_f)
-print("max_overhead_f")
-print(max_overhead_f)
-print("avg_overhead_f")
-print(avg_overhead_f)
-
-print("min_size_s")
-print(min_size_s)
-print("max_size_s")
-print(max_size_s)
-print("avg_size_s")
-print(avg_size_s)
-
-print("min_size_f")
-print(min_size_f)
-print("max_size_f")
-print(max_size_f)
-print("avg_size_f")
-print(avg_size_f)
+if __name__ == '__main__':
+    main(sys.argv[1:])

@@ -1,12 +1,5 @@
 const C = 2.0;
 
--- node bucket_val(fill_amt: real; empty: bool) returns (level: real);
--- let
---    level = 0.0 ->
--- 	   (if (empty) then 0.0 else pre(level)) + fill_amt;
--- tel;
-
--- empty buckets e and e+1 each round
 node game(i1, i2, i3, i4, i5 : real; e : int) returns ();
 var
   b1, b2, b3, b4, b5 : real;
@@ -27,9 +20,6 @@ let
   ok4 = b4 <= C;
   ok5 = b5 <= C;
   ok6 = (e = 1 or e = 2 or e = 3 or e = 4 or e = 5);
-  -- MWW: I don't think that this is necessary.
-  -- and
-  --  (e = 1 or e = 2 or e = 3 or e = 4 or e = 5);
 
   --%REALIZABLE i1, i2, i3, i4, i5;
   --%PROPERTY ok1;

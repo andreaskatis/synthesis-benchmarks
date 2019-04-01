@@ -94,7 +94,7 @@ def deleteAll():
 def run_realizability_fixpoint_only(file_path):
     #delete "xml"
     args = ['java', '-jar', jkind_jar, '-jrealizability',
-            '-scratch', '-timeout', '2000', '-n', '1000000', file_path]
+            '-scratch', '-timeout', '3000', '-n', '1000000', file_path]
     with open(EXTRA_EXPERIMENTS_DIR+"/debug_jkind.txt", "a") as debug:
         debug.write("Running jkind with arguments: {}\n".format(args))
         proc = subprocess.Popen(args, stdout=debug)
@@ -103,7 +103,8 @@ def run_realizability_fixpoint_only(file_path):
 
 def run_synthesis_fixpoint_only(file_path):
     args = ['java', '-jar', jkind_jar, '-jrealizability',
-            '-scratch','-fixpoint_T', '-timeout', '2000', '-n', '1000000', file_path]
+            '-scratch','-synthesis', '-timeout', '3000', '-n', '1000000', file_path]
+#            '-scratch','-fixpoint_T', '-timeout', '2000', '-n', '1000000', file_path]
     with open(EXTRA_EXPERIMENTS_DIR+"/debug_jkind.txt", "a") as debug:
         debug.write("Running jkind with arguments: {}\n".format(args))
         proc = subprocess.Popen(args, stdout=debug)
@@ -112,7 +113,7 @@ def run_synthesis_fixpoint_only(file_path):
 
 def run_fixpoint_fixpoint_only(file_path):
     args = ['java', '-jar', jkind_jar, '-jrealizability',
-            '-scratch','-fixpoint', '-timeout', '2000', '-n', '1000000', file_path]
+            '-scratch','-fixpoint', '-timeout', '3000', '-n', '1000000', file_path]
     with open(EXTRA_EXPERIMENTS_DIR+"/debug_jkind.txt", "a") as debug:
         debug.write("Running jkind with arguments: {}\n".format(args))
         proc = subprocess.Popen(args, stdout=debug)
@@ -123,12 +124,12 @@ def run_fixpoint_fixpoint_only(file_path):
 def run_realizability_synthesis_fixpoint_only(lus_file, experiments_dir):
 
     lus_path = os.path.join(experiments_dir, lus_file)
-    run_realizability_fixpoint_only(lus_path)
+    #run_realizability_fixpoint_only(lus_path)
     sys.stdout.write(".")
     sys.stdout.flush()
 
     lus_path = os.path.join(experiments_dir, lus_file)
-    run_synthesis_fixpoint_only(lus_path)
+    #run_synthesis_fixpoint_only(lus_path)
     sys.stdout.write(".")
     sys.stdout.flush()
 
@@ -216,7 +217,7 @@ def execute_fixpoint_only():
 
             run_realizability_synthesis_fixpoint_only(lus_file, EXTRA_EXPERIMENTS_DIR)
             os.chdir(EXTRA_EXPERIMENTS_DIR)
-            move_impl(PUSH_PATH, EXTRA_EXPERIMENTS_DIR)
+            #move_impl(PUSH_PATH, EXTRA_EXPERIMENTS_DIR)
             os.chdir("..")
 
             run_last_fixpoint_fixpoint_only(lus_file, EXTRA_EXPERIMENTS_DIR)
