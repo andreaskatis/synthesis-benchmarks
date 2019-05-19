@@ -1,0 +1,23 @@
+node Initially(cond : bool) returns (ok : bool);
+let
+ ok = cond -> true;
+tel;
+
+node follow(adv_x, adv_y : int; drn_x, drn_y : int) returns ();
+var
+ ok1, ok2, ok3 : bool;
+let
+ assert (-1 <= (adv_x - pre(adv_x)) and (adv_x - pre(adv_x)) <= 1);
+ assert (-1 <= (adv_y - pre(adv_y)) and (adv_y - pre(adv_y)) <= 1);
+ assert Initially(adv_x = 0 and adv_y = 0);
+ 
+ ok1 = (drn_x = 0) -> (-1 <= (drn_x - pre(drn_x)) and (drn_x - pre(drn_x)) <= 1);
+
+ ok2 = ((drn_x - adv_x <= 2) and (drn_y - adv_y = 0)) or (drn_x - adv_x = 0 and drn_y - adv_y <= 2) or (drn_x - adv_x <= 1 and drn_y - adv_y <=1);
+ ok3 = (drn_y = 0) -> (-1 <= (drn_y - pre(drn_y)) and (drn_y - pre(drn_y)) <= 1);
+ 
+ --%PROPERTY ok1;
+ --%PROPERTY ok2;
+ --%PROPERTY ok3;
+ --%REALIZABLE adv_x, adv_y;
+tel;

@@ -1,0 +1,355 @@
+(declare-fun $b4$~1 () Real)
+(declare-fun $i4$0 () Real)
+(declare-fun $b5$2 () Real)
+(declare-fun $b1$2 () Real)
+(declare-fun $b3$2 () Real)
+(declare-fun $b5$~1 () Real)
+(declare-fun %init () Bool)
+(declare-fun $b2$~1 () Real)
+(declare-fun $i1$0 () Real)
+(declare-fun $b1$~1 () Real)
+(declare-fun $i5$0 () Real)
+(declare-fun $i2$0 () Real)
+(declare-fun $e$2 () Int)
+(declare-fun $i3$0 () Real)
+(declare-fun $b2$2 () Real)
+(declare-fun $ok3$2 () Bool)
+(declare-fun $b3$~1 () Real)
+(declare-fun $b4$2 () Real)
+(declare-fun $ok1$2 () Bool)
+(declare-fun $ok2$2 () Bool)
+(declare-fun $ok4$2 () Bool)
+(declare-fun $ok5$2 () Bool)
+(declare-fun $ok6$2 () Bool)
+
+(assert (let ((a!1 (or (and %init (= (+ $b1$~1 $i1$0) 0.0)) (not %init)))
+      (a!2 (or (and %init (= (+ $b2$~1 $i2$0) 0.0)) (not %init)))
+      (a!3 (or (and %init (= (+ $b5$~1 $i5$0) 0.0)) (not %init)))
+      (a!5 (= $ok1$2 (<= (+ $b1$~1 $i1$0) (to_real (div 20 10)))))
+      (a!6 (= $ok2$2 (<= (+ $b2$~1 $i2$0) (to_real (div 20 10)))))
+      (a!7 (= $ok4$2 (<= $i4$0 (to_real (div 20 10)))))
+      (a!8 (= $ok5$2 (<= (+ $b5$~1 $i5$0) (to_real (div 20 10)))))
+      (a!9 (or %init (and (not %init) (= 0.0 (+ $b2$~1 $i2$0)))))
+      (a!11 (or %init (and (not %init) (= 0.0 (+ $b5$~1 $i5$0)))))
+      (a!14 (= $ok1$2 (<= $i1$0 (to_real (div 20 10)))))
+      (a!15 (or %init (and (not %init) (= 0.0 (+ $b1$~1 $i1$0)))))
+      (a!21 (= $ok3$2 (<= $i3$0 (to_real (div 20 10)))))
+      (a!22 (or (and %init (= (+ $b1$~1 $i1$0) 0.0))
+                (and (not %init) (= $b1$~1 0.0))))
+      (a!23 (or (and %init (= (+ $b3$~1 $i3$0) 0.0)) (not %init)))
+      (a!24 (or (and %init (= (+ $b4$~1 $i4$0) 0.0)) (not %init)))
+      (a!26 (= $ok2$2 (<= $i2$0 (to_real (div 20 10)))))
+      (a!27 (= $ok3$2 (<= (+ $b3$~1 $i3$0) (to_real (div 20 10)))))
+      (a!28 (= $ok4$2 (<= (+ $b4$~1 $i4$0) (to_real (div 20 10)))))
+      (a!32 (= $ok5$2 (<= $i5$0 (to_real (div 20 10))))))
+(let ((a!4 (and a!1
+                a!2
+                (or %init (and (not %init) (= 0.0 $i3$0)))
+                (or (and %init (= $i4$0 0.0)) (not %init))
+                a!3
+                (<= (+ $b1$~1 $i1$0) 2.0)
+                (<= (+ $b2$~1 $i2$0) 2.0)
+                (<= $i4$0 2.0)
+                (<= (+ $b5$~1 $i5$0) 2.0)))
+      (a!10 (and a!1
+                 a!9
+                 (or %init (and (not %init) (= 0.0 $i3$0)))
+                 (or %init (and (not %init) (= 0.0 $i4$0)))
+                 a!3
+                 (<= (+ $b1$~1 $i1$0) 2.0)
+                 (<= (+ $b5$~1 $i5$0) 2.0)))
+      (a!12 (and a!1
+                 a!2
+                 (or %init (and (not %init) (= 0.0 $i3$0)))
+                 (or %init (and (not %init) (= 0.0 $i4$0)))
+                 a!11
+                 (<= (+ $b1$~1 $i1$0) 2.0)
+                 (<= (+ $b2$~1 $i2$0) 2.0)))
+      (a!13 (and (or (and %init (= $i1$0 0.0)) (and (not %init) (= 0.0 $b1$~1)))
+                 a!2
+                 (or %init (and (not %init) (= 0.0 $i3$0)))
+                 (or %init (and (not %init) (= 0.0 $i4$0)))
+                 a!3
+                 (<= $i1$0 2.0)
+                 (<= (+ $b2$~1 $i2$0) 2.0)
+                 (<= (+ $b5$~1 $i5$0) 2.0)))
+      (a!16 (and a!15
+                 a!2
+                 (or %init (and (not %init) (= 0.0 $i3$0)))
+                 (or %init (and (not %init) (= 0.0 $i4$0)))
+                 a!3
+                 (<= (+ $b2$~1 $i2$0) 2.0)
+                 (<= (+ $b5$~1 $i5$0) 2.0)))
+      (a!17 (and a!15
+                 a!2
+                 (or %init (and (not %init) (= 0.0 $i3$0)))
+                 (or %init (and (not %init) (= 0.0 $i4$0)))
+                 a!11
+                 (<= (+ $b2$~1 $i2$0) 2.0)))
+      (a!18 (and a!15
+                 a!9
+                 (or %init (and (not %init) (= 0.0 $i3$0)))
+                 (or %init (and (not %init) (= 0.0 $i4$0)))
+                 a!3
+                 (<= (+ $b5$~1 $i5$0) 2.0)))
+      (a!19 (and a!15
+                 a!9
+                 (or %init (and (not %init) (= 0.0 $i3$0)))
+                 (or %init (and (not %init) (= 0.0 $i4$0)))
+                 a!11))
+      (a!20 (and a!1
+                 a!2
+                 (or (and %init (= $i3$0 0.0)) (not %init))
+                 (or (and %init (= $i4$0 0.0)) (not %init))
+                 a!3
+                 (<= (+ $b1$~1 $i1$0) 2.0)
+                 (<= (+ $b2$~1 $i2$0) 2.0)
+                 (<= $i3$0 2.0)
+                 (<= $i4$0 2.0)
+                 (<= (+ $b5$~1 $i5$0) 2.0)))
+      (a!25 (and a!22
+                 (or (and %init (= $i2$0 0.0)) (not %init))
+                 a!23
+                 a!24
+                 a!3
+                 (<= (+ $b1$~1 $i1$0) 2.0)
+                 (<= $i2$0 2.0)
+                 (<= (+ $b3$~1 $i3$0) 2.0)
+                 (<= (+ $b4$~1 $i4$0) 2.0)
+                 (<= (+ $b5$~1 $i5$0) 2.0)))
+      (a!29 (and (or (and %init (= $i1$0 0.0)) (not %init))
+                 (or (and %init (= $i2$0 0.0)) (not %init))
+                 a!23
+                 a!24
+                 a!3
+                 (<= $i1$0 2.0)
+                 (<= $i2$0 2.0)
+                 (<= (+ $b3$~1 $i3$0) 2.0)
+                 (<= (+ $b4$~1 $i4$0) 2.0)
+                 (<= (+ $b5$~1 $i5$0) 2.0)))
+      (a!30 (and a!1
+                 (or (and %init (= $i2$0 0.0)) (not %init))
+                 (or (and %init (= $i3$0 0.0)) (not %init))
+                 a!24
+                 a!3
+                 (<= (+ $b1$~1 $i1$0) 2.0)
+                 (<= $i2$0 2.0)
+                 (<= $i3$0 2.0)
+                 (<= (+ $b4$~1 $i4$0) 2.0)
+                 (<= (+ $b5$~1 $i5$0) 2.0)))
+      (a!31 (and (or (and %init (= $i1$0 0.0)) (not %init))
+                 a!2
+                 a!23
+                 a!24
+                 (or (and %init (= $i5$0 0.0)) (not %init))
+                 (<= $i1$0 2.0)
+                 (<= (+ $b2$~1 $i2$0) 2.0)
+                 (<= (+ $b3$~1 $i3$0) 2.0)
+                 (<= (+ $b4$~1 $i4$0) 2.0)
+                 (<= $i5$0 2.0)))
+      (a!33 (and a!1
+                 a!2
+                 a!23
+                 (or (and %init (= $i4$0 0.0)) (not %init))
+                 (or (and %init (= $i5$0 0.0)) (not %init))
+                 (<= (+ $b1$~1 $i1$0) 2.0)
+                 (<= (+ $b2$~1 $i2$0) 2.0)
+                 (<= (+ $b3$~1 $i3$0) 2.0)
+                 (<= $i4$0 2.0)
+                 (<= $i5$0 2.0))))
+(let ((a!34 (ite a!33
+                 (and (= $b1$2 (+ $b1$~1 $i1$0))
+                      (= $e$2 4)
+                      (= $b2$2 (+ $b2$~1 $i2$0))
+                      (= $b3$2 (+ $b3$~1 $i3$0))
+                      (= $b4$2 $i4$0)
+                      (= $b5$2 $i5$0)
+                      a!5
+                      a!6
+                      a!27
+                      a!7
+                      a!32
+                      (= $ok6$2 true))
+                 true)))
+(let ((a!35 (ite a!31
+                 (and (= $b1$2 $i1$0)
+                      (= $e$2 5)
+                      (= $b2$2 (+ $b2$~1 $i2$0))
+                      (= $b3$2 (+ $b3$~1 $i3$0))
+                      (= $b4$2 (+ $b4$~1 $i4$0))
+                      (= $b5$2 $i5$0)
+                      a!14
+                      a!6
+                      a!27
+                      a!28
+                      a!32
+                      (= $ok6$2 true))
+                 a!34)))
+(let ((a!36 (ite a!30
+                 (and (= $b1$2 (+ $b1$~1 $i1$0))
+                      (= $e$2 2)
+                      (= $b2$2 $i2$0)
+                      (= $b3$2 $i3$0)
+                      (= $b4$2 (+ $b4$~1 $i4$0))
+                      (= $b5$2 (+ $b5$~1 $i5$0))
+                      a!5
+                      a!26
+                      a!21
+                      a!28
+                      a!8
+                      (= $ok6$2 true))
+                 a!35)))
+(let ((a!37 (ite a!29
+                 (and (= $b1$2 $i1$0)
+                      (= $e$2 1)
+                      (= $b2$2 $i2$0)
+                      (= $b3$2 (+ $b3$~1 $i3$0))
+                      (= $b4$2 (+ $b4$~1 $i4$0))
+                      (= $b5$2 (+ $b5$~1 $i5$0))
+                      a!14
+                      a!26
+                      a!27
+                      a!28
+                      a!8
+                      (= $ok6$2 true))
+                 a!36)))
+(let ((a!38 (ite a!25
+                 (and (= $b1$2 (+ $b1$~1 $i1$0))
+                      (= $e$2 1)
+                      (= $b2$2 $i2$0)
+                      (= $b3$2 (+ $b3$~1 $i3$0))
+                      (= $b4$2 (+ $b4$~1 $i4$0))
+                      (= $b5$2 (+ $b5$~1 $i5$0))
+                      a!5
+                      a!26
+                      a!27
+                      a!28
+                      a!8
+                      (= $ok6$2 true))
+                 a!37)))
+(let ((a!39 (ite a!20
+                 (and (= $b1$2 (+ $b1$~1 $i1$0))
+                      (= $e$2 3)
+                      (= $b2$2 (+ $b2$~1 $i2$0))
+                      (= $b3$2 $i3$0)
+                      (= $b4$2 $i4$0)
+                      (= $b5$2 (+ $b5$~1 $i5$0))
+                      a!5
+                      a!6
+                      a!21
+                      a!7
+                      a!8
+                      (= $ok6$2 true))
+                 a!38)))
+(let ((a!40 (ite a!18
+                 (and (= $b1$2 0.0)
+                      (= $e$2 3)
+                      (= $b2$2 0.0)
+                      (= $b3$2 0.0)
+                      (= $b4$2 0.0)
+                      (= $b5$2 (+ $b5$~1 $i5$0))
+                      (= $ok1$2 true)
+                      (= $ok2$2 true)
+                      (= $ok3$2 true)
+                      (= $ok4$2 true)
+                      a!8
+                      (= $ok6$2 true))
+                 (ite a!19
+                      (and (= $b1$2 0.0)
+                           (= $e$2 3)
+                           (= $b2$2 0.0)
+                           (= $b3$2 0.0)
+                           (= $b4$2 0.0)
+                           (= $b5$2 0.0)
+                           (= $ok1$2 true)
+                           (= $ok2$2 true)
+                           (= $ok3$2 true)
+                           (= $ok4$2 true)
+                           (= $ok5$2 true)
+                           (= $ok6$2 true))
+                      a!39))))
+(let ((a!41 (ite a!17
+                 (and (= $b1$2 0.0)
+                      (= $e$2 3)
+                      (= $b2$2 (+ $b2$~1 $i2$0))
+                      (= $b3$2 0.0)
+                      (= $b4$2 0.0)
+                      (= $b5$2 0.0)
+                      (= $ok1$2 true)
+                      a!6
+                      (= $ok3$2 true)
+                      (= $ok4$2 true)
+                      (= $ok5$2 true)
+                      (= $ok6$2 true))
+                 a!40)))
+(let ((a!42 (ite a!16
+                 (and (= $b1$2 0.0)
+                      (= $e$2 3)
+                      (= $b2$2 (+ $b2$~1 $i2$0))
+                      (= $b3$2 0.0)
+                      (= $b4$2 0.0)
+                      (= $b5$2 (+ $b5$~1 $i5$0))
+                      (= $ok1$2 true)
+                      a!6
+                      (= $ok3$2 true)
+                      (= $ok4$2 true)
+                      a!8
+                      (= $ok6$2 true))
+                 a!41)))
+(let ((a!43 (ite a!13
+                 (and (= $b1$2 $i1$0)
+                      (= $e$2 3)
+                      (= $b2$2 (+ $b2$~1 $i2$0))
+                      (= $b3$2 0.0)
+                      (= $b4$2 0.0)
+                      (= $b5$2 (+ $b5$~1 $i5$0))
+                      a!14
+                      a!6
+                      (= $ok3$2 true)
+                      (= $ok4$2 true)
+                      a!8
+                      (= $ok6$2 true))
+                 a!42)))
+(let ((a!44 (ite a!12
+                 (and (= $b1$2 (+ $b1$~1 $i1$0))
+                      (= $e$2 3)
+                      (= $b2$2 (+ $b2$~1 $i2$0))
+                      (= $b3$2 0.0)
+                      (= $b4$2 0.0)
+                      (= $b5$2 0.0)
+                      a!5
+                      a!6
+                      (= $ok3$2 true)
+                      (= $ok4$2 true)
+                      (= $ok5$2 true)
+                      (= $ok6$2 true))
+                 a!43)))
+(let ((a!45 (ite a!10
+                 (and (= $b1$2 (+ $b1$~1 $i1$0))
+                      (= $e$2 3)
+                      (= $b2$2 0.0)
+                      (= $b3$2 0.0)
+                      (= $b4$2 0.0)
+                      (= $b5$2 (+ $b5$~1 $i5$0))
+                      a!5
+                      (= $ok2$2 true)
+                      (= $ok3$2 true)
+                      (= $ok4$2 true)
+                      a!8
+                      (= $ok6$2 true))
+                 a!44)))
+  (ite a!4
+       (and (= $b1$2 (+ $b1$~1 $i1$0))
+            (= $e$2 3)
+            (= $b2$2 (+ $b2$~1 $i2$0))
+            (= $b3$2 0.0)
+            (= $b4$2 $i4$0)
+            (= $b5$2 (+ $b5$~1 $i5$0))
+            a!5
+            a!6
+            (= $ok3$2 true)
+            a!7
+            a!8
+            (= $ok6$2 true))
+       a!45))))))))))))))))
+(check-sat)

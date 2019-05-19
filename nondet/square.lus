@@ -1,0 +1,18 @@
+node square(envposx : int; envposy : int; posx : int; posy : int) returns ();
+
+var
+  ok1, ok2, ok3, ok4 : bool;
+let
+  assert true -> (-1 <= envposx - pre(posx) and envposx - pre(posx) <= 1);
+  assert true -> (-1 <= envposy - pre(posy) and envposy - pre(posy) <= 1);
+  ok1 = (posx >= -4) and (posx <= 4);
+  ok2 = (posy >= -4) and (posy <= 4);
+  ok3 = (posx = 0) -> (-1 <= posx - envposx and posx - envposx <= 1);
+  ok4 = (posy = 0) -> (-1 <= posy - envposy and posy - envposy <= 1);
+
+  --%PROPERTY ok1;
+  --%PROPERTY ok2;
+  --%PROPERTY ok3;
+  --%PROPERTY ok4;
+  --%REALIZABLE envposx, envposy;
+tel;

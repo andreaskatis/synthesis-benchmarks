@@ -1,0 +1,10 @@
+node program_repair(gl : int; l : int; pc : int) returns ();
+var
+  ok1, ok2 : bool;
+let
+  ok1 = (gl = 0 and l = 0 and pc = 0) -> (pc = 2 and pre(pc) = 0 and l = pre(l) and gl = pre(gl) or (pc = 4 and pre(pc) = 0 and l = pre(l) and gl = pre(gl)) or (pc = 4 and pre(pc) = 2 and l = 1 and pre(l) <= 0) or (pc = 5 and pre(pc) = 4 and gl = pre(gl) and pre(gl) <> 0 and l = pre(l)) or (pc = 6 and pre(pc) = 4 and gl = pre(gl) and pre(gl) = 0 and l = pre(l)) or (pc = 6 and pre(pc) = 5 and l = 0 and pre(l) >= 1 and gl = pre(gl)) or (pc = 0 and pre(pc) = 6 and l = pre(l)));
+  ok2 = not ((pc = 2 and l = 1) or (pc = 5 and l = 0));
+  --%PROPERTY ok1;
+  --%PROPERTY ok2;
+  --%REALIZABLE;
+tel;

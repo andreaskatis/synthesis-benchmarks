@@ -1,0 +1,28 @@
+node Initially(i: bool) returns (o: bool);
+let
+  o = i -> true;
+tel;
+
+node abs(val : int) returns (absval : int);
+let
+  absval = if (val < 0) then (-1 * val) else val;
+tel;
+
+node limitedbox(envposy : int; posx : int; posy : int) returns ();
+var
+  ok1, ok2, ok3, ok4, ok5 : bool;
+let
+
+  ok1 = (posx >= -2) and (posx <= 2);
+  ok2 = true -> ((posx >= pre(posx) - 1) and (posx <= pre(posx) + 1));
+  ok3 = Initially(posx = 0 and posy = 0);
+  ok4 = true -> posy = envposy;
+  ok5 = true -> posx <> pre(posx);
+
+  --%REALIZABLE envposy;
+  --%PROPERTY ok1;
+  --%PROPERTY ok2;
+  --%PROPERTY ok3;
+  --%PROPERTY ok4;
+  --%PROPERTY ok5;
+tel;

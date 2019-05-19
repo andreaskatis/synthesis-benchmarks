@@ -1,0 +1,16 @@
+node GridWorldSequence1D(in : int; out : int) returns();
+var
+ ok1, ok2, ok3 : bool;
+
+let
+
+ assert (0 <= in and in <= 399) -> (in = pre(out) or in = pre(out) + 1);
+ ok1 = (0 <= out and  out <= 399) -> (out < 799);
+ ok2 = true;
+-- out >= in - 1 and out <= in;
+ ok3 = (out <= 399 and (out = in - 1 or out = in)) or (399 <= out and out = in);
+ --%PROPERTY ok1;
+ --%PROPERTY ok2;
+ --%PROPERTY ok3;
+ --%REALIZABLE in;
+tel;

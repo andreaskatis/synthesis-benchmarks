@@ -1,0 +1,13 @@
+node solitarybox(posx : int; posy : int) returns ();
+var
+  ok1, ok2, ok3 : bool;
+let
+  ok1 = (posy >= -1) and (posy <= 1);
+  ok2 = (posx = pre(posx) or posx = pre(posx) - 1 or posx = pre(posx) + 1);
+  ok3 = (posy = 0) -> (posy = pre(posy) or posy = pre(posy) -1 or posy = pre(posy) + 1);
+
+  --%PROPERTY ok1;
+  --%PROPERTY ok2;
+  --%PROPERTY ok3;
+  --%REALIZABLE;  
+tel;
