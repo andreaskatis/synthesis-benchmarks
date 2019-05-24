@@ -314,49 +314,49 @@ let
 
   generated_macro_47 = USER_emission.USER_b;
 
-  USER_object_type = ((0 <= USER_object) and (USER_object <= 5));
+  USER_object_type = ((0 <= USER_object) and (USER_object <= 4));
 
-  USER_spex_type = ((0 <= USER_spex) and (USER_spex <= 2));
+  USER_spex_type = ((0 <= USER_spex) and (USER_spex <= 1));
 
-  USER_parm_type = ((0 <= USER_parm) and (USER_parm <= 1023));
+  USER_parm_type = ((0 <= USER_parm) and (USER_parm <= 255));
 
-  USER_position_x_type = (((-1024) <= generated_macro_0) and (generated_macro_1 <= 1024));
+  USER_position_x_type = (((-256) <= generated_macro_0) and (generated_macro_1 <= 256));
 
-  USER_position_y_type = (((-1024) <= generated_macro_2) and (generated_macro_3 <= 1024));
+  USER_position_y_type = (((-256) <= generated_macro_2) and (generated_macro_3 <= 256));
 
-  USER_position_z_type = (((-1024) <= generated_macro_4) and (generated_macro_5 <= 1024));
+  USER_position_z_type = (((-256) <= generated_macro_4) and (generated_macro_5 <= 256));
 
-  USER_vector_x_type = (((-1024) <= generated_macro_6) and (generated_macro_7 <= 1024));
+  USER_vector_x_type = (((-256) <= generated_macro_6) and (generated_macro_7 <= 256));
 
-  USER_vector_y_type = (((-1024) <= generated_macro_8) and (generated_macro_9 <= 1024));
+  USER_vector_y_type = (((-256) <= generated_macro_8) and (generated_macro_9 <= 256));
 
-  USER_vector_z_type = (((-1024) <= generated_macro_10) and (generated_macro_11 <= 1024));
+  USER_vector_z_type = (((-256) <= generated_macro_10) and (generated_macro_11 <= 256));
 
-  USER_color_r_type = ((0 <= generated_macro_12) and (generated_macro_13 <= 1024));
+  USER_color_r_type = ((0 <= generated_macro_12) and (generated_macro_13 <= 256));
 
-  USER_color_g_type = ((0 <= generated_macro_14) and (generated_macro_15 <= 1024));
+  USER_color_g_type = ((0 <= generated_macro_14) and (generated_macro_15 <= 256));
 
-  USER_color_b_type = ((0 <= generated_macro_16) and (generated_macro_17 <= 1024));
+  USER_color_b_type = ((0 <= generated_macro_16) and (generated_macro_17 <= 256));
 
-  USER_emission_r_type = ((0 <= generated_macro_18) and (generated_macro_19 <= 1024));
+  USER_emission_r_type = ((0 <= generated_macro_18) and (generated_macro_19 <= 256));
 
-  USER_emission_g_type = ((0 <= generated_macro_20) and (generated_macro_21 <= 1024));
+  USER_emission_g_type = ((0 <= generated_macro_20) and (generated_macro_21 <= 256));
 
-  USER_emission_b_type = ((0 <= generated_macro_22) and (generated_macro_23 <= 1024));
+  USER_emission_b_type = ((0 <= generated_macro_22) and (generated_macro_23 <= 256));
 
   USER_object_satisfies_predicate = ((0 <= USER_object) and (USER_object <= 4));
 
   USER_spex_satisfies_predicate = ((0 <= USER_spex) and (USER_spex <= 1));
 
-  USER_parm_satisfies_predicate = ((0 <= USER_parm) and (USER_parm <= 1023));
+  USER_parm_satisfies_predicate = ((0 <= USER_parm) and (USER_parm <= 255));
 
-  USER_position_satisfies_predicate = ((((-1024) <= generated_macro_24) and (generated_macro_25 <= 1024)) and ((((-1024) <= generated_macro_26) and (generated_macro_27 <= 1024)) and (((-1024) <= generated_macro_28) and (generated_macro_29 <= 1024))));
+  USER_position_satisfies_predicate = ((((-256) <= generated_macro_24) and (generated_macro_25 <= 256)) and ((((-256) <= generated_macro_26) and (generated_macro_27 <= 256)) and (((-256) <= generated_macro_28) and (generated_macro_29 <= 256))));
 
-  USER_vector_satisfies_predicate = ((((-1024) <= generated_macro_30) and (generated_macro_31 <= 1024)) and ((((-1024) <= generated_macro_32) and (generated_macro_33 <= 1024)) and (((-1024) <= generated_macro_34) and (generated_macro_35 <= 1024))));
+  USER_vector_satisfies_predicate = ((((-256) <= generated_macro_30) and (generated_macro_31 <= 256)) and ((((-256) <= generated_macro_32) and (generated_macro_33 <= 256)) and (((-256) <= generated_macro_34) and (generated_macro_35 <= 256))));
 
-  USER_color_satisfies_predicate = (((0 <= generated_macro_36) and (generated_macro_37 <= 1023)) and (((0 <= generated_macro_38) and (generated_macro_39 <= 1023)) and ((0 <= generated_macro_40) and (generated_macro_41 <= 1023))));
+  USER_color_satisfies_predicate = (((0 <= generated_macro_36) and (generated_macro_37 <= 255)) and (((0 <= generated_macro_38) and (generated_macro_39 <= 255)) and ((0 <= generated_macro_40) and (generated_macro_41 <= 255))));
 
-  USER_emission_satisfies_predicate = (((0 <= generated_macro_42) and (generated_macro_43 <= 1023)) and (((0 <= generated_macro_44) and (generated_macro_45 <= 1023)) and ((0 <= generated_macro_46) and (generated_macro_47 <= 1023))));
+  USER_emission_satisfies_predicate = (((0 <= generated_macro_42) and (generated_macro_43 <= 255)) and (((0 <= generated_macro_44) and (generated_macro_45 <= 255)) and ((0 <= generated_macro_46) and (generated_macro_47 <= 255))));
 
   constraints = historically((USER_object_type and (USER_spex_type and (USER_parm_type and (USER_position_x_type and (USER_position_y_type and (USER_position_z_type and (USER_vector_x_type and (USER_vector_y_type and (USER_vector_z_type and (USER_color_r_type and (USER_color_g_type and (USER_color_b_type and (USER_emission_r_type and (USER_emission_g_type and USER_emission_b_type)))))))))))))));
 

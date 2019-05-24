@@ -1,14 +1,19 @@
---Evasion game in 1x1 grid, but with real values as possible position coordinates, up to a maximum absolute difference of 0.1 (i.e. abs(x - pre(x)) <= 0.1 and abs(y - pre(y)) <= 0.1)
+node Initially(exp : bool) returns (iexp : bool);
+let
+ iexp = exp -> true;
+tel;
+
 node bounded_evasion(adv_x, adv_y, rbt_x, rbt_y : real) returns ();
 var
  ok1, ok2, ok3, ok4, ok5 : bool;
 let
- assert (adv_x = 1.0 and adv_y = 1.0) -> (adv_y >= pre(adv_y) - 0.1 and adv_y <= pre(adv_y) + 0.1 and adv_x >= pre(adv_x) - 0.1 and adv_x <= pre(adv_x) + 0.1);
-
- ok1 = (rbt_y = 0.0) -> (rbt_y >= pre(rbt_y) - 0.1 and rbt_y <= pre(rbt_y) + 0.1);
+ assert Initially(adv_x = 0.8 and adv_y = 0.8);
+ assert (adv_x >= 0.0 and adv_x <= 1.0 and adv_y >= 0.0 and adv_y <= 1.0);
+ 
+ ok1 = (rbt_y = 0.5) -> (rbt_y >= pre(rbt_y) - 0.1 and rbt_y <= pre(rbt_y) + 0.1);
  ok2 = rbt_x >= 0.0 and rbt_x <= 1.0;
  ok3 = rbt_y >= 0.0 and rbt_y <= 1.0;
- ok4 = (rbt_x = 0.0) -> (rbt_x >= pre(rbt_x) - 0.1 and rbt_x <= pre(rbt_x) + 0.1);
+ ok4 = (rbt_x = 0.5) -> (rbt_x >= pre(rbt_x) - 0.1 and rbt_x <= pre(rbt_x) + 0.1);
  ok5 = not (rbt_x = adv_x) and not (rbt_y = adv_y);
  
  --%PROPERTY ok1;
@@ -16,6 +21,5 @@ let
  --%PROPERTY ok3;
  --%PROPERTY ok4;
  --%PROPERTY ok5;
- 
  --%REALIZABLE adv_x, adv_y;
 tel;
