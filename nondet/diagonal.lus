@@ -1,24 +1,11 @@
-node Initially(i: bool) returns (o: bool);
-let
-  o = i -> true;
-tel;
-
-node abs(val : int) returns (absval : int);
-let
-  absval = if (val < 0) then (-1 * val) else val;
-tel;
-
 node diagonal(posx : int; posy : int) returns ();
 var
-  ok1, ok2, ok3 : bool;
+  ok, t1, t2 : bool;
 let
-  assert (-1 <= posx - pre(posx) and posx - pre(posx) <= 1);
-  
-  ok1 = -2 <= posy - posx and posy - posx <= 2;
-  ok2 = true -> (-1 <= posy - pre(posy) and posy - pre(posy) <= 1);
-  ok3 = Initially(posy = 0);
-  --%REALIZABLE posx;
-  --%PROPERTY ok1;
-  --%PROPERTY ok2;
-  --%PROPERTY ok3;
+
+  ok = ((posy >= posx - 2) and (posy <= posx + 2)) -> ((t1 and t2) => (posy >= posx - 2 and posy <= posx + 2));
+  t1 = (pre(posx) = posx + 1 or pre(posx) = posx - 1 or pre(posx) = posx);
+  t2 = (pre(posy) = posy + 1 or pre(posy) = posy - 1 or pre(posy) = posy);
+  --%PROPERTY ok;
+  --%REALIZABLE posx;  
 tel;

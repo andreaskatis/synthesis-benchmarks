@@ -141,7 +141,7 @@ def run_synthesis(file_path):
 
 def run_fixpoint(file_path):
     args = ['java', '-jar', jkind_jar, '-jrealizability',
-            '-fixpoint', '-timeout', '10000', '-n', '1000000', file_path]
+            '-fixpoint', '-synthesis', '-timeout', '10000', '-n', '1000000', file_path]
     with open("debug_jkind.txt", "a") as debug:
         debug.write("Running jkind with arguments: {}\n".format(args))
         proc = subprocess.Popen(args, stdout=debug)
@@ -151,7 +151,7 @@ def run_fixpoint(file_path):
 
 def run_fixpointwithcompaction(file_path):
     args = ['java', '-jar', jkind_jar, '-jrealizability',
-            '-fixpoint', '-compact', '-timeout', '10000', '-n', '1000000', file_path]
+            '-fixpoint', '-synthesis', '-compact', '-timeout', '10000', '-n', '1000000', file_path]
     with open("debug_jkind.txt", "a") as debug:
         debug.write("Running jkind with arguments: {}\n".format(args))
         proc = subprocess.Popen(args, stdout=debug)

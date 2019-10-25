@@ -9,3 +9,4 @@ fixpoint/
 run_synthesis.py
 *.txt
 *.csv
+*.log
