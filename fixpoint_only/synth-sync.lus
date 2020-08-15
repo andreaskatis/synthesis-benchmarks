@@ -1,0 +1,26 @@
+node synth_sync(x, y1, y2, z, pc1, pc2, pc3 : int) returns();
+var
+  next, next1, next2, next3, ok1 : bool;
+let
+  next = (x = 0 and z = 0 and pc1 = 1 and pc2 = 1 and pc3 = 1) -> (next1 and pc2 = pre(pc2) and pc3 = pre(pc3) or
+  			next2 and pc1 = pre(pc1) and pc3 = pre(pc3) or
+  			next3 and pc1 = pre(pc1) and pc2 = pre(pc2));
+
+  next1 = (pre(pc1) = 1 and pc1 = 2 and x = pre(x + z) and z = pre(z) and y1 = pre(y1) and y2 = pre(y2) or
+  			pre(pc1) = 2 and pc1 = 3 and x = pre(x + z) and z = pre(z) and y1 = pre(y1) and y2 = pre(y2));
+
+  next2 = (pre(pc2) = 1 and pc2 = 2 and z = pre(z + 1) and x = pre(x) and y1 = pre(y1) and y2 = pre(y2) or
+  			pre(pc2) = 2 and pc2 = 3 and z = pre(z + 1) and x = pre(x) and y1 = pre(y1) and y2 = pre(y2));
+
+  next3 = (pre(pc3) = 1 and pc3 = 2 and pre(x) = 1 and y1 = 3 and x = pre(x) and y2 = pre(y2) and z = pre(z) or
+  			pre(pc3) = 1 and pc3 = 2 and pre(x) = 2 and y1 = 6 and x = pre(x) and y2 = pre(y2) and z = pre(z) or
+  			pre(pc3) = 1 and pc3 = 2 and (pre(x) <= 0 or pre(x) >= 3) and y1 =5 and x = pre(x) and y2 = pre(y2) and z = pre(z) or
+  			pre(pc3) = 2 and pc3 = 3 and y2 = pre(x) and x = pre(x) and y1 = pre(y1) and z = pre(z) or
+  			pre(pc3) = 3 and pc3 = 4 and pre(y1) <> pre(y2) and x = pre(x) and y1 = pre(y1) and y2 = pre(y2) and z = pre(z));
+
+  assert next;
+  ok1 = not (pc3 = 3 and y1 = y2);
+
+  --%PROPERTY ok1;
+  --%REALIZABLE;
+tel;

@@ -1,0 +1,10 @@
+node ex2(x1, x2 : real; y : real) returns();
+var
+  ok : bool;
+let
+  assert 0.0 < x1 and x1 < 1.0 and 0.0 < x2 and x2 < 1.0;
+  ok = 0.0 < y and y < 1.0 and y <> x1 and y <> x2;
+
+  --%PROPERTY ok;
+  --%REALIZABLE x1, x2;
+tel;

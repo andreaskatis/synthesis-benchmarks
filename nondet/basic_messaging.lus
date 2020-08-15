@@ -1,0 +1,56 @@
+--Historically
+node H(X:bool) returns (Y:bool);
+let
+    Y = X -> (X and (pre Y));
+tel;
+
+node abs(X:real) returns (Y:real);
+let
+	Y = if (X < 0.0) then -1.0*X else X;
+tel;
+
+node basic_messaging(
+	mainC, index1, index2, user, messID : real;
+	cvg : bool; delta_str, delta_mainC, delta_user : real;
+	strCha0 : real)
+returns();
+var
+  ok1, ok2, ok3, ok4, ok5, ok6, ok7 : bool;
+  guarantee_delta_str, guarantee_coverage_improved_implies_delta_str : bool;
+  guarantee_delta_mainC, guarantee_coverage_improved_implies_delta_mainC : bool;
+  guarantee_delta_user, guarantee_coverage_improved_implies_delta_user : bool;
+let
+
+  guarantee_delta_mainC = 0.0 <= delta_mainC and delta_mainC <= 1.0;
+  ---2.0 <= delta_mainC and delta_mainC <= 2.0;
+  guarantee_coverage_improved_implies_delta_mainC = ((pre(delta_mainC) <= 0.1 and not cvg) => mainC < 1.0) and ((pre(delta_mainC) >= 0.9 and not cvg) => mainC > 3.0);
+  ok1 = (pre(delta_mainC) > 0.1 and pre(delta_mainC) < 0.9) => mainC >= 1.0 and mainC <= 3.0;
+
+  guarantee_delta_str = 0.0 <= delta_str and delta_str <= 1.0;
+  ---94.0 <= delta_str and delta_str <= 94.0;
+  guarantee_coverage_improved_implies_delta_str = ((pre(delta_str) <= 0.1 and not cvg) => strCha0 < 32.0) and ((pre(delta_str) >= 0.9 and not cvg) => strCha0 > 126.0);
+  --cvg => (strCha0 = pre(strCha0) + delta_str);
+  ok2 = (pre(delta_str) > 0.1 and pre(delta_str) < 0.9) => (strCha0 >= 32.0 and strCha0 <=126.0);
+    
+  guarantee_delta_user = 0.0 <= delta_user and delta_user <= 1.0;
+  ---5.0 <= delta_user and delta_user <= 5.0;
+  guarantee_coverage_improved_implies_delta_user = ((pre(delta_user) <= 0.1 and not cvg) => user < 1.0) and ((pre(delta_user) >= 0.9 and not cvg) => user > 6.0);
+  --cvg => (user >= -1000000.0 and user <= 1000000.0);
+  --cvg => (user = pre(user) + delta_user);
+  ok3 = (pre(delta_user) > 0.1 and pre(delta_user) < 0.9) => (user >= 1.0 and user <= 6.0);
+
+  ok4 = index1 >= 0.0;
+  ok5 = index2 >= 0.0;
+  ok6 = messID >= 1.0 and messID <= 255.0;
+  ok7 = guarantee_coverage_improved_implies_delta_str and guarantee_delta_str and guarantee_coverage_improved_implies_delta_mainC and guarantee_delta_mainC and guarantee_coverage_improved_implies_delta_user and guarantee_delta_user;
+
+  --%PROPERTY ok1;
+  --%PROPERTY ok2;
+  --%PROPERTY ok3;
+  --%PROPERTY ok4;
+  --%PROPERTY ok5;
+  --%PROPERTY ok6;
+  --%PROPERTY ok7;
+
+  --%REALIZABLE cvg;
+tel;

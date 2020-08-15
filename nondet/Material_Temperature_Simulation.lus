@@ -1,0 +1,58 @@
+node Material_Temperature_Simulation(
+	cvg : bool;
+	material, Init, runTime, xDim, yDim, zDim, isoFlag, constEnFlag : real;
+	tmod : real;
+	val : real;
+	delta_material, delta_Init, delta_xDim, delta_yDim, delta_zDim : real;
+	delta_val : real
+	) returns();
+var
+  ok1, ok2, ok3, ok4, ok5, ok6, ok7, ok8, ok9, ok10 : bool;
+  guarantee_delta_material, guarantee_cvg_material, guarantee_delta_Init, guarantee_delta_xDim,
+  guarantee_cvg_xDim, guarantee_delta_yDim, guarantee_cvg_yDim, guarantee_delta_zDim, guarantee_cvg_zDim, guarantee_delta_val, guarantee_cvg_val : bool;
+let
+  guarantee_delta_material = 0.0 <= delta_material and delta_material <= 1.0;
+  guarantee_cvg_material = ((pre(delta_material) <= 0.1 and not cvg) => (material >= -100.0 and material < 1.0)) and 
+  	((pre(delta_material) >= 0.9 and not cvg) => (material > 4.0 and material <= 100.0));
+  ok1 = (pre(delta_material) > 0.1 and pre(delta_material) < 0.9) => material >= 1.0 and material <= 4.0;
+
+
+  guarantee_delta_Init = 0.0 <= delta_Init and delta_Init <= 1.0;
+  ok2 = (pre(delta_Init) < 0.5 => Init < 0.0) and (pre(delta_Init) >= 0.5 => Init >= 0.0);
+
+  ok3 = tmod >= -25.0 and tmod <= 25.0;
+  
+  guarantee_delta_xDim = 0.0 <= delta_xDim and delta_xDim <= 1.0;
+  guarantee_cvg_xDim = ((pre(delta_xDim) <= 0.1 and not cvg) => (-100.0 <= xDim and xDim < 1.0)) and ((pre(delta_xDim) >= 0.9 and not cvg) => (xDim > 15.0 and xDim <= 100.0));
+  ok4 = (pre(delta_xDim) > 0.1 and pre(delta_xDim) < 0.9) => xDim >= 1.0 and xDim <= 15.0;
+
+  guarantee_delta_yDim = 0.0 <= delta_yDim and delta_yDim <= 1.0;
+  guarantee_cvg_yDim = ((pre(delta_yDim) <= 0.1 and not cvg) => (-100.0 <= yDim and yDim < 1.0)) and ((pre(delta_yDim) >= 0.9 and not cvg) => (yDim > 15.0 and yDim <= 100.0));
+  ok5 = (pre(delta_yDim) > 0.1 and pre(delta_yDim) < 0.9) => yDim >= 1.0 and yDim <= 15.0;
+
+  guarantee_delta_zDim = 0.0 <= delta_zDim and delta_zDim <= 1.0;
+  guarantee_cvg_zDim = ((pre(delta_zDim) <= 0.1 and not cvg) => (-100.0 <= zDim and zDim < 1.0)) and ((pre(delta_zDim) >= 0.9 and not cvg) => (zDim > 15.0 and zDim <= 100.0));
+  ok6 = (pre(delta_zDim) > 0.1 and pre(delta_zDim) < 0.9) => zDim >= 1.0 and zDim <= 15.0;
+
+  ok7 = 0.0 <= isoFlag and isoFlag <= 1.0 and 0.0 <= constEnFlag and constEnFlag <= 1.0;
+
+  guarantee_delta_val = 0.0 <= delta_val and delta_val <= 1.0;
+  guarantee_cvg_val = ((pre(delta_val) <= 0.1 and not cvg) => val < -172.0) and ((pre(delta_val) >= 0.9 and not cvg) => val > 373.0);
+  ok8 = (pre(delta_val) > 0.1 and pre(delta_val) < 0.9) => val >= -172.0 and val <= 373.0;
+
+  ok9 = 1.0 <= runTime and runTime <= 10000.0;
+  
+  ok10 = guarantee_delta_material and guarantee_cvg_material and guarantee_delta_Init and guarantee_delta_xDim and  guarantee_cvg_xDim and guarantee_delta_yDim and guarantee_cvg_yDim and guarantee_delta_zDim and guarantee_cvg_zDim and guarantee_delta_val and  guarantee_cvg_val;
+  --%PROPERTY ok1;
+  --%PROPERTY ok2;
+  --%PROPERTY ok3;
+  --%PROPERTY ok4;
+  --%PROPERTY ok5;
+  --%PROPERTY ok6;
+  --%PROPERTY ok7;
+  --%PROPERTY ok8;
+  --%PROPERTY ok9;
+  --%PROPERTY ok10;
+
+  --%REALIZABLE cvg;
+tel;

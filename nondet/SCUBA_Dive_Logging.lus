@@ -1,0 +1,58 @@
+node SCUBA_Dive_Logging(
+	mainC, date, hour, minute, second, indx, data : real;
+  downHex0, downHex1, downHex2, downHex3, downHex4, downHex5, downHex6, downHex7, downHex8, downHex9,
+	downHex10, downHex11, downHex12, downHex13, downHex14, downHex15, downHex16, downHex17, downHex18, downHex19,
+  downHex20, downHex21, downHex22, downHex23, downHex24, downHex25, downHex26, downHex27, downHex28, downHex29,
+  downHex30, downHex31 : real;
+  cvg : bool;
+  delta_mainC, delta_data, delta_hour, delta_minute, delta_second, delta_indx, delta_strcha, delta_downHex : real;
+	strcha0, strcha1, strcha2, strcha3, strcha4, strcha5, strcha6, strcha7, strcha8, strcha9, strcha10, strcha11, strcha12, strcha13, strcha14, strcha15, strcha16, strcha17, strcha18, strcha19, strcha20, strcha21, strcha22, strcha23, strcha24 : real
+  )
+returns();
+var
+  ok1, ok2, ok3, ok4, ok5, ok6, ok7, ok8 : bool;
+  guarantee_delta_mainC, guarantee_coverage_improvement_implies_delta_mainC : bool;
+  guarantee_delta_indx, guarantee_coverage_improvement_implies_delta_indx : bool;
+  guarantee_delta_data : bool;
+let
+  guarantee_delta_mainC = 0.0 <= delta_mainC and delta_mainC <= 1.0;
+  guarantee_coverage_improvement_implies_delta_mainC = ((pre(delta_mainC) <= 0.1 and not cvg) => mainC < 0.0) and ((pre(delta_mainC) >= 0.9 and not cvg) => mainC > 7.0);
+  ok1 = (pre(delta_mainC) > 0.1 and pre(delta_mainC) < 0.9) => mainC >= 0.0 and mainC <= 7.0;
+
+  
+  ok2 = date >= 0.0;
+  guarantee_delta_indx = 0.0 <= delta_indx and delta_indx <= 1.0;
+  guarantee_coverage_improvement_implies_delta_indx = ((pre(delta_indx) <= 0.1 and not cvg) => indx < 0.0) and ((pre(delta_indx) >= 0.9 and not cvg) => indx > 20.0);
+  ok3 =  (pre(delta_indx) > 0.1 and pre(delta_indx) < 0.9) => indx >= 1.0 and indx <= 20.0;
+  guarantee_delta_data = 0.0 <= delta_data and delta_data <= 1.0;
+  ok4 = (pre(delta_data) < 0.5 => data < 0.0) and (pre(delta_data) >= 0.5 => data >= 0.0);
+
+  ok5 = strcha0 >= 32.0 and strcha0 <=126.0 and strcha1 >= 32.0 and strcha1 <= 126.0
+        and strcha2 >= 32.0 and strcha2 <= 126.0 and strcha3 >= 32.0 and strcha3 <= 126.0
+        and strcha4 >= 32.0 and strcha4 <= 126.0 and strcha5 >= 32.0 and strcha5 <= 126.0
+        and strcha6 >= 32.0 and strcha6 <= 126.0 and strcha7 >= 32.0 and strcha7 <= 126.0
+        and strcha8 >= 32.0 and strcha8 <= 126.0 and strcha9 >= 32.0 and strcha9 <= 126.0
+        and strcha10 >= 32.0 and strcha10 <= 126.0 and strcha11 >= 32.0 and strcha11 <= 126.0
+        and strcha12 >= 32.0 and strcha12 <= 126.0 and strcha13 >= 32.0 and strcha13 <= 126.0
+        and strcha14 >= 32.0 and strcha14 <= 126.0 and strcha15 >= 32.0 and strcha15 <= 126.0
+        and strcha16 >= 32.0 and strcha16 <= 126.0 and strcha17 >= 32.0 and strcha17 <= 126.0
+        and strcha18 >= 32.0 and strcha18 <= 126.0 and strcha19 >= 32.0 and strcha19 <= 126.0
+        and strcha20 >= 32.0 and strcha20 <= 126.0 and strcha21 >= 32.0 and strcha21 <= 126.0
+        and strcha22 >= 32.0 and strcha22 <= 126.0 and strcha23 >= 32.0 and strcha23 <= 126.0
+        and strcha24 >= 32.0 and strcha24 <= 126.0;
+  ok6 = 0.0 <= downHex0 and downHex0 <= 255.0 and 0.0 <= downHex1 and downHex1<= 255.0 and 0.0 <= downHex2 and downHex2 <= 255.0 and 0.0 <= downHex3 and downHex3<= 255.0 and 0.0 <= downHex4 and downHex4 <= 255.0 and 0.0 <= downHex5 and downHex5 <= 255.0 and 0.0 <= downHex6 and downHex6 <= 255.0 and 0.0 <= downHex7 and downHex7 <= 255.0 and 0.0 <= downHex8 and downHex8 <= 255.0 and 0.0 <= downHex9 and downHex9 <= 255.0 and 0.0 <= downHex10 and downHex10 <= 255.0 and 0.0 <= downHex11 and downHex11 <= 255.0 and 0.0 <= downHex12 and downHex12 <= 255.0 and 0.0 <= downHex13 and downHex13 <= 255.0 and 0.0 <= downHex14 and downHex14 <= 255.0 and 0.0 <= downHex15 and downHex15 <= 255.0 and 0.0 <= downHex16 and downHex16 <= 255.0 and 0.0 <= downHex17 and downHex17 <= 255.0 and 0.0 <= downHex18 and downHex18 <= 255.0 and 0.0 <= downHex19 and downHex19 <= 255.0 and 0.0 <= downHex20 and downHex20 <= 255.0 and 0.0 <= downHex21 and downHex21 <= 255.0 and 0.0 <= downHex22 and downHex22 <= 255.0 and 0.0 <= downHex23 and downHex23 <= 255.0 and 0.0 <= downHex24 and downHex24 <= 255.0 and 0.0 <= downHex25 and downHex25 <= 255.0 and 0.0 <= downHex26 and downHex26 <= 255.0 and 0.0 <= downHex27 and downHex27 <= 255.0 and 0.0 <= downHex28 and downHex28 <= 255.0 and 0.0 <= downHex29 and downHex29 <= 255.0 and 0.0 <= downHex30 and downHex30 <= 255.0 and 0.0 <= downHex31 and downHex31 <= 255.0;
+  
+ ok7 = -79999999.0 <= hour and hour <= 79999999.0 and -79999999.0 <= minute and minute <= 79999999.0 and -79999999.0 <= second and second <= 79999999.0;
+ ok8 = guarantee_delta_mainC and guarantee_coverage_improvement_implies_delta_mainC and guarantee_delta_indx and guarantee_coverage_improvement_implies_delta_indx and guarantee_delta_data;
+
+
+  --%PROPERTY ok1;
+  --%PROPERTY ok2;
+  --%PROPERTY ok3;
+  --%PROPERTY ok4;
+  --%PROPERTY ok5;
+  --%PROPERTY ok6;
+  --%PROPERTY ok7;
+  --%PROPERTY ok8;
+  --%REALIZABLE cvg;
+tel;

@@ -1,0 +1,57 @@
+node Email_System_2(
+	cvg : bool;
+	mainC, index1, index2, flag, user, messID : real;
+	userCha0, userCha1, userCha2, userCha3, userCha4 : real;
+	passCha0, passCha1, passCha2, passCha3, passCha4 : real;
+	msgCha0, msgCha1, msgCha2, msgCha3, msgCha4 : real;
+	delta_mainC, delta_user, delta_messID : real
+	) returns();
+var
+	ok1, ok2, ok3, ok4, ok5, ok6, ok7, ok8, ok9 : bool;
+	guarantee_delta_mainC, guarantee_delta_user, guarantee_delta_messID,
+	guarantee_coverage_improvement_implies_delta_mainC, guarantee_coverage_improvement_implies_delta_user,
+	guarantee_coverage_improvement_implies_delta_messID : bool;
+let
+	guarantee_delta_mainC = 0.0 <= delta_mainC and delta_mainC <= 1.0;
+	guarantee_delta_user = 0.0 <= delta_user and delta_user <= 1.0;
+	guarantee_delta_messID = 0.0 <= delta_messID and delta_messID <= 1.0;
+
+    guarantee_coverage_improvement_implies_delta_mainC = ((pre(delta_mainC) < 0.1 and not cvg) => 
+    	mainC < 1.0) and ((pre(delta_mainC) >= 0.9 and not cvg) => mainC > 3.0);
+    guarantee_coverage_improvement_implies_delta_user = ((pre(delta_user) < 0.1 and not cvg) =>
+    	user < 1.0) and ((pre(delta_user) >= 0.9 and not cvg) => user > 8.0);
+    guarantee_coverage_improvement_implies_delta_messID = ((pre(delta_messID) < 0.1 and not cvg) =>
+    	messID < 0.0) and ((pre(delta_mainC) >= 0.9 and not cvg) => messID > 21.0);
+
+	ok1 = (pre(delta_mainC) >= 0.1 and pre(delta_mainC) <= 0.9) => mainC >= 1.0 and mainC <= 3.0;
+	ok2 = (pre(delta_user) >= 0.1 and pre(delta_user) <= 0.9) => user >= 1.0 and user <= 8.0;
+	ok3 = (pre(delta_messID) >= 0.1 and pre(delta_messID) <= 0.9) => messID >= 0.0 and messID <= 21.0;
+	ok4 = index1 >= 0.0 and index2 >= 0.0;
+	ok5 = 0.0 <= flag and flag <= 1.0;
+	ok6 = 32.0 <= userCha0 and userCha0 <= 126.0 and 32.0 <= userCha1 and userCha1 <= 126.0 and
+			32.0 <= userCha2 and userCha2 <= 126.0 and 32.0 <= userCha3 and userCha3 <= 126.0 and
+			32.0 <= userCha4 and userCha4 <= 126.0;
+
+	ok7 = 32.0 <= passCha0 and passCha0 <= 126.0 and 32.0 <= passCha1 and passCha1 <= 126.0 and
+			32.0 <= passCha2 and passCha2 <= 126.0 and 32.0 <= passCha3 and passCha3 <= 126.0 and
+			32.0 <= passCha4 and passCha4 <= 126.0;
+
+	ok8 = 32.0 <= msgCha0 and msgCha0 <= 126.0 and 32.0 <= msgCha1 and msgCha1 <= 126.0 and
+			32.0 <= msgCha2 and msgCha2 <= 126.0 and 32.0 <= msgCha3 and msgCha3 <= 126.0 and
+			32.0 <= msgCha4 and msgCha4 <= 126.0;
+
+   	ok9 = guarantee_delta_mainC and guarantee_delta_user and guarantee_delta_messID and
+   			guarantee_coverage_improvement_implies_delta_user and guarantee_coverage_improvement_implies_delta_messID and
+   			guarantee_coverage_improvement_implies_delta_mainC;
+
+	--%PROPERTY ok1;
+	--%PROPERTY ok2;
+	--%PROPERTY ok3;
+	--%PROPERTY ok4;
+	--%PROPERTY ok5;
+	--%PROPERTY ok6;
+	--%PROPERTY ok7;
+	--%PROPERTY ok8;
+	--%PROPERTY ok9;
+  --%REALIZABLE cvg;
+tel;

@@ -1,0 +1,37 @@
+node QuadtreeConways(
+	cvg : bool;
+	mainC, xCoord, yCoord, timeC : real;
+	delta_mainC, delta_xCoord, delta_yCoord, delta_timeC : real
+	) returns();
+var
+	ok1, ok2, ok3, ok4, ok5 : bool;
+	guarantee_delta_mainC, guarantee_delta_xCoord,
+	guarantee_delta_yCoord, guarantee_delta_timeC,
+	guarantee_coverage_improvement_implies_delta_mainC, guarantee_coverage_improvement_implies_delta_xCoord,
+	guarantee_coverage_improvement_implies_delta_yCoord, guarantee_coverage_improvement_implies_delta_timeC : bool;
+let
+	guarantee_delta_mainC = 0.0 <= delta_mainC and delta_mainC <= 1.0;
+	guarantee_delta_xCoord = 0.0 <= delta_xCoord and delta_xCoord <= 1.0;
+	guarantee_delta_yCoord = 0.0 <= delta_yCoord and delta_yCoord <= 1.0;
+	guarantee_delta_timeC = 0.0 <= delta_timeC and delta_timeC <= 1.0;
+
+    guarantee_coverage_improvement_implies_delta_mainC = ((pre(delta_mainC) < 0.1 and not cvg) => 
+    	mainC < 1.0) and ((pre(delta_mainC) >= 0.9 and not cvg) => mainC > 5.0);
+    guarantee_coverage_improvement_implies_delta_xCoord = ((pre(delta_xCoord) < 0.1 and not cvg) => xCoord < 0.0) and ((pre(delta_xCoord) > 0.9 and not cvg) => xCoord > 8200.0);
+    guarantee_coverage_improvement_implies_delta_yCoord = ((pre(delta_yCoord) < 0.1 and not cvg) => yCoord < 0.0) and ((pre(delta_yCoord) > 0.9 and not cvg) => yCoord > 8200.0);
+    guarantee_coverage_improvement_implies_delta_timeC = ((pre(delta_timeC) < 0.1 and not cvg) => timeC < 100.0) and ((pre(delta_timeC) > 0.9 and not cvg) => timeC > 1000.0);
+
+	ok1 = (pre(delta_mainC) >= 0.1 and pre(delta_mainC) <= 0.9) => mainC >= 1.0 and mainC <= 5.0;
+	ok2 = (pre(delta_xCoord) >= 0.1 and pre(delta_xCoord) <= 0.9) => xCoord >= 0.0 and xCoord <= 8200.0;
+	ok3 = (pre(delta_yCoord) >= 0.1 and pre(delta_yCoord) <= 0.9) => yCoord >= 0.0 and yCoord <= 8200.0;
+	ok4 = (pre(delta_timeC) >= 0.1 and pre(delta_timeC) <= 0.9) => timeC >= 100.0 and timeC <= 1000.0;
+
+   	ok5 = guarantee_delta_mainC and guarantee_delta_xCoord and guarantee_delta_yCoord and guarantee_delta_timeC and guarantee_coverage_improvement_implies_delta_mainC and guarantee_coverage_improvement_implies_delta_xCoord and guarantee_coverage_improvement_implies_delta_yCoord and guarantee_coverage_improvement_implies_delta_timeC;
+
+	--%PROPERTY ok1;
+	--%PROPERTY ok2;
+	--%PROPERTY ok3;
+	--%PROPERTY ok4;
+	--%PROPERTY ok5;
+  --%REALIZABLE cvg;
+tel;

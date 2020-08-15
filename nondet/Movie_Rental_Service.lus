@@ -1,0 +1,51 @@
+node Movie_Rental_Service(
+	cvg : bool;
+	mainC, movieID, flag, passLength, length, genre, rating, year, admin : real;
+	passCha0, passCha1, passCha2, passCha3, passCha4 : real;
+	delta_mainC, delta_admin, delta_movieID, delta_year : real
+	) returns();
+var
+	ok1, ok2, ok3, ok4, ok5, ok6, ok7, ok8 : bool;
+	guarantee_delta_mainC, guarantee_delta_admin, guarantee_delta_movieID,
+	guarantee_coverage_improvement_implies_delta_mainC, guarantee_coverage_improvement_implies_delta_admin,
+	guarantee_coverage_improvement_implies_delta_movieID : bool;
+	guarantee_delta_year, guarantee_coverage_improvement_implies_delta_year : bool;
+let
+	guarantee_delta_mainC = 0.0 <= delta_mainC and delta_mainC <= 1.0;
+	guarantee_delta_admin = 0.0 <= delta_admin and delta_admin <= 1.0;
+	guarantee_delta_movieID = 0.0 <= delta_movieID and delta_movieID <= 1.0;
+	guarantee_delta_year = 0.0 <= delta_year and delta_year <= 1.0;
+
+    guarantee_coverage_improvement_implies_delta_mainC = ((pre(delta_mainC) < 0.1 and not cvg) => 
+    	mainC < 1.0) and ((pre(delta_mainC) >= 0.9 and not cvg) => mainC > 5.0);
+    guarantee_coverage_improvement_implies_delta_admin = ((pre(delta_admin) < 0.1 and not cvg) =>
+    	admin < 1.0) and ((pre(delta_admin) >= 0.9 and not cvg) => admin > 5.0);
+    guarantee_coverage_improvement_implies_delta_movieID = ((pre(delta_movieID) < 0.1 and not cvg) =>
+    	movieID < 0.0) and ((pre(delta_movieID) >= 0.9 and not cvg) => movieID > 100.0);
+    guarantee_coverage_improvement_implies_delta_year = ((pre(delta_year) < 0.1 and not cvg) =>
+    	year < 1800.0) and ((pre(delta_year) >= 0.9 and not cvg) => year > 2015.0);
+
+	ok1 = (pre(delta_mainC) >= 0.1 and pre(delta_mainC) <= 0.9) => mainC >= 1.0 and mainC <= 5.0;
+	ok2 = (pre(delta_admin) >= 0.1 and pre(delta_admin) <= 0.9) => admin >= 1.0 and admin <= 5.0;
+	ok3 = (pre(delta_movieID) >= 0.1 and pre(delta_movieID) <= 0.9) => movieID >= 1.0 and movieID <= 100.0;
+	ok4 = (pre(delta_year) >= 0.1 and pre(delta_year) <= 0.9) => year >= 1800.0 and year <= 2015.0;
+	ok5 = 0.0 <= flag and flag <= 1.0;
+
+	ok6 = 32.0 <= passCha0 and passCha0 <= 126.0 and 32.0 <= passCha1 and passCha1 <= 126.0 and
+			32.0 <= passCha2 and passCha2 <= 126.0 and 32.0 <= passCha3 and passCha3 <= 126.0 and
+			32.0 <= passCha4 and passCha4 <= 126.0;
+
+   	ok7 = guarantee_delta_mainC and guarantee_delta_admin and guarantee_delta_movieID and guarantee_delta_year and guarantee_coverage_improvement_implies_delta_admin and guarantee_coverage_improvement_implies_delta_movieID and guarantee_coverage_improvement_implies_delta_mainC and guarantee_coverage_improvement_implies_delta_year;
+
+    ok8 = 1.0 <= length and length <= 65.0;
+
+	--%PROPERTY ok1;
+	--%PROPERTY ok2;
+	--%PROPERTY ok3;
+	--%PROPERTY ok4;
+	--%PROPERTY ok5;
+	--%PROPERTY ok6;
+	--%PROPERTY ok7;
+	--%PROPERTY ok8;
+    --%REALIZABLE cvg;
+tel;

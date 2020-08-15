@@ -1,0 +1,8 @@
+node game(x1, x2, y1, y2 :int) returns();
+var
+ok : bool;
+let
+ok = y1 + y2 < x1 + x2 and y1 <> y2;
+--%PROPERTY ok;
+--%REALIZABLE x1, x2;
+tel;

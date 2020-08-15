@@ -1,0 +1,40 @@
+{
+    "Runtime": {
+        "unit": "sec",
+        "value": "19.562"
+    },
+    "Answer": {
+        "source": "base",
+        "text": "unrealizable"
+    },
+    "Counterexamples": [
+    {
+        "K": "8",
+        "props": "[ok]",
+        "Counterexample": [
+            {"name": "b1","type": "real","Step 0": 0,"Step 1": 0.080,"Step 2": 0.080,"Step 3": 0.182,"Step 4": 0.182,"Step 5": 0.486,"Step 6": 0.486,"Step 7": 0.588},
+            {"name": "b2","type": "real","Step 0": 0,"Step 1": 0.817,"Step 2": 0.817,"Step 3": 1.639,"Step 4": 1.639,"Step 5": 2.203,"Step 6": 2.203,"Step 7": 3.101},
+            {"name": "b3","type": "real","Step 0": 0,"Step 1": 0,"Step 2": 0,"Step 3": 0,"Step 4": 0,"Step 5": 0.131,"Step 6": 0.131,"Step 7": 0.131},
+            {"name": "b4","type": "real","Step 0": 0,"Step 1": 0,"Step 2": 0,"Step 3": 0,"Step 4": 0,"Step 5": 0,"Step 6": 0,"Step 7": 0},
+            {"name": "b5","type": "real","Step 0": 0,"Step 1": 0.101,"Step 2": 0.101,"Step 3": 0.178,"Step 4": 0.178,"Step 5": 0.178,"Step 6": 0,"Step 7": 0},
+            {"name": "e","type": "int","Step 0": 3,"Step 1": 5,"Step 2": 3,"Step 3": 5,"Step 4": 3,"Step 5": 4,"Step 6": 4,"Step 7": 0},
+            {"name": "i1","type": "real","Step 0": 0,"Step 1": 0.080,"Step 2": 0,"Step 3": 0.101,"Step 4": 0,"Step 5": 0.304,"Step 6": 0.101,"Step 7": 0.101},
+            {"name": "i2","type": "real","Step 0": 0.101,"Step 1": 0.817,"Step 2": 0,"Step 3": 0.821,"Step 4": 0,"Step 5": 0.563,"Step 6": 0.101,"Step 7": 0.898},
+            {"name": "i3","type": "real","Step 0": 0.898,"Step 1": 0,"Step 2": 0.101,"Step 3": 0,"Step 4": 0,"Step 5": 0.131,"Step 6": 0.101,"Step 7": 0},
+            {"name": "i4","type": "real","Step 0": 0,"Step 1": 0,"Step 2": 0.898,"Step 3": 0,"Step 4": 0.101,"Step 5": 0,"Step 6": 0,"Step 7": 0},
+            {"name": "i5","type": "real","Step 0": 0,"Step 1": 0.101,"Step 2": 0,"Step 3": 0.077,"Step 4": 0.898,"Step 5": 0,"Step 6": 0.695,"Step 7": 0},
+            {"name": "ok","type": "bool","Step 0": true,"Step 1": true,"Step 2": true,"Step 3": true,"Step 4": true,"Step 5": true,"Step 6": true,"Step 7": false},
+            {"name": "turn","type": "turn","Step 0": CINDERELLA,"Step 1": STEPMOTHER,"Step 2": CINDERELLA,"Step 3": STEPMOTHER,"Step 4": CINDERELLA,"Step 5": STEPMOTHER,"Step 6": CINDERELLA,"Step 7": STEPMOTHER}
+        ]
+    }
+    ],
+    "Conflicts": [
+        {"Conflict": "[ok]"}
+    ],
+    "Diagnoses": [
+        {"Diagnosis": "[ok]"}
+    ],
+    "Dependencies": {
+         "ok": {"inputs": ["i1", "i2", "i3", "i4", "i5"] , "locals": ["turn", "b1", "b2", "b3", "b4", "b5"] , "outputs": ["e"]}
+    }
+}

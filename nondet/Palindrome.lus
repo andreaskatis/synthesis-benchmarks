@@ -1,0 +1,19 @@
+node Palindrome(cvg : bool; cha, option, location, delta_cha : real) returns();
+var
+  ok1, ok2, ok3, ok4, ok5, guarantee_delta_cha, guarantee_cvg_cha : bool;
+let
+  ok1 = cvg => option = pre(option);
+  ok2 = not cvg => (1.0 <= option and option <= 3.0);
+  guarantee_delta_cha = 0.0 <= delta_cha and delta_cha <= 1.0;
+  guarantee_cvg_cha = (pre(delta_cha) <= 0.1 and not cvg => cha < 32.0) and (pre(delta_cha) >= 0.9 and not cvg => cha > 126.0);
+  ok3 = (pre(delta_cha) > 0.1 and pre(delta_cha) < 0.9) => (cha >= 32.0 and cha <= 126.0);
+
+  ok4 = guarantee_delta_cha and guarantee_cvg_cha;
+  ok5 = location >= 0.0;
+  --%PROPERTY ok1;
+  --%PROPERTY ok2;
+  --%PROPERTY ok3;
+  --%PROPERTY ok4;
+  --%PROPERTY ok5;
+  --%REALIZABLE cvg;
+tel;

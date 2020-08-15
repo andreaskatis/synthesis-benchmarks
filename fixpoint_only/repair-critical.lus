@@ -1,0 +1,36 @@
+node repair_critical(f1a, f1b, t1b, t2b, f2a, f2b, pc1, pc2 : int) returns();
+var
+  ok1, next1, next2 : bool;
+let
+  next1 = ((pre(pc1) = 1 and pc1 = 2 and f1a = 1 and f1b = pre(f1b) and t1b = pre(t1b) and t2b = pre(t2b) and f2a = pre(f2a) and f2b = pre(f2b) and pc2 = pre(pc2)) or 
+	(pre(pc1) = 2 and pc1 = 3 and f1a = pre(f1a) and f1b = pre(f1b) and t2b = pre(t2b) and f2a = pre(f2a) and f2b = pre(f2b) and pc2 = pre(pc2)) or
+	pre(pc1 = 3) and pre(f1b) = 1 and pre(t1b) = 0 and pc1 = 3 and f1b = pre(f1b) and t1b = pre(t1b) and t2b = pre(t2b) and f2a = pre(f2a) and f2b = pre(f2b) and pc2 = pre(pc2) or
+	pre(pc1) = 3 and ((pre(f1b) = 0) or (pre(t1b) = 0)) and pc1 = 4 and f1b = pre(f1b) and t1b = pre(t1b) and f1a = pre(f1a) and t2b = pre(t2b) and f2a = pre(f2a) and f2b = pre(f2b) and pc2 = pre(pc2) or
+	pre(pc1) = 4 and pc1 = 5 and (f1a = 0) and f1b = pre(f1b) and t1b = pre(t1b) and t2b = pre(t2b) and f2a = pre(f2a) and f2b = pre(f2b) and pc2 = pre(pc2) or
+	pre(pc1) = 5 and pre(t1b) = 1 and pc1 = 6 and f2a = 1 and t1b = pre(t1b) and f1a = pre(f1a) and f1b = pre(f1b) and t2b = pre(t2b) and f2b = pre(f2b) and pc2 = pre(pc2) or
+	pre(pc1) = 5 and pre(t1b) = 1 and pc1 = 9 and f1a = pre(f1a) and f1b = pre(f1b) and t1b = pre(t1b) and t2b = pre(t2b) and f2a = pre(f2a) and f2b = pre(f2b) and pc2 = pre(pc2) or
+	pre(pc1) = 6 and pc1 = 7 and t2b = 1 and f1a = pre(f1a) and f1b = pre(f1b) and t1b = pre(t1b) and f2a = pre(f2a) and f2b = pre(f2b) and pc2 = pre(pc2) or
+	pre(pc1) = 7 and pre(f2b) = 1 and pre(t2b) = 1 and pc1 = 7 and f1a = pre(f1a) and f1b = pre(f1b) and t1b = pre(t1b) and t2b = pre(t2b) and f2a = pre(f2a) and f2b = pre(f2b) and pc2 = pre(pc2) or
+	pre(pc1) = 7 and ((pre(f2b) = 0) or (pre(t2b) = 0)) and pc1 = 8 and f1a = pre(f1a) and f1b = pre(f1b) and t1b = pre(t1b) and t2b = pre(t2b) and f2a = pre(f2a) and f2b = pre(f2b) and pc2 = pre(pc2) or
+	pre(pc1) = 8 and pc1 = 9 and (f2a = 0) and f1a = pre(f1a) and f1b = pre(f1b) and t1b = pre(t1b) and t2b = pre(t2b) and f2b = pre(f2b) and pc2 = pre(pc2) or
+	pre(pc1) = 9 and pc1 = 1 and f1a = pre(f1a) and f1b = pre(f1b) and t1b = pre(t1b) and t2b = pre(t2b) and f2a = pre(f2a) and f2b = pre(f2b) and pc2 = pre(pc2));
+
+  next2 = ((pre(pc2) = 1 and pc2 = 2 and f1b = 1 and f1a = pre(f1a) and t1b = pre(t1b) and t2b = pre(t2b) and f2a = pre(f2a) and f2b = pre(f2b) and pc1 = pre(pc1)) or
+  	(pre(pc2) = 2 and pc2 = 3 and (t1b = 0) and f1a = pre(f1a) and f1b = pre(f1b) and t2b = pre(t2b) and f2a = pre(f2a) and f2b = pre(f2b) and pc1 = pre(pc1)) or
+  	pre(pc2) = 3 and pre(f1a) = 1 and (pre(t1b) = 0) and pc2 = 3 and f1a = pre(f1a) and f1b = pre(f1b) and t1b = pre(t1b) and t2b = pre(t2b) and f2a = pre(f2a) and f2b = pre(f2b) and pc1 = pre(pc1) or
+  	pre(pc2) = 3 and ((pre(f1a) = 0) or pre(t1b) = 1) and pc2 = 4 and f1a = pre(f1a) and f1b = pre(f1b) and t1b = pre(t1b) and t2b = pre(t2b) and f2a = pre(f2a) and f2b = pre(f2b) and pc1 = pre(pc1) or
+  	pre(pc2) = 4 and pc2 = 5 and f2b = 1 and f1a = pre(f1a) and f1b = pre(f1b) and t1b = pre(t1b) and t2b = pre(t2b) and f2a = pre(f2a) and pc1 = pre(pc1) or
+  	pre(pc2) = 5 and pc2 = 6 and (t2b = 0) and f1a = pre(f1a) and f1b = pre(f1b) and t1b = pre(t1b) and f2a = pre(f2a) and f2b = pre(f2b) and pc1 = pre(pc1) or
+  	pre(pc2) = 6 and pre(f2a) = 1 and (pre(t2b) = 0) and pc2 = 6 and f1a = pre(f1a) and f1b = pre(f1b) and t1b = pre(t1b) and t2b = pre(t2b) and f2a = pre(f2a) and f2b = pre(f2b) and pc1 = pre(pc1) or
+  	pre(pc2) = 6 and (pre(f2a) = 0 or pre(t2b) = 1) and pc2 = 7 and f1a = pre(f1a) and f1b = pre(f1b) and t1b = pre(t1b) and t2b = pre(t2b) and f2a = pre(f2a) and f2b = pre(f2b) and pc1 = pre(pc1) or
+  	pre(pc2) = 7 and pc2 = 8 and (f2b = 0) and f1a = pre(f1a) and f1b = pre(f1b) and t1b = pre(t1b) and t2b = pre(t2b) and f2a = pre(f2a) and pc1 = pre(pc1) or
+  	pre(pc2) = 8 and pc2 = 9 and (f1b = 0) and f1a = pre(f1a) and t1b = pre(t1b) and t2b = pre(t2b) and f2a = pre(f2a) and f2b = pre(f2b) and pc1 = pre(pc1) or
+  	pre(pc2) = 9 and pc2 = 1 and f1a = pre(f1a) and f1b = pre(f1b) and t1b = pre(t1b) and t2b = pre(t2b) and f2a = pre(f2a) and f2b = pre(f2b) and pc1 = pre(pc1));
+
+  assert ((f1a = 0) and (f1b = 0) and (t1b = 0) and (f2a = 0) and (f2b = 0) and (t2b = 0) and pc1 = 1 and pc2 = 1) -> (next1 or next2);
+
+  ok1 = (((1 <= pc1 and pc1 <= 9) and (1 <= pc2 and pc2 <= 9) and ((pc1 = 4 => pc2 <> 4) and (pc1 = 8 => pc2 <> 7))));
+
+  --%PROPERTY ok1;
+  --%REALIZABLE;
+tel;

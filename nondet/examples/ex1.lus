@@ -1,0 +1,9 @@
+node ex1(x : int; y1, y2 : int) returns();
+var
+  ok : bool;
+let
+  ok = (x <=2 and y1 > -3*x and y2 < x) or (x>= -1 and y1 < 5*x and y2 > x);
+
+  --%PROPERTY ok;
+  --%REALIZABLE x;
+tel;

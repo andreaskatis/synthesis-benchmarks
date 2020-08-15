@@ -1,0 +1,41 @@
+node User_Manager(
+	cvg : bool;
+	mainC, indx, flag, userIdx : real;
+	username : real;
+	password : real;
+	cmd : real;
+	delta_mainC, delta_cmd : real
+	) returns();
+var
+	ok1, ok2, ok3, ok4, ok5, ok6, ok7, ok8 : bool;
+	guarantee_delta_mainC, guarantee_delta_cmd,
+	guarantee_coverage_improvement_implies_delta_mainC, guarantee_coverage_improvement_implies_delta_cmd : bool;
+let
+	guarantee_delta_mainC = 0.0 <= delta_mainC and delta_mainC <= 1.0;
+	guarantee_delta_cmd = 0.0 <= delta_cmd and delta_cmd <= 1.0;
+
+    guarantee_coverage_improvement_implies_delta_mainC = ((pre(delta_mainC) < 0.1 and not cvg) => 
+    	mainC < 1.0) and ((pre(delta_mainC) >= 0.9 and not cvg) => mainC > 4.0);
+    guarantee_coverage_improvement_implies_delta_cmd = ((pre(delta_cmd) < 0.1 and not cvg) => cmd < 0.0) and ((pre(delta_cmd) > 0.9 and not cvg) => cmd > 11.0);
+
+	ok1 = (pre(delta_mainC) >= 0.1 and pre(delta_mainC) <= 0.9) => mainC >= 1.0 and mainC <= 4.0;
+	ok2 = indx >= 0.0;
+	ok3 = userIdx >= 0.0;
+	ok4 = username >= 32.0 and username <= 126.0;
+	ok5 = password >= 32.0 and password <= 126.0;
+	ok6 = (pre(delta_cmd) >= 0.1 and pre(delta_cmd) <= 0.9) => cmd >= 0.0 and cmd <= 11.0;
+	ok7 = 0.0 <= flag and flag <= 1.0;
+
+   	ok8 = guarantee_delta_mainC and guarantee_delta_cmd and
+	guarantee_coverage_improvement_implies_delta_mainC and guarantee_coverage_improvement_implies_delta_cmd;
+
+	--%PROPERTY ok1;
+	--%PROPERTY ok2;
+	--%PROPERTY ok3;
+	--%PROPERTY ok4;
+	--%PROPERTY ok5;
+	--%PROPERTY ok6;
+	--%PROPERTY ok7;
+	--%PROPERTY ok8;
+  --%REALIZABLE cvg;
+tel;

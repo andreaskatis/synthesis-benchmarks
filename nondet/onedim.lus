@@ -1,0 +1,14 @@
+node onedim(x, y : int) returns();
+var
+  ok1, ok2 : bool;
+  position : int;
+let
+  assert x >= -1 and x <= 1;
+  position =  1 -> (pre(position) + x + y);
+  ok1 = y >= -1 and y <= 1;
+  ok2 = position >= 0;
+
+  --%PROPERTY ok1;
+  --%PROPERTY ok2;
+  --%REALIZABLE x;
+tel;

@@ -1,0 +1,19 @@
+--Evasion game in 7x7 grid, movements using integers.
+node bounded_evasion_ints(adv_x, adv_y, rbt_x, rbt_y : int) returns ();
+var
+ ok1, ok2, ok3, ok4, ok5 : bool;
+let	
+ assert (adv_x = 6 and adv_y = 6) -> (adv_y >= pre(adv_y) - 1 and adv_y <= pre(adv_y) + 1 and adv_x >= pre(adv_x) - 1 and adv_x <= pre(adv_x) + 1);
+ ok1 = rbt_x = 0 -> (rbt_x >= pre(rbt_x) - 1 and rbt_x <= pre(rbt_x) + 1);
+ ok2 = rbt_y = 0 -> (rbt_y >= pre(rbt_y) - 1 and rbt_y <= pre(rbt_y) + 1);
+ ok3 = rbt_x >= 0 and rbt_x <= 6;
+ ok4 = rbt_y >= 0 and rbt_y <= 6;
+ ok5 = not (rbt_x = adv_x and rbt_y = adv_y);
+ 
+ --%PROPERTY ok1;
+ --%PROPERTY ok2;
+ --%PROPERTY ok3;
+ --%PROPERTY ok4;
+ --%PROPERTY ok5;
+ --%REALIZABLE adv_x, adv_y;
+tel;
