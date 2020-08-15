@@ -80,17 +80,24 @@ void chasing_adv() {
 	    }
 	  } else {
 	  	//Toss a coin, move either on X or Y axis
+
 	  	if (rand() % 2 == 0) {
 	      if (adv_x[0] > rbt_x[0]) {
 	        adv_x[0] = adv_x[0] - 0.1;
-	      } else {
+	      } else if (adv_x[0] < rbt_x[0]) {
 	       adv_x[0] = adv_x[0] + 0.1;
+	      } else {
+	      //if (adv_x[0] == rbt_x[0] && fabs(adv_y - rbt_y) == 0.1) {
+	      	adv_y[0] = rbt_y[0];
 	      }
 	  	} else {
 	      if (adv_y[0] > rbt_y[0]) {
 	        adv_y[0] = adv_y[0] - 0.1;
-	      } else {
+	      } else if (adv_y[0] < rbt_y[0]) {
 	        adv_y[0] = adv_y[0] + 0.1;
+	      } else {
+	      // if (adv_y[0] == rbt_y[0] && fabs(adv_x - rbt_x) == 0.1) {
+	      	adv_x[0] = rbt_x[0];
 	      } 
 	  	}
 	  }
@@ -126,7 +133,7 @@ extern double generateRandomValue(_Bool lflag, _Bool uflag, double lbound, doubl
 extern double generateRandomValueExcl(double excl1, _Bool lflag, _Bool uflag, double lbound, double ubound) {
   double min = (lflag && excl1 != lbound) ? lbound : lbound+0.001;
   double max = (uflag && excl1 != ubound) ? ubound : ubound-0.001;
-  double range = max - min;
+  double range = (max - min);
   if (range == 1) {
     return max;
   } else {
@@ -143,15 +150,21 @@ extern double generateRandomValueExcl(double excl1, _Bool lflag, _Bool uflag, do
 }
 
 extern double generateRandomValueExcl2(double excl1, double excl2, _Bool lflag, _Bool uflag, double lbound, double ubound) {
-  double min = (lflag && excl1 != lbound && excl2 != lbound) ? lbound : lbound+1;
-  double max = (uflag && excl1 != ubound && excl2 != ubound) ? ubound : ubound-1;
-  double range = max - min;
+  double min = (lflag && excl1 != lbound && excl2 != lbound) ? lbound : lbound+0.001;
+  double max = (uflag && excl1 != ubound && excl2 != ubound) ? ubound : ubound-0.001;
+  double range = (max - min);
   if (range == 1) {
     return max;
   } else {  
-    double rnd = ((double) rand())/(1.0 + ((double) RAND_MAX));
+  	
+  	// double rnd = pow((double) rand()/(1.0 + ((double) RAND_MAX)), 2);
+    // double rnd = sqrt((double) abs(rand() - rand())/(1.0 + ((double) RAND_MAX)));
+    double rnd = (double) rand()/(1.0 + ((double) RAND_MAX));
     double value = ((double) (((double) range)*rnd));
     double res = value + min;
+
+    double mix = (double) rand()/(1.0 + ((double) RAND_MAX)) * 0.3;
+    res = (rand() % 2 == 0) ? res *(1 - mix) + 0.3*mix : res *(1 - mix) + 0.7*mix;
 
     if (res == excl1 || res == excl2) {
       return generateRandomValueExcl2 (excl1, excl2, lflag, uflag, min, max);
@@ -162,8 +175,8 @@ extern double generateRandomValueExcl2(double excl1, double excl2, _Bool lflag, 
 }
 
 extern double generateRandomValueExcl3(double excl1, double excl2, double excl3, _Bool lflag, _Bool uflag, double lbound, double ubound) {
-  double min = (lflag && excl1 != lbound && excl2 != lbound && excl3 != lbound) ? lbound : lbound+1;
-  double max = (uflag && excl1 != ubound && excl2 != ubound && excl3 != ubound) ? ubound : ubound-1;
+  double min = (lflag && excl1 != lbound && excl2 != lbound && excl3 != lbound) ? lbound : lbound+0.001;
+  double max = (uflag && excl1 != ubound && excl2 != ubound && excl3 != ubound) ? ubound : ubound-0.001;
   double range = max - min;
   if (range == 1) {
     return max;
