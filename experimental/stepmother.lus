@@ -1,5 +1,4 @@
 const C = 1.0;
-const V = 5;
 
 node game(i1, i2, i3, i4, i5 : real; e : int) returns ();
 var
@@ -12,14 +11,14 @@ let
   ok1 = i1 >= 0.0 and i2 >= 0.0 and i3 >= 0.0 and i4 >= 0.0 and i5 >= 0.0;
   ok2 = i1 + i2 + i3 + i4 + i5 = 1.0;
 
-  b1 = 0.0 -> (if (e = 5 or e = 1) then pre(b1) else (pre(b1) + i1)) ;
-  b2 = 0.0 -> (if (e = 1 or e = 2) then pre(b2) else (pre(b2) + i2)) ;
-  b3 = 0.0 -> (if (e = 2 or e = 3) then pre(b3) else (pre(b3) + i3)) ;
-  b4 = 0.0 -> (if (e = 3 or e = 4) then pre(b4) else (pre(b4) + i4)) ;
-  b5 = 0.0 -> (if (e = 4 or e = 5) then pre(b5) else (pre(b5) + i5)) ;
+  b1 = 0.0 -> (if (e = 5 or e = 1) then i1 else (pre(b1) + i1)) ;
+  b2 = 0.0 -> (if (e = 1 or e = 2) then i2 else (pre(b2) + i2)) ;
+  b3 = 0.0 -> (if (e = 2 or e = 3) then i3 else (pre(b3) + i3)) ;
+  b4 = 0.0 -> (if (e = 3 or e = 4) then i4 else (pre(b4) + i4)) ;
+  b5 = 0.0 -> (if (e = 4 or e = 5) then i5 else (pre(b5) + i5)) ;
 
-  counter = 0 -> (if (not ((b1 <= C) and (b2 <= C) and (b3 <= C) and (b4 <= C) and (b5 <= C))) then 0 else pre(counter) + 1);
-  ok3 = counter < V;
+  counter = 0 -> (if (b1 > C or b2 > C or b3 > C or b4 > C or b5 > C) then 0 else pre(counter) + 1);
+  ok3 = counter < 5;
 
   --%PROPERTY ok1;
   --%PROPERTY ok2;
