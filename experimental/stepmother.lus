@@ -1,10 +1,11 @@
-const C = 1.0;
+const C = 1.4;
 
 node game(i1, i2, i3, i4, i5 : real; e : int) returns ();
 var
   b1, b2, b3, b4, b5 : real;
-  counter : int;  
-  ok1, ok2, ok3 : bool;
+  counter : int;
+  --counter1, counter2, counter3, counter4, counter5 : int;  
+  ok1, ok2, ok3, ok_comb, ok_hist : bool;
 let
   assert (e = 1 or e = 2 or e = 3 or e = 4 or e = 5);
 
@@ -17,8 +18,18 @@ let
   b4 = 0.0 -> (if (e = 3 or e = 4) then i4 else (pre(b4) + i4)) ;
   b5 = 0.0 -> (if (e = 4 or e = 5) then i5 else (pre(b5) + i5)) ;
 
-  counter = 0 -> (if (b1 > C or b2 > C or b3 > C or b4 > C or b5 > C) then 0 else pre(counter) + 1);
-  ok3 = counter < 5;
+  --counter = 0 -> (if (b1 > C or b2 > C or b3 > C or b4 > C or b5 > C) then 0 else pre(counter) + 1);
+  --counter1 = 0 -> (if b1 > C then 0 else pre(counter1) + 1);
+  --counter2 = 0 -> (if b2 > C then 0 else pre(counter2) + 1);
+  --counter3 = 0 -> (if b3 > C then 0 else pre(counter3) + 1);
+  --counter4 = 0 -> (if b4 > C then 0 else pre(counter4) + 1);
+  --counter5 = 0 -> (if b5 > C then 0 else pre(counter5) + 1);
+
+  counter = 0 -> pre(counter) + 1;
+  ok_comb = (b1 > C or b2 > C or b3 > C or b4 > C or b5 > C); 
+  ok_hist = ok_comb -> (ok_comb or pre(ok_hist));
+  ok3 = counter < 10 or ok_hist; 
+  --ok3 = counter1 < 100 and counter2 < 100 and counter3 < 100 and counter4 < 100 and counter5 < 100;
 
   --%PROPERTY ok1;
   --%PROPERTY ok2;
