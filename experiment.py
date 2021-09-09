@@ -45,40 +45,40 @@ NestList_performance = []
 
 #delete all previous files except lus files in subfolder
 def deleteFile_in_subfolder(folder, lus_files):
-    os.chdir(folder)
+    if os.path.isdir(folder):
+        os.chdir(folder)
+        cfileList = glob.glob("*.c")
+        hfileList = glob.glob("*.h")
+        ofileList = glob.glob("*.o")
+        sfileList = glob.glob("*.smt2")
+        txtfileList = glob.glob("*.txt")
 
-    cfileList = glob.glob("*.c")
-    hfileList = glob.glob("*.h")
-    ofileList = glob.glob("*.o")
-    sfileList = glob.glob("*.smt2")
-    txtfileList = glob.glob("*.txt")
+        if (len(cfileList)!=0):
+            for f in cfileList:
+                os.remove(f)
 
-    if (len(cfileList)!=0):
-        for f in cfileList:
-            os.remove(f)
+        if (len(hfileList)!=0):
+            for h in hfileList:
+                os.remove(h)
 
-    if (len(hfileList)!=0):
-        for h in hfileList:
-            os.remove(h)
+        if (len(ofileList)!=0):
+            for o in ofileList:
+                os.remove(o)
 
-    if (len(ofileList)!=0):
-        for o in ofileList:
-            os.remove(o)
+        if (len(sfileList)!=0):
+            for s in sfileList:
+                os.remove(s)
 
-    if (len(sfileList)!=0):
-        for s in sfileList:
-            os.remove(s)
+        if (len(txtfileList)!=0):
+            for txt in txtfileList:
+                os.remove(txt)
 
-    if (len(txtfileList)!=0):
-        for txt in txtfileList:
-            os.remove(txt)
+        if (len(lus_files)!=0):
+            for lus in lus_files:
+                if (os.path.isfile(os.path.splitext(lus)[0])):
+                    os.remove(os.path.splitext(lus)[0])
 
-    if (len(lus_files)!=0):
-        for lus in lus_files:
-            if (os.path.isfile(os.path.splitext(lus)[0])):
-                os.remove(os.path.splitext(lus)[0])
-
-    os.chdir("..")
+        os.chdir("..")
 
 #delete files in each folder except lus
 def deleteFile_in_folder():
@@ -284,7 +284,7 @@ def drawOverhead():
 
     fig = plt.figure()
 
-    plt.scatter(pl2,pl3,c="r", s = 100,edgecolor= "")
+    plt.scatter(pl2,pl3,c="r", s = 100,edgecolor=['none'])
 
     plt.yscale('log')
     plt.xscale('log')
@@ -330,7 +330,7 @@ def drawSize():
     fig = plt.figure()
 
     
-    plt.scatter(pl1,pl2,c="r", s = 100,edgecolor= "")
+    plt.scatter(pl1,pl2,c="r", s = 100,edgecolor=['none'])
     plt.yscale('log')
     plt.xscale('log')
 
@@ -367,7 +367,7 @@ def drawFixpointReducedSize():
     fig = plt.figure()
 
 
-    plt.scatter(pl1,pl2,c="r", s = 100,edgecolor= "")
+    plt.scatter(pl1,pl2,c="r", s = 100,edgecolor=['none'])
 
     plt.yscale('log')
     plt.xscale('log')
@@ -452,7 +452,7 @@ def drawPerformance():
 
     fig = plt.figure()
 
-    plt.scatter(pl1,pl2,c="r", s = 100,edgecolor= "")
+    plt.scatter(pl1,pl2,c="r", s = 100,edgecolor=['none'])
     plt.axis([0,(float(getMax(NestList_performance))+20),0,(float(getMax(NestList_performance))+20)])
     plt.plot([0,(float(getMax(NestList_performance))+20)],[0,(float(getMax(NestList_performance))+20)])
 
@@ -734,7 +734,7 @@ def main(argv):
     try:
       opts, args = getopt.getopt(argv,"c",[])
     except getopt.GetoptError:
-      print 'experiment.py -c'
+      print ('experiment.py -c')
       sys.exit(2)
     for opt, arg in opts:
         if opt == '-c':
@@ -768,7 +768,7 @@ def main(argv):
 
 
     #################################################################################
-    print("deleting the remained files")
+    print("deleting the remaining files")
     if ((len(sys.argv)>1) and (sys.argv[1] == "-skipjkind")):
         print("skip the jkind")
 
